@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">OCSChat</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="click_here_to_register">Click here to register</string>
+    <string name="click_here_to_login">Click here to login</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
 </resources>
