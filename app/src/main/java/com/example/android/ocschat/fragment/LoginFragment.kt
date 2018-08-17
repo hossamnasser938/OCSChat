@@ -43,6 +43,16 @@ class LoginFragment : Fragment() {
         setClickRegisterOnClickListener()
     }
 
+    override fun onPause() {
+        super.onPause()
+        try {
+            disposable.dispose()
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //Just stop
+        }
+    }
+
     private fun setLoginButtonOnClickListener(){
         val context : Context? = context
         login_button.setOnClickListener {
@@ -92,13 +102,11 @@ class LoginFragment : Fragment() {
             val intent = Intent(context, HomeActivity::class.java)
             startActivity(intent)
             activity?.finish()
-            Log.d("LoginFragment", it.displayName)
         }, {
             //hide loading progress bar
             login_loading_progress_bar.visibility = View.GONE
             //show error message
             showErrorMessage(R.string.error_login)
-            Log.d("LoginFragment", it.message)
         })
     }
 

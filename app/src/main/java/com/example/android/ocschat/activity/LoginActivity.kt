@@ -17,7 +17,6 @@ class LoginActivity : AppCompatActivity() , LoginFragment.LoginTransitionInterfa
     override fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.login_frame_layout, fragment)
-                .addToBackStack(null)
                 .commit()
     }
 }
