@@ -52,6 +52,7 @@
             android:id="@+id/click_login_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default16_margin"
             android:text="@string/click_here_to_login"
             android:textStyle="bold"
             android:gravity="center_horizontal" />
@@ -60,7 +61,8 @@
             android:id="@+id/register_loading_progress_bar"
             android:layout_width="@dimen/progress_bar_dimens"
             android:layout_height="@dimen/progress_bar_dimens"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
