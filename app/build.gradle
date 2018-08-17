@@ -26,9 +26,10 @@ android {
 dependencies {
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation 'com.google.firebase:firebase-core:11.8.0'
-    implementation 'com.google.firebase:firebase-auth:11.8.0'
-    implementation 'com.google.firebase:firebase-database:11.8.0'
+    implementation "com.github.FrangSierra:RxFirebase:$rxfirebase_version"
+    implementation "com.google.firebase:firebase-core:$firebase_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_version"
+    implementation "com.google.firebase:firebase-database:$firebase_version"
     annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "com.android.support:multidex:$multidex_version"
     implementation "io.reactivex:rxjava:$rxjava_version"
