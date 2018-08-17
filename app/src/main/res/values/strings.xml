@@ -19,4 +19,5 @@
     <string name="you_are_logged">You are logged successfully</string>
     <string name="error_login">Error occurs while Performing login, please try again later</string>
     <string name="error_register">Error occurs while Performing register, please try again later</string>
+    <string name="sign_out">Sign out</string>
 </resources>
