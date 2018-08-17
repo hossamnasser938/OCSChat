@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "574333177315",
+    "firebase_url": "https://ocschat-cf7f6.firebaseio.com",
+    "project_id": "ocschat-cf7f6",
+    "storage_bucket": "ocschat-cf7f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574333177315:android:f107c8a92bfb5d34",
+        "android_client_info": {
+          "package_name": "com.example.android.ocschat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574333177315-s7rpod6f1444je6u7fbtie17534doao3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.ocschat",
+            "certificate_hash": "4baf534d883d0aba8ce0379cd5d9422c7ef2d8cc"
+          }
+        },
+        {
+          "client_id": "574333177315-ap6cpjtvq3cldga578n1emdjodlcu52e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBV-X4cb-w4cWcsrwWafH5DOkVR0U4wOM4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574333177315-ap6cpjtvq3cldga578n1emdjodlcu52e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
