@@ -18,16 +18,16 @@ class LoginViewModelImpl : LoginViewModel {
     }
 
 
-    override fun register(email: String?, name: String?, password: String?): Maybe<FirebaseUser> {
-        return api.register(email, name, password).flatMap { AuthResult ->
+    override fun register(body: HashMap<String, String>): Maybe<FirebaseUser> {
+        return api.register(body[Constants.EMAIL_KEY], body[Constants.NAME_KEY], body[Constants.PASSWORD_KEY]).flatMap { AuthResult ->
             if(AuthResult.user != null) Maybe.just(AuthResult.user)
             else Maybe.error(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun login(email: String?, password: String?): Maybe<FirebaseUser> {
-        return api.login(email, password).flatMap { AuthResult ->
+    override fun login(body : HashMap<String, String>): Maybe<FirebaseUser> {
+        return api.login(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY]).flatMap { AuthResult ->
             if(AuthResult.user != null) Maybe.just(AuthResult.user)
             else Maybe.error(OCSChatThrowable(Constants.FAILED_Login_MESSAGE)) }
                 .subscribeOn(Schedulers.io())

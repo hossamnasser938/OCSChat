@@ -2,6 +2,7 @@
     <string name="app_name">OCSChat</string>
     <string name="login_activity">Login Activity</string>
     <string name="home_activity">Home Activity</string>
+    <string name="no_internet_connection">No internet connection, please connect to the internet and try again</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="click_here_to_register">Click here to register</string>
@@ -9,4 +10,13 @@
     <string name="email">E-mail</string>
     <string name="password">Password</string>
     <string name="username">Username</string>
+    <string name="forgot_email_password">Please Enter your email and password</string>
+    <string name="forgot_email_password_name">Please Enter your email, name, and password</string>
+    <string name="invalid_email">Please enter email with valid format</string>
+    <string name="invalid_name">Please enter name starting by a letter</string>
+    <string name="invalid_password">Please enter password of 6 characters or more</string>
+    <string name="logged_successfully">Logged Successfully</string>
+    <string name="you_are_logged">You are logged successfully</string>
+    <string name="error_login">Error occurs while Performing login, please try again later</string>
+    <string name="error_register">Error occurs while Performing register, please try again later</string>
 </resources>
