@@ -3,12 +3,15 @@ package com.example.android.ocschat.activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import com.example.android.ocschat.R
+import com.example.android.ocschat.fragment.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +20,14 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
+        openFragment(HomeFragment())
+    }
+
+    override fun openFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.home_frame_layout, fragment)
+                .addToBackStack(null)
+                .commit()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -37,4 +48,5 @@ class HomeActivity : AppCompatActivity() {
         }
         return true
     }
+
 }
