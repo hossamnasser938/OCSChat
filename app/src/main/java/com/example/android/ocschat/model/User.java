@@ -12,6 +12,10 @@ public class User {
     private String name;
     private List<Friend> friends;
 
+    public User() {
+        //Required for firebase database operations
+    }
+
     public User(String id, String name) {
         this.id = id;
         this.name = name;

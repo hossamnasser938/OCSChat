@@ -1,7 +1,9 @@
 package com.example.android.ocschat.dataLayer.impl;
 
+
 import com.example.android.ocschat.dataLayer.LoginApi;
 import com.example.android.ocschat.model.User;
+import com.example.android.ocschat.util.Constants;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -19,9 +21,8 @@ public class LoginApiImpl implements LoginApi {
     }
 
     @Override
-    public Completable registerInFirebaseDatabase(String id, String name){
-        return RxFirebaseDatabase.setValue(FirebaseDatabase.getInstance().getReference("users").child(id), new User(id, name));
-
+    public Completable registerInFirebaseDatabase(User user){
+        return RxFirebaseDatabase.setValue(FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(user.getId()), user);
     }
 
     @Override

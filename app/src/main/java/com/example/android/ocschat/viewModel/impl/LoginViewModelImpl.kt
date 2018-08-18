@@ -1,17 +1,15 @@
 package com.example.android.ocschat.viewModel.impl
 
 import com.example.android.ocschat.dataLayer.LoginApi
+import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.OCSChatThrowable
 import com.example.android.ocschat.viewModel.LoginViewModel
 import com.google.firebase.auth.FirebaseUser
-import io.reactivex.Completable
 import io.reactivex.Maybe
-import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Action
-import io.reactivex.functions.Consumer
+
 
 class LoginViewModelImpl : LoginViewModel {
 
@@ -21,13 +19,13 @@ class LoginViewModelImpl : LoginViewModel {
         this.api = api
     }
 
-
     override fun register(body: HashMap<String, String>): Maybe<FirebaseUser> {
         return api.registerInFirebaseAuth(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY])
                 .flatMap { AuthResult ->
             if(AuthResult.user != null) {
-                api.registerInFirebaseDatabase(AuthResult.user.uid, body[Constants.NAME_KEY]).doOnError { Maybe.error<OCSChatThrowable>(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) }
-                        Maybe.just(AuthResult.user)
+                api.registerInFirebaseDatabase(User(AuthResult.user.uid, body[Constants.NAME_KEY]))
+                        .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) })
+                Maybe.just(AuthResult.user)
             }
             else Maybe.error(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) }
                 .subscribeOn(Schedulers.io())

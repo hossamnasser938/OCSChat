@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
 
+
 import io.reactivex.Maybe;
 
 public interface LoginViewModel {
