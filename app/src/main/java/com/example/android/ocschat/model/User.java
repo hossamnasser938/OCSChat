@@ -1,5 +1,7 @@
 package com.example.android.ocschat.model;
 
+import java.util.List;
+
 /**
  * User class used to hold more info about user for scalability
  * will be Connected with firebase User class through id property
@@ -8,10 +10,11 @@ public class User {
 
     private String id;
     private String name;
+    private List<Friend> friends;
 
     public User(String id, String name) {
-        this.setId(id);
-        this.setName(name);
+        this.id = id;
+        this.name = name;
     }
 
 
@@ -29,5 +32,21 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Friend> getFriends(){
+        return friends;
+    }
+
+    public void addFriend(Friend friend){
+        friends.add(friend);
+    }
+
+    public boolean deleteFriend(Friend friend){
+        if(friends.contains(friend)){
+            friends.remove(friend);
+            return true;
+        }
+        return false;
     }
 }
