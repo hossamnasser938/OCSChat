@@ -31,6 +31,9 @@ class HomeActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signOut()
                 this.finishAffinity()
             }
+            R.id.settings_menu_item -> {
+                //Nothing for now
+            }
         }
         return true
     }
