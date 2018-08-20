@@ -22,4 +22,5 @@
     <string name="sign_out">Sign out</string>
     <string name="settings">Settings</string>
     <string name="empty_friends_list">Empty Friends List</string>
+    <string name="enter_friend_email_or_username">Enter Friend email or username</string>
 </resources>
