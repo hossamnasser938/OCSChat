@@ -9,5 +9,7 @@ public class Constants {
     public static final String NAME_KEY = "name";
     public static final String ID_KEY = "id";
     public static final String USERS_KEY = "users";
+    public static final String MESSAGES_KEY = "messages";
+    public static final String FRIENDS_KEY = "friends";
 
 }
