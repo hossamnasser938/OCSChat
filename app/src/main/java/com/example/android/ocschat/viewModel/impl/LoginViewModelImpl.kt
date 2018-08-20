@@ -24,14 +24,7 @@ class LoginViewModelImpl : LoginViewModel {
         return api.registerInFirebaseAuth(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY])
                 .flatMap { AuthResult ->
             if(AuthResult.user != null) {
-                //testing start
-                var user = User(AuthResult.user.uid, body[Constants.NAME_KEY])
-                user.addFriend(Friend("1"))
-                user.addFriend(Friend("2"))
-                user.addFriend(Friend("3"))
-                api.registerInFirebaseDatabase(user)
-                        //testing finish
-                //api.registerInFirebaseDatabase(User(AuthResult.user.uid, body[Constants.NAME_KEY]))
+                api.registerInFirebaseDatabase(User(AuthResult.user.uid, body[Constants.NAME_KEY]))
                         .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(it.message)) })//removed: Constants.FAILED_REGISTERING_MESSAGE
                 Maybe.just(AuthResult.user)
             }
