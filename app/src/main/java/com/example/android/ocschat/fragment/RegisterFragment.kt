@@ -15,6 +15,7 @@ import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.LoginViewModel
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
 import javax.inject.Inject
 
@@ -110,7 +111,7 @@ class RegisterFragment : Fragment() {
             //hide loading progress bar
             register_loading_progress_bar.visibility = View.GONE
             //show error message
-            showErrorMessage(R.string.error_register)
+            showErrorMessage(it.message)
         })
     }
 
@@ -137,6 +138,11 @@ class RegisterFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         register_error_text_view.visibility = View.VISIBLE
         register_error_text_view.text = getString(messageId)
+    }
+
+    private fun showErrorMessage(message : String?){
+        login_error_text_view.visibility = View.VISIBLE
+        login_error_text_view.text = message
     }
 
 }

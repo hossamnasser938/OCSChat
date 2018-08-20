@@ -3,6 +3,7 @@ package com.example.android.ocschat.viewModel.impl
 import com.example.android.ocschat.dataLayer.HomeApi
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
+import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.OCSChatThrowable
 import com.example.android.ocschat.viewModel.HomeViewMdel
 import io.reactivex.Flowable
@@ -20,19 +21,21 @@ class HomeViewModelImpl : HomeViewMdel {
         return api.currentUserFriends
                 .flatMap { DataSnapshot ->
                     if(DataSnapshot != null){
-                        var friendsIdsList = ArrayList<String>()
-                        var friendsList = ArrayList<User>()
+                        //DataSnapshot here holds ids of current user friends
+                        val friendsIdsList = ArrayList<String>()
+                        val friendsList = ArrayList<User>()
                         for(dataSnapshot in DataSnapshot.children){
-                            friendsIdsList.add((dataSnapshot.value as Friend).id)
+                            friendsIdsList.add((dataSnapshot.getValue(Friend::class.java)).id)
                         }
                         api.getCurrentUserFriendsAsUsers(friendsIdsList)
                                 .subscribe({ for(dataSnapshot in it){
-                                    friendsList.add(dataSnapshot.value as User)
-                                } } , { Flowable.error<OCSChatThrowable>(OCSChatThrowable("")) })
+                                    //DataSnapshot here holds friends of current user as User objects
+                                    friendsList.add(dataSnapshot.getValue(User::class.java))
+                                } } , { Flowable.error<OCSChatThrowable>(OCSChatThrowable(it.message)) })
                         Flowable.just(friendsList)
                     }
                     else{
-                        Flowable.error(OCSChatThrowable(""))
+                        Flowable.error(OCSChatThrowable(Constants.FAILED_LOADING_FRIENDS))
                     }
                 }
     }

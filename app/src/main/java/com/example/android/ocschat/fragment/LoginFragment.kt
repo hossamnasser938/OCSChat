@@ -106,7 +106,7 @@ class LoginFragment : Fragment() {
             //hide loading progress bar
             login_loading_progress_bar.visibility = View.GONE
             //show error message
-            showErrorMessage(R.string.error_login)
+            showErrorMessage(it.message)
         })
     }
 
@@ -132,6 +132,11 @@ class LoginFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         login_error_text_view.visibility = View.VISIBLE
         login_error_text_view.text = getString(messageId)
+    }
+
+    private fun showErrorMessage(message : String?){
+        login_error_text_view.visibility = View.VISIBLE
+        login_error_text_view.text = message
     }
 
     interface LoginTransitionInterface{

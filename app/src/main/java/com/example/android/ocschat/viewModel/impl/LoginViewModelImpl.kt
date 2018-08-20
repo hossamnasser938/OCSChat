@@ -1,6 +1,7 @@
 package com.example.android.ocschat.viewModel.impl
 
 import com.example.android.ocschat.dataLayer.LoginApi
+import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.OCSChatThrowable
@@ -23,8 +24,15 @@ class LoginViewModelImpl : LoginViewModel {
         return api.registerInFirebaseAuth(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY])
                 .flatMap { AuthResult ->
             if(AuthResult.user != null) {
-                api.registerInFirebaseDatabase(User(AuthResult.user.uid, body[Constants.NAME_KEY]))
-                        .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) })
+                //testing start
+                var user = User(AuthResult.user.uid, body[Constants.NAME_KEY])
+                user.addFriend(Friend("1"))
+                user.addFriend(Friend("2"))
+                user.addFriend(Friend("3"))
+                api.registerInFirebaseDatabase(user)
+                        //testing finish
+                //api.registerInFirebaseDatabase(User(AuthResult.user.uid, body[Constants.NAME_KEY]))
+                        .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(it.message)) })//removed: Constants.FAILED_REGISTERING_MESSAGE
                 Maybe.just(AuthResult.user)
             }
             else Maybe.error(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) }
@@ -35,7 +43,7 @@ class LoginViewModelImpl : LoginViewModel {
     override fun login(body : HashMap<String, String>): Maybe<FirebaseUser> {
         return api.login(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY]).flatMap { AuthResult ->
             if(AuthResult.user != null) Maybe.just(AuthResult.user)
-            else Maybe.error(OCSChatThrowable(Constants.FAILED_Login_MESSAGE)) }
+            else Maybe.error(OCSChatThrowable(Constants.FAILED_LOGIN_MESSAGE)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

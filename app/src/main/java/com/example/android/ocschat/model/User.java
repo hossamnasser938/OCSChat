@@ -1,5 +1,6 @@
 package com.example.android.ocschat.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ public class User {
     public User(String id, String name) {
         this.id = id;
         this.name = name;
+        this.friends = new ArrayList<>();
     }
 
 

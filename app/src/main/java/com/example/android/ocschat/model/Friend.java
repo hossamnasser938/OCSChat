@@ -4,6 +4,10 @@ public class Friend {
     private String id;
     private FriendState state;
 
+    public Friend(){
+        //Required for firebase database operations
+    }
+
     public Friend(String id) {
         this.id = id;
         this.state = FriendState.NORMAL;

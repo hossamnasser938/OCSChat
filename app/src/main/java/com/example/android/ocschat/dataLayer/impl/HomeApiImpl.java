@@ -28,10 +28,11 @@ public class HomeApiImpl implements HomeApi {
 
     @Override
     public Single<List<DataSnapshot>> getCurrentUserFriendsAsUsers(final List<String> friendsIdsList) {
-        DatabaseReference usersReferences = FirebaseDatabase.getInstance().getReference(Constants.USERS_KEY);
+        DatabaseReference usersReferences = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
         return RxFirebaseQuery.getInstance().filter(usersReferences, new Function<DataSnapshot, DatabaseReference[]>() {
             @Override
             public DatabaseReference[] apply(DataSnapshot dataSnapshot) throws Exception {
+                //Filter users to get only friends of current user
                 List<DatabaseReference> referencesList = new ArrayList<DatabaseReference>();
                 User user;
                 for(DataSnapshot dsS : dataSnapshot.getChildren()){

@@ -20,7 +20,8 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
-        openFragment(HomeFragment())
+        else
+            openFragment(HomeFragment())
     }
 
     override fun openFragment(fragment: Fragment) {
