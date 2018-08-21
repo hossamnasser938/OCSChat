@@ -1,20 +1,20 @@
 package com.example.android.ocschat.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.*
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
-import com.example.android.ocschat.viewModel.HomeViewMdel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.example.android.ocschat.activity.AddFriendActivity
+import com.example.android.ocschat.viewModel.HomeViewModel
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
     @Inject
-    lateinit var homeVieModel : HomeViewMdel
+    lateinit var homeViewModel : HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +27,14 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeVieModel.currentUserFriends.subscribe({ Log.d("HomeFragment", it.size.toString())}, {Log.d("HomeFragment", it.message)})
+        handleAddFriendButton()
+    }
+
+    fun handleAddFriendButton(){
+        add_friend_button.setOnClickListener {
+            val intent = Intent(activity, AddFriendActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     interface HomeTransitionInterface{

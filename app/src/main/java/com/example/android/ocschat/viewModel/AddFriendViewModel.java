@@ -6,8 +6,8 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 
-public interface HomeViewMdel {
+public interface AddFriendViewModel {
 
-    Flowable<List<User>> getCurrentUserFriends();
+    Flowable<List<User>> getAllUsers();
 
 }

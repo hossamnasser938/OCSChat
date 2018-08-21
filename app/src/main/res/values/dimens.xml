@@ -2,4 +2,5 @@
 <resources>
     <dimen name="progress_bar_dimens">50dp</dimen>
     <dimen name="default16_margin">16dp</dimen>
+    <dimen name="default8_margin">8dp</dimen>
 </resources>

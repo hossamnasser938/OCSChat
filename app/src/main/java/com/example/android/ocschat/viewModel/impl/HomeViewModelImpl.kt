@@ -5,10 +5,10 @@ import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.OCSChatThrowable
-import com.example.android.ocschat.viewModel.HomeViewMdel
+import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.Flowable
 
-class HomeViewModelImpl : HomeViewMdel {
+class HomeViewModelImpl : HomeViewModel {
 
     private val api : HomeApi
 
