@@ -1,5 +1,6 @@
 package com.example.android.ocschat.viewModel.impl
 
+import android.util.Log
 import com.example.android.ocschat.dataLayer.AddFriendApi
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.AddFriendViewModel
@@ -13,14 +14,10 @@ class AddFriendViewModelImpl : AddFriendViewModel {
         this.api = api
     }
 
-    override fun getAllUsers() : Flowable<List<User>> {
+    override fun getAllUsers() : Flowable<User> {
         return api.allUsers.flatMap {
-            val usersList = ArrayList<User>()
-            for (dsS in it.value.children) {
-                val user = dsS.getValue(User::class.java)
-                usersList.add(user)
-            }
-            Flowable.just(usersList)
+            val user = it.value.getValue(User::class.java)
+            Flowable.just(user)
         }
     }
 }
