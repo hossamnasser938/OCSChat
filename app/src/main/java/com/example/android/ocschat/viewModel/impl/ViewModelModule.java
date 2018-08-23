@@ -1,9 +1,11 @@
 package com.example.android.ocschat.viewModel.impl;
 
 import com.example.android.ocschat.dataLayer.AddFriendApi;
+import com.example.android.ocschat.dataLayer.ChatApi;
 import com.example.android.ocschat.dataLayer.HomeApi;
 import com.example.android.ocschat.dataLayer.LoginApi;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
+import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;
 import com.example.android.ocschat.viewModel.LoginViewModel;
 
@@ -28,6 +30,11 @@ public class ViewModelModule {
     @Provides @Singleton
     AddFriendViewModel provideAddFriendViewModel(AddFriendApi api){
         return new AddFriendViewModelImpl(api);
+    }
+
+    @Provides @Singleton
+    ChatViewModel provideChatViewModel(ChatApi api){
+        return new ChatViewModelImpl(api);
     }
 
 }

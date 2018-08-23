@@ -17,7 +17,7 @@ class ChatActivity : AppCompatActivity(), ChatFragment.ChatTransitionInterface {
     override fun openFragment(fragment: Fragment) {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.login_frame_layout, fragment)
+                .replace(R.id.chat_frame_layout, fragment)
                 .commit()
     }
 }
