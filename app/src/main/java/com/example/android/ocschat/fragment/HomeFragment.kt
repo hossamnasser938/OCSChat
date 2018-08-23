@@ -91,6 +91,7 @@ class HomeFragment : Fragment() {
                             val clickedFriend = friendsList[position]
                             //Navigate to chat activity passing clicked friend
                             val intent = Intent(context, ChatActivity::class.java)
+                            intent.putExtra(Constants.FRIEND_ID_KEY, clickedFriend.id)
                             startActivity(intent)
                         }))
     }
