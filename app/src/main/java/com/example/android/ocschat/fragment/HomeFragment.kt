@@ -7,12 +7,14 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.AddFriendActivity
 import com.example.android.ocschat.adapter.HomeAdapter
 import com.example.android.ocschat.listener.HomeOnClickListener
 import com.example.android.ocschat.model.User
+import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -36,8 +38,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handleAddFriendButton()
+        //show loading progress bar
+        friends_list_loading_progress_bar.visibility = View.VISIBLE
+        //Fetch friends from api
         fetchCurrentUserFriends()
+        handleAddFriendButton()
     }
 
     fun handleAddFriendButton(){
@@ -50,9 +55,21 @@ class HomeFragment : Fragment() {
     private fun fetchCurrentUserFriends() {
         disposable = homeViewModel.currentUserFriends.subscribe({
             Log.d("HomeFragment", "Got friends list: " + it.size)
+            if(it.size > 0){
+                //Hide loading progress bar
+                friends_list_loading_progress_bar.visibility = View.GONE
+            }
+            else{
+                //Hide loading progress bar and show empty list text view
+                friends_list_loading_progress_bar.visibility = View.GONE
+                empty_list_text_view.visibility = View.VISIBLE
+            }
             displayCurrentUserFriends(it)
         }, {
             Log.d("HomeFragment", "Got throwable: " + it.message)
+            //Hide loading progress bar and toast
+            friends_list_loading_progress_bar.visibility = View.GONE
+            Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT)
         })
     }
 

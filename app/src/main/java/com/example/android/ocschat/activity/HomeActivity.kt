@@ -27,7 +27,6 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
     override fun openFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.home_frame_layout, fragment)
-                .addToBackStack(null)
                 .commit()
     }
 

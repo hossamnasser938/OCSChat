@@ -18,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/empty_friends_list"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/friends_list_loading_progress_bar"
