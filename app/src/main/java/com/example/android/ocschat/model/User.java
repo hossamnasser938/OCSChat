@@ -1,5 +1,6 @@
 package com.example.android.ocschat.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * User class used to hold more info about user for scalability
  * will be Connected with firebase User class through id property
  */
-public class User {
+public class User implements Serializable {
 
     private String id;
     private String name;
@@ -15,6 +16,7 @@ public class User {
 
     public User() {
         //Required for firebase database operations
+        this.friends = new ArrayList<>();
     }
 
     public User(String id, String name) {

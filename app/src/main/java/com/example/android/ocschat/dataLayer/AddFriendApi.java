@@ -1,12 +1,18 @@
 package com.example.android.ocschat.dataLayer;
 
+import com.example.android.ocschat.model.Friend;
 import com.google.firebase.database.DataSnapshot;
 
 import durdinapps.rxfirebase2.RxFirebaseChildEvent;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+
 
 public interface AddFriendApi {
 
     Flowable<RxFirebaseChildEvent<DataSnapshot>> getAllUsers();
+    Flowable<DataSnapshot> getCurrentUserFriends();
+    Completable addFriend(Friend friend);
+    Completable confirmAddFriend(Friend friend);
 
 }

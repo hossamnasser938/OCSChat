@@ -18,7 +18,6 @@ class AddFriendActivity : AppCompatActivity() , AddFriendFragment.AddFriendTrans
         supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.add_friend_frame_layout, fragment)
-                .addToBackStack(null)
                 .commit()
     }
 }
