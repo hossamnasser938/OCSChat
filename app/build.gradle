@@ -24,6 +24,7 @@ android {
 }
 
 dependencies {
+    implementation "com.android.support:recyclerview-v7:$recyclerview_version"
     implementation "com.google.dagger:dagger:$dagger_version"
     implementation "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "com.github.FrangSierra:RxFirebase:$rxfirebase_version"

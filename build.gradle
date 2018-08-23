@@ -9,6 +9,7 @@ buildscript {
         multidex_version = '1.0.3'
         firebase_version = '10.2.6'
         rxfirebase_version = '1.5.0'
+        recyclerview_version = '27.1.1'
     }
 
     repositories {
