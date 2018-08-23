@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
 
     private fun fetchCurrentUserFriends() {
         disposable = homeViewModel.currentUserFriends.subscribe({
-            Log.d("HomeFragment", "Got friends list")
+            Log.d("HomeFragment", "Got friends list: " + it.size)
             displayCurrentUserFriends(it)
         }, {
             Log.d("HomeFragment", "Got throwable: " + it.message)

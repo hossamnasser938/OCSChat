@@ -22,7 +22,8 @@ public class HomeApiImpl implements HomeApi {
 
     @Override
     public Flowable<DataSnapshot> getCurrentUserFriends() {
-        DatabaseReference currentUserFriendsReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(Constants.FRIENDS_KEY);
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference currentUserFriendsReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(currentUserId).child(Constants.FRIENDS_KEY);
         return RxFirebaseDatabase.observeValueEvent(currentUserFriendsReference);
     }
 
