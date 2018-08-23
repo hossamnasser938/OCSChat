@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/default8_margin"
+            android:layout_marginBottom="@dimen/default8_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/message_text_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Input"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/send_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            app:fabSize="mini"
+            android:src="@mipmap/send_fab_24"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/default8_margin" />
+
+    </LinearLayout>
+
+</RelativeLayout>

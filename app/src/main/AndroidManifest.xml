@@ -24,7 +24,8 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/login_activity" />
-        <activity android:name=".activity.AddFriendActivity"></activity>
+        <activity android:name=".activity.AddFriendActivity" />
+        <activity android:name=".activity.ChatActivity"></activity>
     </application>
 
 </manifest>
