@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.AddFriendActivity
+import com.example.android.ocschat.activity.ChatActivity
 import com.example.android.ocschat.adapter.HomeAdapter
 import com.example.android.ocschat.listener.HomeOnClickListener
 import com.example.android.ocschat.model.User
@@ -87,8 +88,10 @@ class HomeFragment : Fragment() {
                 .addOnItemTouchListener(HomeOnClickListener(context, friends_recycler_view,
                         HomeOnClickListener.ClickListener {
             view, position ->
-                            val clickedFriend = friendsList.get(position)
+                            val clickedFriend = friendsList[position]
                             //Navigate to chat activity passing clicked friend
+                            val intent = Intent(context, ChatActivity::class.java)
+                            startActivity(intent)
                         }))
     }
 
