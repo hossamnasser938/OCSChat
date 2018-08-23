@@ -5,8 +5,8 @@ import java.util.Date;
 public class Message {
 
     private String text;
-    private String fromUserId;
-    private String toUserId;
+    private String fromUser;
+    private String toUser;
     private long date;
 
     public Message() {
@@ -15,8 +15,8 @@ public class Message {
 
     public Message(String text, String fromUserId, String toUserId) {
         this.text = text;
-        this.setFromUserId(fromUserId);
-        this.setToUserId(toUserId);
+        this.setFromUser(fromUserId);
+        this.setToUser(toUserId);
         this.date = new Date().getTime();;
     }
 
@@ -36,19 +36,19 @@ public class Message {
         this.date = date;
     }
 
-    public String getFromUserId() {
-        return fromUserId;
+    public String getFromUser() {
+        return fromUser;
     }
 
-    public void setFromUserId(String fromUserId) {
-        this.fromUserId = fromUserId;
+    public void setFromUser(String fromUser) {
+        this.fromUser = fromUser;
     }
 
-    public String getToUserId() {
-        return toUserId;
+    public String getToUser() {
+        return toUser;
     }
 
-    public void setToUserId(String toUserId) {
-        this.toUserId = toUserId;
+    public void setToUser(String toUser) {
+        this.toUser = toUser;
     }
 }

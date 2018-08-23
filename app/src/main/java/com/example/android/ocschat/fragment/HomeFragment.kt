@@ -46,6 +46,16 @@ class HomeFragment : Fragment() {
         handleAddFriendButton()
     }
 
+    override fun onPause() {
+        super.onPause()
+        try {
+            disposable.dispose()
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just stop
+        }
+    }
+
     fun handleAddFriendButton(){
         add_friend_button.setOnClickListener {
             val intent = Intent(activity, AddFriendActivity::class.java)
