@@ -2,8 +2,11 @@ package com.example.android.ocschat.viewModel.impl
 
 import com.example.android.ocschat.dataLayer.ChatApi
 import com.example.android.ocschat.model.Message
+import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.ChatViewModel
+import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 
 class ChatViewModelImpl : ChatViewModel {
 
@@ -17,6 +20,17 @@ class ChatViewModelImpl : ChatViewModel {
         return api.getMessages(friendId).flatMap {
             val message = it.value.getValue(Message::class.java)
             Flowable.just(message)
+        }
+    }
+
+    override fun pushMessage(friendId: String?, message: Message?): Completable {
+        return api.pushMessage(friendId, message)
+    }
+
+    override fun getUser(userid: String?): Maybe<User> {
+        return api.getUser(userid).flatMap {
+            val user = it.getValue(User::class.java)
+            Maybe.just(user)
         }
     }
 }

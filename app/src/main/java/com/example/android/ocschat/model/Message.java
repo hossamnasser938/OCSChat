@@ -13,11 +13,11 @@ public class Message {
 
     }
 
-    public Message(String text, String fromUserId, String toUserId) {
+    public Message(String text, String fromUser, String toUser) {
         this.text = text;
-        this.setFromUser(fromUserId);
-        this.setToUser(toUserId);
-        this.date = new Date().getTime();;
+        this.setFromUser(fromUser);
+        this.setToUser(toUser);
+        this.date = new Date().getTime();
     }
 
     public String getText() {

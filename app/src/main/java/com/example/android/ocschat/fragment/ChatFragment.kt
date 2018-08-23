@@ -12,8 +12,10 @@ import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.adapter.ChatAdapter
 import com.example.android.ocschat.model.Message
+import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.ChatViewModel
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_chat.*
 import javax.inject.Inject
@@ -22,8 +24,16 @@ class ChatFragment : Fragment() {
 
     @Inject
     lateinit var chatViewModel: ChatViewModel
-    private lateinit var disposable : Disposable
+
+    private lateinit var fetchMessgaesDisposable : Disposable
+    private lateinit var pushMessagesDisposable: Disposable
+    private lateinit var fetchUserDisposable: Disposable
+    private lateinit var fetchFriendDisposable: Disposable
+
     private lateinit var chatAdapter: ChatAdapter
+
+    private lateinit var currentUser : User
+    private lateinit var friendUser : User
 
     private val messagesList = ArrayList<Message>()
 
@@ -49,23 +59,32 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val friendId = arguments?.getString(Constants.FRIEND_ID_KEY)
-        Log.d("ChatFragment", friendId)
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         fetchMessages(friendId)
         displayMessages()
+        fetchUsers(currentUserId, friendId)
+        handleUserInput(friendId)
     }
 
     override fun onPause() {
         super.onPause()
-        try {
-            disposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //just stop
-        }
+
+        try { fetchMessgaesDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
+
+        try { pushMessagesDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
+
+        try { fetchUserDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
+
+        try { fetchFriendDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
+
     }
 
     private fun fetchMessages(friendId: String?){
-        disposable = chatViewModel.getMessages(friendId)
+        fetchMessgaesDisposable = chatViewModel.getMessages(friendId)
                 .subscribe({
                     messagesList.add(it)
                 },{
@@ -81,6 +100,32 @@ class ChatFragment : Fragment() {
 
         chatAdapter = ChatAdapter(context, messagesList)
         chat_recycler_view.adapter = chatAdapter
+    }
+
+    private fun fetchUsers(currentUserId : String?, friendId : String?){
+        fetchUserDisposable = chatViewModel.getUser(currentUserId).subscribe({
+            currentUser = it
+        }, {
+            Log.d("ChatFragment", it.message)
+        })
+        fetchFriendDisposable = chatViewModel.getUser(friendId).subscribe({
+            friendUser = it
+        }, {
+            Log.d("ChatFragment", it.message)
+        })
+    }
+
+    private fun handleUserInput(friendId: String?) {
+        send_fab.setOnClickListener {
+            val messageText = message_text_input.text.toString()
+            val message = Message(messageText, currentUser.name, friendUser.name)
+            pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)
+                    .subscribe({
+                        message_text_input.text.clear()
+                    }, {
+                        Log.d("ChatFragment", it.message)
+                    })
+        }
     }
 
     interface ChatTransitionInterface{
