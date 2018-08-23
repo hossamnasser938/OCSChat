@@ -4,10 +4,10 @@ import android.util.Log
 import com.example.android.ocschat.dataLayer.HomeApi
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
-import com.example.android.ocschat.util.Constants
-import com.example.android.ocschat.util.OCSChatThrowable
 import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class HomeViewModelImpl : HomeViewModel {
 
@@ -18,7 +18,7 @@ class HomeViewModelImpl : HomeViewModel {
     }
 
 
-    override fun getCurrentUserFriends() : Flowable<List<User>> {
+    override fun getCurrentUserFriends() : Flowable<ArrayList<User>> {
         return api.currentUserFriends
                 .flatMap {
                         //it here holds ids of current user friends
@@ -38,6 +38,7 @@ class HomeViewModelImpl : HomeViewModel {
 
                                     Flowable.just(friendsList)
                                     }
-                }
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }

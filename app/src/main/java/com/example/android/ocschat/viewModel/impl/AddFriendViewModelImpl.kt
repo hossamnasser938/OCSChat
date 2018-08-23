@@ -6,6 +6,8 @@ import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class AddFriendViewModelImpl : AddFriendViewModel {
 
@@ -19,7 +21,8 @@ class AddFriendViewModelImpl : AddFriendViewModel {
         return api.allUsers.flatMap {
             val user = it.value.getValue(User::class.java)
             Flowable.just(user)
-        }
+        }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun isFriend(uid: String?): Flowable<Boolean> {
@@ -32,11 +35,14 @@ class AddFriendViewModelImpl : AddFriendViewModel {
                             isFriend = true
                     }
                     Flowable.just(isFriend)
-                }
+                }.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun addFriend(friend: Friend?): Completable {
         return api.addFriend(friend)
                 .concatWith(api.confirmAddFriend(friend))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 }
