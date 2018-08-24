@@ -15,5 +15,6 @@ public class Constants {
     public static final String FAILED_LOADING_FRIENDS = "Failed to load friends";
     public static final String ERROR_GENERATING_MESSAGE_KEY = "error generating message key .. Two users with identical keys";
     public static final String FRIEND_ID_KEY = "friend_id";
+    public static final String DATE_FORMAT = "dd-MM-yyyy (HH:mm:ss)";
 
 }

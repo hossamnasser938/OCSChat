@@ -7,11 +7,13 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.android.ocschat.R;
 import com.example.android.ocschat.model.Message;
+import com.example.android.ocschat.util.Constants;
 
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         Message currentMessage = messagesList.get(position);
         holder.text.setText(currentMessage.getText());
         holder.user.setText(currentMessage.getFromUser());
-        holder.date.setText(DateFormat.format("dd-MM-yyyy (HH:mm:ss)", currentMessage.getDate()));
+        holder.date.setText(DateFormat.format(Constants.DATE_FORMAT, currentMessage.getDate()));
     }
 
     @Override

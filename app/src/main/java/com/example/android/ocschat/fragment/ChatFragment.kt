@@ -60,8 +60,8 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val friendId = arguments?.getString(Constants.FRIEND_ID_KEY)
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        InitializeAdapter()
         fetchMessages(friendId)
-        displayMessages()
         fetchUsers(currentUserId, friendId)
         handleUserInput(friendId)
     }
@@ -83,33 +83,39 @@ class ChatFragment : Fragment() {
 
     }
 
+    private fun InitializeAdapter(){
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.stackFromEnd = true
+        chat_recycler_view.layoutManager = layoutManager
+        chat_recycler_view.setHasFixedSize(true)
+        chat_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
+        Log.d("ChatFragment", "Initiate adapter")
+        chatAdapter = ChatAdapter(context, messagesList)
+        chat_recycler_view.adapter = chatAdapter
+    }
+
     private fun fetchMessages(friendId: String?){
         fetchMessgaesDisposable = chatViewModel.getMessages(friendId)
                 .subscribe({
                     messagesList.add(it)
+                    chatAdapter.notifyDataSetChanged()
+                    Log.d("ChatFragment", it.text)
                 },{
                     Log.d("ChatFragment", it.message)
                 })
     }
 
-    private fun displayMessages(){
-        val layoutManager = LinearLayoutManager(context)
-        chat_recycler_view.layoutManager = layoutManager
-        chat_recycler_view.setHasFixedSize(true)
-        chat_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-
-        chatAdapter = ChatAdapter(context, messagesList)
-        chat_recycler_view.adapter = chatAdapter
-    }
-
     private fun fetchUsers(currentUserId : String?, friendId : String?){
         fetchUserDisposable = chatViewModel.getUser(currentUserId).subscribe({
             currentUser = it
+            Log.d("ChatFragment", it.name)
         }, {
             Log.d("ChatFragment", it.message)
         })
         fetchFriendDisposable = chatViewModel.getUser(friendId).subscribe({
             friendUser = it
+            Log.d("ChatFragment", it.name)
         }, {
             Log.d("ChatFragment", it.message)
         })
@@ -122,6 +128,7 @@ class ChatFragment : Fragment() {
             pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)
                     .subscribe({
                         message_text_input.text.clear()
+                        Log.d("ChatFragment", "Message sent")
                     }, {
                         Log.d("ChatFragment", it.message)
                     })
