@@ -60,9 +60,8 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val friendId = arguments?.getString(Constants.FRIEND_ID_KEY)
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-        InitializeAdapter()
-        fetchMessages(friendId)
         fetchUsers(currentUserId, friendId)
+        fetchMessages(friendId)
         handleUserInput(friendId)
     }
 
@@ -88,10 +87,9 @@ class ChatFragment : Fragment() {
         layoutManager.stackFromEnd = true
         chat_recycler_view.layoutManager = layoutManager
         chat_recycler_view.setHasFixedSize(true)
-        chat_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         Log.d("ChatFragment", "Initiate adapter")
-        chatAdapter = ChatAdapter(context, messagesList)
+        chatAdapter = ChatAdapter(context, messagesList, currentUser.name)
         chat_recycler_view.adapter = chatAdapter
     }
 
@@ -100,6 +98,7 @@ class ChatFragment : Fragment() {
                 .subscribe({
                     messagesList.add(it)
                     chatAdapter.notifyDataSetChanged()
+                    chat_recycler_view.scrollToPosition(chatAdapter.itemCount - 1)
                     Log.d("ChatFragment", it.text)
                 },{
                     Log.d("ChatFragment", it.message)
@@ -109,6 +108,7 @@ class ChatFragment : Fragment() {
     private fun fetchUsers(currentUserId : String?, friendId : String?){
         fetchUserDisposable = chatViewModel.getUser(currentUserId).subscribe({
             currentUser = it
+            InitializeAdapter()
             Log.d("ChatFragment", it.name)
         }, {
             Log.d("ChatFragment", it.message)
