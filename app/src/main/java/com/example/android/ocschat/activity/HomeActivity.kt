@@ -16,6 +16,7 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        supportActionBar?.title = getString(R.string.home)
         if(FirebaseAuth.getInstance().currentUser == null){
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
