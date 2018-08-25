@@ -11,6 +11,7 @@ import com.example.android.ocschat.R
 import com.example.android.ocschat.adapter.AddFriendAdapter
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.AddFriendViewModel
+import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_add_friend.*
 import javax.inject.Inject
@@ -56,12 +57,17 @@ class AddFriendFragment : Fragment() {
      * Set Auto complete property while search for friends
      */
     fun setAutoCompleteProperty(){
+        val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
+
         adapter = AddFriendAdapter(context, usersList)
         add_friend_auto_complete.setAdapter(adapter)
         disposable = addFriendViewModel.allUsers.subscribe({
-            usersList.add(it)
-            Log.d("AddFriendFragment", it.id)
-            Log.d("AddFriendFragment", usersList.size.toString())
+            //Check if it is the currently logged user do not add it to the list
+            if(!it.id.equals(currentUserID, false)){
+                usersList.add(it)
+                Log.d("AddFriendFragment", it.id)
+                Log.d("AddFriendFragment", usersList.size.toString())
+            }
         }, {
             Log.d("AddFriendFragment", it.message)
         })
