@@ -56,6 +56,13 @@ class HomeFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(disposable.isDisposed){
+            fetchCurrentUserFriends()
+        }
+    }
+
     fun handleAddFriendButton(){
         add_friend_button.setOnClickListener {
             val intent = Intent(activity, AddFriendActivity::class.java)
@@ -80,7 +87,7 @@ class HomeFragment : Fragment() {
             Log.d("HomeFragment", "Got throwable: " + it.message)
             //Hide loading progress bar and toast
             friends_list_loading_progress_bar.visibility = View.GONE
-            Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT)
+            Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
         })
     }
 
