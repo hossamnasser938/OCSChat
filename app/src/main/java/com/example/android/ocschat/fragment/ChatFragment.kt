@@ -1,5 +1,6 @@
 package com.example.android.ocschat.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.DividerItemDecoration
@@ -86,7 +87,6 @@ class ChatFragment : Fragment() {
 
         try { fetchFriendDisposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
-
     }
 
     private fun InitializeAdapter(){
@@ -119,12 +119,16 @@ class ChatFragment : Fragment() {
             Log.d("ChatFragment", it.name)
         }, {
             Log.d("ChatFragment", it.message)
+            Toast.makeText(context, Constants.ERROR, Toast.LENGTH_SHORT).show()
+            activity?.finish()
         })
         fetchFriendDisposable = chatViewModel.getUser(friendId).subscribe({
             friendUser = it
             Log.d("ChatFragment", it.name)
         }, {
             Log.d("ChatFragment", it.message)
+            Toast.makeText(context, Constants.ERROR, Toast.LENGTH_SHORT).show()
+            activity?.finish()
         })
     }
 
@@ -142,6 +146,7 @@ class ChatFragment : Fragment() {
                                 message_text_input.text.clear()
                                 Log.d("ChatFragment", "Message sent")
                             }, {
+                                Toast.makeText(context, Constants.FAILED_SENDING_MESSAGE, Toast.LENGTH_SHORT).show()
                                 Log.d("ChatFragment", it.message)
                             })
                 }

@@ -12,6 +12,7 @@ import com.example.android.ocschat.R
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_user_info.*
@@ -51,8 +52,14 @@ class UserInfoFragment : Fragment() {
         val currentUser = arguments?.get(Constants.USER_KEY) as User
         user_info_name_text_view.text = currentUser.name
 
-        checkFriendshipState(currentUser)
         checkFriendImage(currentUser)
+
+        if(!Utils.isNetworkConnected(context)){
+            Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+        }
+        else{
+            checkFriendshipState(currentUser)
+        }
     }
 
     override fun onPause() {
@@ -78,6 +85,7 @@ class UserInfoFragment : Fragment() {
                 setAddFriendButtonClickListen(currentUser)
             }
         }, {
+            Toast.makeText(context, Constants.FAILED_CHECKING_FRIENDSHIPSTATE, Toast.LENGTH_SHORT).show()
             Log.d("UserInfoFragment", it.message)
         })
     }

@@ -12,7 +12,10 @@ public class Constants {
     public static final String USER_KEY = "user";
     public static final String MESSAGES_KEY = "messages";
     public static final String FRIENDS_KEY = "friends";
+    public static final String ERROR = "Unexpected error occures";
+    public static final String FAILED_SENDING_MESSAGE = "Failed to send message";
     public static final String FAILED_LOADING_FRIENDS = "Failed to load friends";
+    public static final String FAILED_CHECKING_FRIENDSHIPSTATE = "Failed to check friendship state";
     public static final String ERROR_GENERATING_MESSAGE_KEY = "error generating message key .. Two users with identical keys";
     public static final String FRIEND_ID_KEY = "friend_id";
     public static final String DATE_FORMAT = "dd-MM-yyyy (HH:mm:ss)";
