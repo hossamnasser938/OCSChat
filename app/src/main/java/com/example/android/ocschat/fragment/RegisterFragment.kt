@@ -1,8 +1,12 @@
 package com.example.android.ocschat.fragment
 
+import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +21,8 @@ import com.example.android.ocschat.viewModel.LoginViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
+import org.eclipse.osgi.framework.adaptor.FilePath
+import java.io.IOException
 import javax.inject.Inject
 
 class RegisterFragment : Fragment() {
@@ -25,6 +31,8 @@ class RegisterFragment : Fragment() {
     lateinit var loginViewModel : LoginViewModel
     private lateinit var disposable : Disposable
     private lateinit var transient: LoginFragment.LoginTransitionInterface
+
+    private lateinit var filePath: Uri
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +48,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setRegisterButtonOnClickListener()
         setClickLoginOnClickListener()
+        setChooseProfilePictureClickListener()
     }
 
     override fun onPause() {
@@ -49,6 +58,21 @@ class RegisterFragment : Fragment() {
         }
         catch (e : UninitializedPropertyAccessException){
             //Just stop
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            filePath = data.data
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
+                register_user_image_view.setImageBitmap(bitmap)
+                choose_image_text_view.visibility = View.GONE
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
         }
     }
 
@@ -118,6 +142,15 @@ class RegisterFragment : Fragment() {
     fun setClickLoginOnClickListener(){
         click_login_text_view.setOnClickListener{
             transient.openFragment(LoginFragment())
+        }
+    }
+
+    fun setChooseProfilePictureClickListener(){
+        register_user_image_view.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
         }
     }
 
