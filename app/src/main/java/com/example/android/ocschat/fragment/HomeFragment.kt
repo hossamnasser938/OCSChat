@@ -89,7 +89,6 @@ class HomeFragment : Fragment() {
 
         friends_recycler_view.layoutManager = layoutManager
         friends_recycler_view.setHasFixedSize(true)
-        friends_recycler_view.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         homeAdapter = HomeAdapter(context, friendsList)
         friends_recycler_view.adapter = homeAdapter

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default8_margin">
+
+    <ImageView
+        android:id="@+id/friend_item_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="@dimen/default8_margin"
+        android:scaleType="fitStart" />
 
     <TextView
         android:id="@+id/friend_item_username"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_weight="5"
+        android:gravity="center"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-</RelativeLayout>
+</LinearLayout>
