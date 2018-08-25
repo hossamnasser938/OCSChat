@@ -87,6 +87,8 @@ class ChatFragment : Fragment() {
         catch (e : UninitializedPropertyAccessException){ }
     }
 
+
+
     private fun InitializeAdapter(){
         val layoutManager = LinearLayoutManager(context)
         layoutManager.stackFromEnd = true
