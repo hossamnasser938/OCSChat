@@ -10,6 +10,7 @@ import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.model.Friend
+import com.example.android.ocschat.model.HasImage
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.AddFriendViewModel
@@ -52,24 +53,17 @@ class UserInfoFragment : Fragment() {
         user_info_name_text_view.text = currentUser.name
 
         checkFriendshipState(currentUser)
+        checkFriendImage(currentUser)
     }
 
     override fun onPause() {
         super.onPause()
 
-        try {
-            isFriendDisposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //Just stop
-        }
+        try { isFriendDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
 
-        try {
-            addFriendDisposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //Just stop
-        }
+        try { addFriendDisposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
     }
 
     /**
@@ -100,6 +94,20 @@ class UserInfoFragment : Fragment() {
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d("UserInfoFragment", it.message)
             })
+        }
+    }
+
+    private fun checkFriendImage(currentUser: User){
+        when(currentUser.hasImage){
+            HasImage.IMAGE_LOCALLY -> {
+
+            }
+            HasImage.IMAGE_ON_FIREBASE -> {
+
+            }
+            else -> {
+                user_info_image_view.setImageResource(R.drawable.person_placeholder)
+            }
         }
     }
 
