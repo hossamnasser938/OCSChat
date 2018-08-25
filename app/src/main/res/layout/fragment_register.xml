@@ -1,74 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
-
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:orientation="vertical"
-        android:layout_gravity="center_vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/register_email_edit_text"
-            android:layout_width="match_parent"
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/email" />
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical">
 
-        <EditText
-            android:id="@+id/register_username_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/username" />
+            <EditText
+                android:id="@+id/register_email_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/email" />
 
-        <EditText
-            android:id="@+id/register_password_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="@string/password" />
+            <EditText
+                android:id="@+id/register_username_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/username" />
 
-        <TextView
-            android:id="@+id/register_error_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:gravity="center_horizontal"
-            android:textColor="@color/red" />
+            <EditText
+                android:id="@+id/register_password_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/password" />
 
-        <Button
-            android:id="@+id/register_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/register" />
+            <TextView
+                android:id="@+id/register_error_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default16_margin"
+                android:visibility="gone"
+                android:gravity="center_horizontal"
+                android:textColor="@color/red" />
 
-        <TextView
-            android:id="@+id/click_login_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default16_margin"
-            android:text="@string/click_here_to_login"
-            android:textStyle="bold"
-            android:gravity="center_horizontal" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default16_margin">
 
-        <ProgressBar
-            android:id="@+id/register_loading_progress_bar"
-            android:layout_width="@dimen/progress_bar_dimens"
-            android:layout_height="@dimen/progress_bar_dimens"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
+                <ImageView
+                    android:id="@+id/register_user_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/person_placeholder"
+                    android:scaleType="fitStart"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:id="@+id/upload_image_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/upload_profile_picture" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default16_margin"
+                android:text="@string/register" />
+
+            <ProgressBar
+                android:id="@+id/register_loading_progress_bar"
+                android:layout_width="@dimen/progress_bar_dimens"
+                android:layout_height="@dimen/progress_bar_dimens"
+                android:layout_margin="@dimen/default16_margin"
+                android:visibility="gone"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/click_login_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default16_margin"
+                android:text="@string/click_here_to_login"
+                android:textStyle="bold"
+                android:gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+    </ScrollView>
 
-</LinearLayout>
+
