@@ -10,7 +10,6 @@ import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.model.Friend
-import com.example.android.ocschat.model.HasImage
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.AddFriendViewModel
@@ -98,16 +97,11 @@ class UserInfoFragment : Fragment() {
     }
 
     private fun checkFriendImage(currentUser: User){
-        when(currentUser.hasImage){
-            HasImage.IMAGE_LOCALLY -> {
+        if(currentUser.hasImage){
 
-            }
-            HasImage.IMAGE_ON_FIREBASE -> {
-
-            }
-            else -> {
-                user_info_image_view.setImageResource(R.drawable.person_placeholder)
-            }
+        }
+        else{
+            user_info_image_view.setImageResource(R.drawable.person_placeholder)
         }
     }
 
