@@ -86,9 +86,9 @@ class UserInfoFragment : Fragment() {
         user_info_add_friend_button.setOnClickListener {
             val friend = Friend(currentUser.id)
             addFriendDisposable = addFriendViewMdel.addFriend(friend).subscribe({
-                Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 user_info_add_friend_button.visibility = View.GONE
                 user_info_friendship_state_text_view.visibility = View.VISIBLE
+                Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
             }, {
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d("UserInfoFragment", it.message)

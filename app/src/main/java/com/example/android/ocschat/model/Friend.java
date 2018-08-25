@@ -1,6 +1,8 @@
 package com.example.android.ocschat.model;
 
-public class Friend {
+import java.io.Serializable;
+
+public class Friend implements Serializable {
     private String id;
     private FriendState state;
 
