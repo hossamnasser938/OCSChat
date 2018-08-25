@@ -8,12 +8,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.adapter.ChatAdapter
 import com.example.android.ocschat.model.Message
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.ChatViewModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
@@ -60,9 +62,14 @@ class ChatFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val friendId = arguments?.getString(Constants.FRIEND_ID_KEY)
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-        fetchUsers(currentUserId, friendId)
-        fetchMessages(friendId)
         handleUserInput(friendId)
+        if(!Utils.isNetworkConnected(context)){
+            showNoInternetText()
+        }
+        else{
+            fetchUsers(currentUserId, friendId)
+            fetchMessages(friendId)
+        }
     }
 
     override fun onPause() {
@@ -123,16 +130,28 @@ class ChatFragment : Fragment() {
 
     private fun handleUserInput(friendId: String?) {
         send_fab.setOnClickListener {
-            val messageText = message_text_input.text.toString()
-            val message = Message(messageText, currentUser.name, friendUser.name)
-            pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)
-                    .subscribe({
-                        message_text_input.text.clear()
-                        Log.d("ChatFragment", "Message sent")
-                    }, {
-                        Log.d("ChatFragment", it.message)
-                    })
+            if(!Utils.isNetworkConnected(context)){
+                Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+            }
+            else{
+                val messageText = message_text_input.text.toString()
+                if(!messageText.isEmpty()){
+                    val message = Message(messageText, currentUser.name, friendUser.name)
+                    pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)
+                            .subscribe({
+                                message_text_input.text.clear()
+                                Log.d("ChatFragment", "Message sent")
+                            }, {
+                                Log.d("ChatFragment", it.message)
+                            })
+                }
+            }
         }
+    }
+
+    private fun showNoInternetText(){
+        failure_chat_view.visibility = View.VISIBLE
+        failure_chat_view.text = resources.getString(R.string.no_internet_connection)
     }
 
     interface ChatTransitionInterface{
