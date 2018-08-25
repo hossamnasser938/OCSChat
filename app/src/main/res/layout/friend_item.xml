@@ -9,8 +9,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_margin="@dimen/default8_margin"
-        android:scaleType="fitStart" />
+        android:scaleType="fitStart"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/friend_item_username"
