@@ -13,6 +13,7 @@ public class User implements Serializable {
     private String id;
     private String name;
     private List<Friend> friends;
+    private HasImage hasImage;
 
     public User() {
         //Required for firebase database operations
@@ -23,6 +24,14 @@ public class User implements Serializable {
         this.id = id;
         this.name = name;
         this.friends = new ArrayList<>();
+        this.setHasImage(HasImage.NO_IMAGE);
+    }
+
+    public User(String id, String name, HasImage hasImage) {
+        this.id = id;
+        this.name = name;
+        this.friends = new ArrayList<>();
+        this.setHasImage(hasImage);
     }
 
 
@@ -56,5 +65,13 @@ public class User implements Serializable {
             return true;
         }
         return false;
+    }
+
+    public HasImage getHasImage() {
+        return hasImage;
+    }
+
+    public void setHasImage(HasImage hasImage) {
+        this.hasImage = hasImage;
     }
 }
