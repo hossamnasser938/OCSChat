@@ -25,10 +25,12 @@
             android:label="@string/login" />
         <activity
             android:name=".activity.AddFriendActivity"
-            android:label="@string/add_friend" />
+            android:label="@string/add_friend"
+            android:parentActivityName=".activity.HomeActivity" />
         <activity
             android:name=".activity.ChatActivity"
-            android:label="@string/chat" />
+            android:label="@string/chat"
+            android:parentActivityName=".activity.HomeActivity" />
     </application>
 
 </manifest>
