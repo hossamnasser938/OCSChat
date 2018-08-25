@@ -3,7 +3,6 @@ package com.example.android.ocschat.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
@@ -16,6 +15,7 @@ import com.example.android.ocschat.adapter.HomeAdapter
 import com.example.android.ocschat.listener.HomeOnClickListener
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -39,10 +39,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //show loading progress bar
+        //Show loading progress bar
         friends_list_loading_progress_bar.visibility = View.VISIBLE
-        //Fetch friends from api
-        fetchCurrentUserFriends()
+        //Check internet connection before fetching friends
+        if(!Utils.isNetworkConnected(context)){
+            //Hide loading progress bar and show no internet connection text view
+            showNoInternetText()
+        }else{
+            //Fetch friends from api
+            fetchCurrentUserFriends()
+        }
+
         handleAddFriendButton()
     }
 
@@ -58,8 +65,13 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if(disposable.isDisposed){
-            fetchCurrentUserFriends()
+        try {
+            if(disposable.isDisposed){
+                fetchCurrentUserFriends()
+            }
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just resume
         }
     }
 
@@ -79,8 +91,7 @@ class HomeFragment : Fragment() {
             }
             else{
                 //Hide loading progress bar and show empty list text view
-                friends_list_loading_progress_bar.visibility = View.GONE
-                empty_list_text_view.visibility = View.VISIBLE
+                showEmptyListText()
             }
             displayCurrentUserFriends(it)
         }, {
@@ -110,6 +121,18 @@ class HomeFragment : Fragment() {
                             intent.putExtra(Constants.FRIEND_ID_KEY, clickedFriend.id)
                             startActivity(intent)
                         }))
+    }
+
+    private fun showEmptyListText(){
+        friends_list_loading_progress_bar.visibility = View.GONE
+        failure_list_text_view.visibility = View.VISIBLE
+        failure_list_text_view.text = resources.getString(R.string.empty_friends_list)
+    }
+
+    private fun showNoInternetText(){
+        friends_list_loading_progress_bar.visibility = View.GONE
+        failure_list_text_view.visibility = View.VISIBLE
+        failure_list_text_view.text = resources.getString(R.string.no_internet_connection)
     }
 
     interface HomeTransitionInterface{
