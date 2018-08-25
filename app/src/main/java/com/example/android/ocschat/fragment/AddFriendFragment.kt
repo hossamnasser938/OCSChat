@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.adapter.AddFriendAdapter
 import com.example.android.ocschat.model.User
+import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
@@ -39,18 +41,19 @@ class AddFriendFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setAutoCompleteProperty()
         setDropDownItemsClickListener()
+        if(!Utils.isNetworkConnected(context)){
+            Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+        }
+        else{
+            setAutoCompleteProperty()
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        try {
-            disposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //Just stop
-        }
+        try { disposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
     }
 
     /**
