@@ -1,10 +1,9 @@
 package com.example.android.ocschat.fragment
 
-
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,8 +52,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun setLoginButtonOnClickListener(){
-        val context : Context? = context
         login_button.setOnClickListener {
+            Log.d("LoginFragment", "login button clicked")
+            //Do not respond to user clicks for now
+            it.isClickable = false
             //hide error text view
             login_error_text_view.visibility = View.GONE
 
@@ -84,7 +85,6 @@ class LoginFragment : Fragment() {
                 showErrorMessage(R.string.invalid_password)
                 return@setOnClickListener
             }
-
             //show loading progress bar
             login_loading_progress_bar.visibility = View.VISIBLE
 
@@ -131,11 +131,13 @@ class LoginFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         login_error_text_view.visibility = View.VISIBLE
         login_error_text_view.text = getString(messageId)
+        login_button.isClickable = true
     }
 
     private fun showErrorMessage(message : String?){
         login_error_text_view.visibility = View.VISIBLE
         login_error_text_view.text = message
+        login_button.isClickable = true
     }
 
     interface LoginTransitionInterface{

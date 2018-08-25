@@ -79,6 +79,8 @@ class RegisterFragment : Fragment() {
     private fun setRegisterButtonOnClickListener(){
         val context : Context? = context
         register_button.setOnClickListener {
+            //Do not respond to user clicks for now
+            it.isClickable = false
             //hide error text view
             register_error_text_view.visibility = View.GONE
 
@@ -171,11 +173,13 @@ class RegisterFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         register_error_text_view.visibility = View.VISIBLE
         register_error_text_view.text = getString(messageId)
+        register_button.isClickable = true
     }
 
     private fun showErrorMessage(message : String?){
         login_error_text_view.visibility = View.VISIBLE
         login_error_text_view.text = message
+        register_button.isClickable = true
     }
 
 }
