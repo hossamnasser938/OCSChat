@@ -5,7 +5,8 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical">
 
         <View
             android:layout_width="0dp"
@@ -47,10 +48,12 @@
                 android:gravity="center_horizontal"
                 android:textColor="@color/red" />
 
+            <!-- Postponed functionality -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default16_margin">
+                android:layout_margin="@dimen/default16_margin"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/register_user_image_view"

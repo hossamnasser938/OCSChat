@@ -98,7 +98,7 @@ class UserInfoFragment : Fragment() {
 
     private fun checkFriendImage(currentUser: User){
         if(currentUser.hasImage){
-
+            //Postponed functionality
         }
         else{
             user_info_image_view.setImageResource(R.drawable.person_placeholder)

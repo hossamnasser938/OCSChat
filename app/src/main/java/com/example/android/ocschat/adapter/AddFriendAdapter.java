@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.ocschat.R;
@@ -41,8 +42,15 @@ public class AddFriendAdapter extends ArrayAdapter<User> {
         User currentUser = getItem(position);
 
         TextView usernameTextView = listItem.findViewById(R.id.friend_item_username);
+        ImageView userImageView = listItem.findViewById(R.id.friend_item_image);
 
         usernameTextView.setText(currentUser.getName());
+        if(currentUser.getHasImage()){
+            //Postponed functionality
+        }
+        else{
+            userImageView.setImageResource(R.drawable.person_placeholder);
+        }
 
         return listItem;
     }

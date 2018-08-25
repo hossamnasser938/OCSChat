@@ -40,23 +40,25 @@
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default16_margin"
             android:text="@string/login" />
+
+        <ProgressBar
+            android:id="@+id/login_loading_progress_bar"
+            android:layout_width="@dimen/progress_bar_dimens"
+            android:layout_height="@dimen/progress_bar_dimens"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
 
         <TextView
             android:id="@+id/click_register_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/click_here_to_register"
-            android:layout_marginTop="@dimen/default16_margin"
+            android:layout_margin="@dimen/default16_margin"
             android:textStyle="bold"
             android:gravity="center_horizontal" />
-
-        <ProgressBar
-            android:id="@+id/login_loading_progress_bar"
-            android:layout_width="@dimen/progress_bar_dimens"
-            android:layout_height="@dimen/progress_bar_dimens"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 

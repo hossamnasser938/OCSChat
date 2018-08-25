@@ -52,7 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         User currentFriend = friendsList.get(position);
         holder.name.setText(currentFriend.getName());
         if(currentFriend.getHasImage()){
-
+            //Postponed functionality
         }
         else{
             holder.image.setImageResource(R.drawable.person_placeholder);
