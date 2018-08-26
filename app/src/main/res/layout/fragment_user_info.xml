@@ -17,21 +17,12 @@
             android:gravity="center"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-        <TextView
-            android:id="@+id/user_info_friendship_state_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/friend"
-            android:gravity="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:visibility="gone" />
-
         <Button
             android:id="@+id/user_info_add_friend_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
             android:gravity="center"
-            android:text="@string/add_friend"
             android:visibility="gone" />
 
     </LinearLayout>

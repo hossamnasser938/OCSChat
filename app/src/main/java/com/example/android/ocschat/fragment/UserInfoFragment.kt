@@ -78,10 +78,10 @@ class UserInfoFragment : Fragment() {
     private fun checkFriendshipState(currentUser : User){
         isFriendDisposable = addFriendViewMdel.isFriend(currentUser.id).subscribe({
             if(it){
-                user_info_friendship_state_text_view.visibility = View.VISIBLE
+                showFriendState()
             }
             else{
-                user_info_add_friend_button.visibility = View.VISIBLE
+                showAddFriendState()
                 setAddFriendButtonClickListen(currentUser)
             }
         }, {
@@ -94,9 +94,9 @@ class UserInfoFragment : Fragment() {
         user_info_add_friend_button.setOnClickListener {
             val friend = Friend(currentUser.id)
             addFriendDisposable = addFriendViewMdel.addFriend(friend).subscribe({
-                user_info_add_friend_button.visibility = View.GONE
-                user_info_friendship_state_text_view.visibility = View.VISIBLE
+                showFriendState()
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
+                activity?.finish()
             }, {
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d("UserInfoFragment", it.message)
@@ -111,6 +111,20 @@ class UserInfoFragment : Fragment() {
         else{
             user_info_image_view.setImageResource(R.drawable.person_placeholder)
         }
+    }
+
+    private fun showFriendState(){
+        user_info_add_friend_button.visibility = View.VISIBLE
+        user_info_add_friend_button.background = resources.getDrawable(R.drawable.already_friend)
+        user_info_add_friend_button.setTextColor(resources.getColor(R.color.black))
+        user_info_add_friend_button.text = resources.getString(R.string.friend)
+    }
+
+    private fun showAddFriendState(){
+        user_info_add_friend_button.visibility = View.VISIBLE
+        user_info_add_friend_button.background = resources.getDrawable(R.drawable.add_friend)
+        user_info_add_friend_button.setTextColor(resources.getColor(R.color.white))
+        user_info_add_friend_button.text = resources.getString(R.string.add_friend)
     }
 
 }
