@@ -39,8 +39,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Show loading progress bar
-        friends_list_loading_progress_bar.visibility = View.VISIBLE
         //Check internet connection before fetching friends
         if(!Utils.isNetworkConnected(context)){
             //Hide loading progress bar and show no internet connection text view
@@ -86,18 +84,15 @@ class HomeFragment : Fragment() {
         disposable = homeViewModel.currentUserFriends.subscribe({
             Log.d("HomeFragment", "Got friends list: " + it.size)
             if(it.size > 0){
-                //Hide loading progress bar
-                friends_list_loading_progress_bar.visibility = View.GONE
+                displayCurrentUserFriends(it)
             }
             else{
                 //Hide loading progress bar and show empty list text view
                 showEmptyListText()
             }
-            displayCurrentUserFriends(it)
+
         }, {
             Log.d("HomeFragment", "Got throwable: " + it.message)
-            //Hide loading progress bar and toast
-            friends_list_loading_progress_bar.visibility = View.GONE
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
         })
     }
@@ -124,13 +119,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun showEmptyListText(){
-        friends_list_loading_progress_bar.visibility = View.GONE
         failure_list_text_view.visibility = View.VISIBLE
         failure_list_text_view.text = resources.getString(R.string.empty_friends_list)
     }
 
     private fun showNoInternetText(){
-        friends_list_loading_progress_bar.visibility = View.GONE
         failure_list_text_view.visibility = View.VISIBLE
         failure_list_text_view.text = resources.getString(R.string.no_internet_connection)
     }
