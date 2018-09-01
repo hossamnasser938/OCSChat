@@ -28,4 +28,6 @@
     <string name="add_friend">Add Friend</string>
     <string name="chat">Chat</string>
     <string name="choose_profile_picture">Choose profile picture</string>
+    <string name="update_profile_picture">Update profile picture</string>
+    <string name="update_profile">Update profile</string>
 </resources>

@@ -3,9 +3,7 @@ package com.example.android.ocschat.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
@@ -22,6 +20,7 @@ class UserInfoFragment : Fragment() {
 
     @Inject
     lateinit var addFriendViewMdel : AddFriendViewModel
+    private lateinit var transition : AddFriendFragment.AddFriendTransitionInterface
 
     private lateinit var isFriendDisposable : Disposable
     private lateinit var addFriendDisposable : Disposable
@@ -41,6 +40,7 @@ class UserInfoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
+        transition = activity as AddFriendFragment.AddFriendTransitionInterface
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,7 +50,7 @@ class UserInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val currentUser = arguments?.get(Constants.USER_KEY) as User
-        user_info_name_text_view.text = currentUser.name
+        displayCurrentUserInfo(currentUser)
 
         checkFriendImage(currentUser)
 
@@ -70,6 +70,20 @@ class UserInfoFragment : Fragment() {
 
         try { addFriendDisposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.user_info_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.update_profile_menu_item -> {
+                //open update profile fragment
+                transition.openFragment(UpdateProfileFragment())
+            }
+        }
+        return true
     }
 
     /**
@@ -113,7 +127,13 @@ class UserInfoFragment : Fragment() {
         }
     }
 
+    private fun displayCurrentUserInfo(user : User){
+        user_info_name_text_view.text = user.name
+        //TODO: set user image
+    }
+
     private fun showFriendState(){
+        setMenuVisibility(false)
         user_info_add_friend_button.visibility = View.VISIBLE
         user_info_add_friend_button.background = resources.getDrawable(R.drawable.already_friend)
         user_info_add_friend_button.setTextColor(resources.getColor(R.color.black))
@@ -121,10 +141,15 @@ class UserInfoFragment : Fragment() {
     }
 
     private fun showAddFriendState(){
+        setMenuVisibility(false)
         user_info_add_friend_button.visibility = View.VISIBLE
         user_info_add_friend_button.background = resources.getDrawable(R.drawable.add_friend)
         user_info_add_friend_button.setTextColor(resources.getColor(R.color.white))
         user_info_add_friend_button.text = resources.getString(R.string.add_friend)
+    }
+
+    private fun showUpdateProfileState(){
+        setMenuVisibility(true)
     }
 
 }
