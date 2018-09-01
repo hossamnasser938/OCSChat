@@ -5,6 +5,8 @@ import com.example.android.ocschat.fragment.ChatFragment;
 import com.example.android.ocschat.fragment.HomeFragment;
 import com.example.android.ocschat.fragment.LoginFragment;
 import com.example.android.ocschat.fragment.RegisterFragment;
+import com.example.android.ocschat.fragment.SettingsFragment;
+import com.example.android.ocschat.fragment.UpdateProfileFragment;
 import com.example.android.ocschat.fragment.UserInfoFragment;
 
 import javax.inject.Singleton;
@@ -21,5 +23,7 @@ public interface AppComponent {
     void inject(AddFriendFragment addFriendFragment);
     void inject(UserInfoFragment userInfoFragment);
     void inject(ChatFragment chatFragment);
+    void inject(SettingsFragment settingsFragment);
+    void inject(UpdateProfileFragment updateProfileFragment);
 
 }

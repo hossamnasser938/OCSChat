@@ -25,7 +25,7 @@ class UserInfoFragment : Fragment() {
     private lateinit var isFriendDisposable : Disposable
     private lateinit var addFriendDisposable : Disposable
 
-    private lateinit var user: User
+    private lateinit var currentUser: User
 
     companion object {
         fun newInstance(user : User) : UserInfoFragment {
@@ -49,7 +49,7 @@ class UserInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val currentUser = arguments?.get(Constants.USER_KEY) as User
+        currentUser = arguments?.get(Constants.USER_KEY) as User
         displayCurrentUserInfo(currentUser)
 
         checkFriendImage(currentUser)
@@ -80,7 +80,11 @@ class UserInfoFragment : Fragment() {
         when(item?.itemId){
             R.id.update_profile_menu_item -> {
                 //open update profile fragment
-                transition.openFragment(UpdateProfileFragment())
+                try {
+                    transition.openFragment(UpdateProfileFragment.newInstance(currentUser))
+                }
+                catch (e : UninitializedPropertyAccessException){ }
+
             }
         }
         return true

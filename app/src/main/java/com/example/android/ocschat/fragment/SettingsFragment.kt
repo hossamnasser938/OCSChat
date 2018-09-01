@@ -2,16 +2,30 @@ package com.example.android.ocschat.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.android.ocschat.R
+import com.example.android.ocschat.model.User
+import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.viewModel.SettingsViewModel
 import com.google.firebase.auth.FirebaseAuth
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_settings.*
+import javax.inject.Inject
 
 class SettingsFragment : Fragment() {
 
-    lateinit var transition : SettingsTransitionInterface
+    @Inject
+    lateinit var settingsViewModel: SettingsViewModel
+
+    private lateinit var currentlyLoggedUser : User
+
+    private lateinit var transition : SettingsTransitionInterface
+
+    private lateinit var disposable : Disposable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,23 +39,43 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         displayCurrentUserInfo()
-
     }
+
+    override fun onStop() {
+        super.onStop()
+
+        try { disposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    //TODO: override onStart
 
     /**
      * display currently logged user information
      */
     private fun displayCurrentUserInfo() {
-        val currentUserName = FirebaseAuth.getInstance().currentUser?.displayName
-        //TODO: set user name
-        //settings_logged_user_name.text = currentUserName
-        //TODO: set user image
+        val currentlyLoggedUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        disposable = settingsViewModel.getUser(currentlyLoggedUserId).subscribe({
+            currentlyLoggedUser = it
+            setUserInfoOnClickListener(currentlyLoggedUser)
+        }, {
+            Log.d("SettingsFragment", it.message)
+            Toast.makeText(context, Constants.ERROR_FETCHING_USER_INFO, Toast.LENGTH_SHORT).show()
+        })
+
+        try {
+            settings_logged_user_name.text = currentlyLoggedUser.name
+            //TODO: set user image
+            settings_logged_user_image.setImageResource(R.drawable.person_placeholder)
+        }
+        catch (e : UninitializedPropertyAccessException){ }
     }
 
-    private fun setUserInfoOnClickListener(){
+    private fun setUserInfoOnClickListener(user : User){
         settings_logged_user_info.setOnClickListener {
             //open user info fragment to display currently logged user info
-            transition.openFragment(UserInfoFragment())
+            transition.openFragment(UserInfoFragment.newInstance(user))
         }
     }
 
