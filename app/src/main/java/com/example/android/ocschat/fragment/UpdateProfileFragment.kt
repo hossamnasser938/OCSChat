@@ -2,11 +2,14 @@ package com.example.android.ocschat.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.*
+import android.widget.Toast
 import com.example.android.ocschat.R
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.SettingsViewModel
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_update_profile.*
 import javax.inject.Inject
 
@@ -14,6 +17,8 @@ class UpdateProfileFragment : Fragment(){
 
     @Inject
     lateinit var settingsViewModel: SettingsViewModel
+
+    lateinit var disposable : Disposable
 
     private lateinit var currentlyLoggedUser : User
 
@@ -39,7 +44,13 @@ class UpdateProfileFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         currentlyLoggedUser = arguments?.get(Constants.USER_KEY) as User
         loadUserInfo()
+    }
 
+    override fun onStop() {
+        super.onStop()
+
+        try { disposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -52,7 +63,15 @@ class UpdateProfileFragment : Fragment(){
                 //call firebase service to update current user info
                 try {
                     currentlyLoggedUser.name = update_profile_name_edit_text.text.toString()
-                    //TODO: Add function in data layer and view model to update user
+                    disposable = settingsViewModel.updateCurrentUser(currentlyLoggedUser)
+                            .subscribe({
+                                //Inform user and go back to Home activity
+                                Toast.makeText(context, Constants.ACCOUNT_UPDATED_SUCCESSFULLY, Toast.LENGTH_SHORT).show()
+                                activity?.finish()
+                            }, {
+                                Log.d("UpdateProfileFragment", it.message)
+                                Toast.makeText(context, Constants.ERROR_UPDATING_ACCOUNT, Toast.LENGTH_SHORT).show()
+                            })
                 }
                 catch (e : UninitializedPropertyAccessException){
 
