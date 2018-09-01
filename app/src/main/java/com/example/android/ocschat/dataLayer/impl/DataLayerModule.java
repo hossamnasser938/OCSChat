@@ -4,6 +4,7 @@ import com.example.android.ocschat.dataLayer.AddFriendApi;
 import com.example.android.ocschat.dataLayer.ChatApi;
 import com.example.android.ocschat.dataLayer.HomeApi;
 import com.example.android.ocschat.dataLayer.LoginApi;
+import com.example.android.ocschat.dataLayer.SettingsApi;
 
 import javax.inject.Singleton;
 
@@ -31,6 +32,11 @@ public class DataLayerModule {
     @Provides @Singleton
     ChatApi provideChatApi(){
         return new ChatApiImpl();
+    }
+
+    @Provides @Singleton
+    SettingsApi provideSettingsApi(){
+        return new SettingsApiImpl();
     }
 
 }

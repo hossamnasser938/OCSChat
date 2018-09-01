@@ -4,10 +4,12 @@ import com.example.android.ocschat.dataLayer.AddFriendApi;
 import com.example.android.ocschat.dataLayer.ChatApi;
 import com.example.android.ocschat.dataLayer.HomeApi;
 import com.example.android.ocschat.dataLayer.LoginApi;
+import com.example.android.ocschat.dataLayer.SettingsApi;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
 import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;
 import com.example.android.ocschat.viewModel.LoginViewModel;
+import com.example.android.ocschat.viewModel.SettingsViewModel;
 
 import javax.inject.Singleton;
 
@@ -35,6 +37,11 @@ public class ViewModelModule {
     @Provides @Singleton
     ChatViewModel provideChatViewModel(ChatApi api){
         return new ChatViewModelImpl(api);
+    }
+
+    @Provides @Singleton
+    SettingsViewModel provideSettingsViewModel(SettingsApi api){
+        return new SettingsViewModelImpl(api);
     }
 
 }
