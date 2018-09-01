@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
@@ -29,6 +30,7 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as SettingsTransitionInterface
     }
 
@@ -54,22 +56,19 @@ class SettingsFragment : Fragment() {
      * display currently logged user information
      */
     private fun displayCurrentUserInfo() {
-        val currentlyLoggedUserId = FirebaseAuth.getInstance().currentUser?.uid
+        settings_logged_user_image.setImageResource(R.drawable.person_placeholder)
 
+        val currentlyLoggedUserId = FirebaseAuth.getInstance().currentUser?.uid
         disposable = settingsViewModel.getUser(currentlyLoggedUserId).subscribe({
             currentlyLoggedUser = it
+            settings_logged_user_name.text = currentlyLoggedUser.name
+            //TODO: set user image
             setUserInfoOnClickListener(currentlyLoggedUser)
+            Log.d("SettingsFragment", it.name)
         }, {
             Log.d("SettingsFragment", it.message)
             Toast.makeText(context, Constants.ERROR_FETCHING_USER_INFO, Toast.LENGTH_SHORT).show()
         })
-
-        try {
-            settings_logged_user_name.text = currentlyLoggedUser.name
-            //TODO: set user image
-            settings_logged_user_image.setImageResource(R.drawable.person_placeholder)
-        }
-        catch (e : UninitializedPropertyAccessException){ }
     }
 
     private fun setUserInfoOnClickListener(user : User){
