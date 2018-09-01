@@ -44,7 +44,9 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
                 this.finishAffinity()
             }
             R.id.settings_menu_item -> {
-                //Nothing for now
+                //open settings activity
+                val intent = Intent(applicationContext, SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
         return true
