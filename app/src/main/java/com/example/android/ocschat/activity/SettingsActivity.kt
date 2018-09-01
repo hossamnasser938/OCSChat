@@ -11,6 +11,7 @@ class SettingsActivity : AppCompatActivity(), SettingsFragment.SettingsTransitio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
+        openFragment(SettingsFragment())
     }
 
     override fun openFragment(fragment: Fragment) {
