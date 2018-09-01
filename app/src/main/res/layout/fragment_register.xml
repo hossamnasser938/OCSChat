@@ -1,110 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:orientation="vertical"
         android:layout_gravity="center_vertical">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
+        <EditText
+            android:id="@+id/register_email_edit_text"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="6"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical">
+            android:hint="@string/email" />
 
-            <EditText
-                android:id="@+id/register_email_edit_text"
+        <EditText
+            android:id="@+id/register_username_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username" />
+
+        <EditText
+            android:id="@+id/register_password_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/password" />
+
+        <TextView
+            android:id="@+id/register_error_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:textColor="@color/red" />
+
+        <!-- Postponed functionality -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/register_user_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email" />
-
-            <EditText
-                android:id="@+id/register_username_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/username" />
-
-            <EditText
-                android:id="@+id/register_password_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:hint="@string/password" />
+                android:src="@drawable/person_placeholder"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
 
             <TextView
-                android:id="@+id/register_error_text_view"
-                android:layout_width="match_parent"
+                android:id="@+id/choose_image_text_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default16_margin"
-                android:visibility="gone"
-                android:gravity="center_horizontal"
-                android:textColor="@color/red" />
+                android:layout_centerInParent="true"
+                android:text="@string/choose_profile_picture" />
 
-            <!-- Postponed functionality -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default16_margin"
-                android:visibility="gone">
+        </RelativeLayout>
 
-                <ImageView
-                    android:id="@+id/register_user_image_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/person_placeholder"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true" />
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default16_margin"
+            android:text="@string/register" />
 
-                <TextView
-                    android:id="@+id/choose_image_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/choose_profile_picture" />
+        <ProgressBar
+            android:id="@+id/register_loading_progress_bar"
+            android:layout_width="@dimen/progress_bar_dimens"
+            android:layout_height="@dimen/progress_bar_dimens"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
 
-            </RelativeLayout>
-
-            <Button
-                android:id="@+id/register_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default16_margin"
-                android:text="@string/register" />
-
-            <ProgressBar
-                android:id="@+id/register_loading_progress_bar"
-                android:layout_width="@dimen/progress_bar_dimens"
-                android:layout_height="@dimen/progress_bar_dimens"
-                android:layout_margin="@dimen/default16_margin"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal" />
-
-            <TextView
-                android:id="@+id/click_login_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default16_margin"
-                android:text="@string/click_here_to_login"
-                android:textStyle="bold"
-                android:gravity="center_horizontal" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/click_login_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
+            android:text="@string/click_here_to_login"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
 
     </LinearLayout>
 
-    </ScrollView>
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>
 
 

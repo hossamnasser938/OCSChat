@@ -15,18 +15,9 @@ class AddFriendActivity : AppCompatActivity() , AddFriendFragment.AddFriendTrans
     }
 
     override fun openFragment(fragment: Fragment) {
-        if(fragment is AddFriendFragment){
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.add_friend_frame_layout, fragment)
-                    .commit()
-        }
-        else{
-            supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.add_friend_frame_layout, fragment)
-                    .addToBackStack(null)
-                    .commit()
-        }
+        supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.add_friend_frame_layout, fragment)
+                .commit()
     }
 }

@@ -98,6 +98,9 @@ class HomeFragment : Fragment() {
     }
 
     fun displayCurrentUserFriends(friendsList : List<User>){
+        //Hide failure text view
+        failure_list_text_view.visibility = View.GONE
+
         val layoutManager = LinearLayoutManager(context)
 
         friends_recycler_view.layoutManager = layoutManager
