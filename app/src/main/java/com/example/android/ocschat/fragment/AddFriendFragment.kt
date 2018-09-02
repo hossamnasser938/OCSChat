@@ -79,7 +79,7 @@ class AddFriendFragment : Fragment() {
     private fun setDropDownItemsClickListener() {
         add_friend_auto_complete.setOnItemClickListener { parent, view, position, id ->
             val clickedUser = adapter.getItem(position)
-            transition.openFragment(UserInfoFragment.newInstance(clickedUser))
+            transition.openFragment(FriendInfoFragment.newInstance(clickedUser))
         }
     }
 
