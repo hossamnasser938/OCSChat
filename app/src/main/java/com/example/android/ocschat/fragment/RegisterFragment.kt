@@ -100,19 +100,19 @@ class RegisterFragment : Fragment() {
             }
 
             //check email validity
-            if(!loginViewModel.isValidEmail(userInput[Constants.EMAIL_KEY])){
+            if(!Utils.isValidEmail(userInput[Constants.EMAIL_KEY])){
                 showErrorMessage(R.string.invalid_email)
                 return@setOnClickListener
             }
 
             //check name validity
-            if(!loginViewModel.isValidName(userInput[Constants.NAME_KEY])){
+            if(!Utils.isValidName(userInput[Constants.NAME_KEY])){
                 showErrorMessage(R.string.invalid_name)
                 return@setOnClickListener
             }
 
             //check password validity
-            if(!loginViewModel.isValidPassword(userInput[Constants.PASSWORD_KEY])){
+            if(!Utils.isValidPassword(userInput[Constants.PASSWORD_KEY])){
                 showErrorMessage(R.string.invalid_password)
                 return@setOnClickListener
             }

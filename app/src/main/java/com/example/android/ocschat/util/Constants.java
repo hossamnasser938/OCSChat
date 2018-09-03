@@ -22,5 +22,8 @@ public class Constants {
     public static final String FRIEND_ID_KEY = "friend_id";
     public static final String DATE_FORMAT = "dd-MM-yyyy (HH:mm:ss)";
     public static final int PICK_IMAGE_REQUEST = 100;
+    public static final String EMAIL_SUBJECT = "Invitation";
+    public static final String EMAIL_BODY = "Let's chat using OCSChat";
+    public static final String EMAIL_SENDER = "hossamnasser938@gmail.com";
 
 }

@@ -75,13 +75,13 @@ class LoginFragment : Fragment() {
             }
 
             //check email validity
-            if(!loginViewModel.isValidEmail(userInput[Constants.EMAIL_KEY])){
+            if(!Utils.isValidEmail(userInput[Constants.EMAIL_KEY])){
                 showErrorMessage(R.string.invalid_email)
                 return@setOnClickListener
             }
 
             //check password validity
-            if(!loginViewModel.isValidPassword(userInput[Constants.PASSWORD_KEY])){
+            if(!Utils.isValidPassword(userInput[Constants.PASSWORD_KEY])){
                 showErrorMessage(R.string.invalid_password)
                 return@setOnClickListener
             }

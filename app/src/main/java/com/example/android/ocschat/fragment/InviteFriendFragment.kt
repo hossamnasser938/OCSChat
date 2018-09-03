@@ -1,11 +1,15 @@
 package com.example.android.ocschat.fragment
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
 import android.widget.Toast
 import com.example.android.ocschat.R
-import kotlinx.android.synthetic.main.activity_add_friend.view.*
+import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import kotlinx.android.synthetic.main.fragment_invite_friend.*
 
 class InviteFriendFragment : Fragment() {
@@ -31,11 +35,34 @@ class InviteFriendFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.invite_friend_menu_item -> {
-                //TODO: invite friend
-                Toast.makeText(context, invite_friend_email_edit_text.text.toString(), Toast.LENGTH_SHORT).show()
+            R.id.invite_menu_item -> {
+                //hide error text
+                invite_friend_error_text_view.visibility = View.GONE
+
+                //check email validity format
+                if(!Utils.isValidEmail(invite_friend_email_edit_text.text.toString())){
+                    showErrorText(R.string.invalid_email)
+                    return true
+                }
+
+                //create intent for sending email inviting friends
+                val emailUriString = "mailto:" + invite_friend_email_edit_text.text.toString() + "?cc=" + Constants.EMAIL_SENDER + "&subject=" + Uri.encode(Constants.EMAIL_SUBJECT) + "&body=" + Uri.encode(Constants.EMAIL_BODY)
+                val emailIntent = Intent()
+                emailIntent.action = Intent.ACTION_SENDTO
+                emailIntent.data = Uri.parse(emailUriString)
+                try {
+                    startActivity(emailIntent)
+                }
+                catch (e : ActivityNotFoundException){
+                    Toast.makeText(context, R.string.opening_email_app_error, Toast.LENGTH_SHORT).show()
+                }
             }
         }
         return true
+    }
+
+    private fun showErrorText(stringID : Int){
+        invite_friend_error_text_view.visibility = View.VISIBLE
+        invite_friend_error_text_view.text = resources.getString(stringID)
     }
 }

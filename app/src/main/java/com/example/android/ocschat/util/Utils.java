@@ -19,6 +19,28 @@ public class Utils {
     }
 
     /**
+     * checks if email is in valid format
+     * Got from "https://codereview.stackexchange.com/questions/33546/simple-code-to-check-format-of-user-inputted-email-address"
+     */
+    public static boolean isValidEmail(String email){
+        return email.matches("[a-zA-Z0-9\\.]+@[a-zA-Z0-9\\-\\_\\.]+\\.[a-zA-Z0-9]{3}");
+    }
+
+    /**
+     * checks if password is valid(6 characters or more)
+     */
+    public static boolean isValidPassword(String password){
+        return password.length() >= 6;
+    }
+
+    /**
+     * Checks if name is valid(starts with a letter)
+     */
+    public static boolean isValidName(String name){
+        return name.charAt(0) >= 65 && name.charAt(0) <= 120;
+    }
+
+    /**
      * generates unique key each two friends using their guaranteed unique keys
      * @param currentUserId
      * @param friendId

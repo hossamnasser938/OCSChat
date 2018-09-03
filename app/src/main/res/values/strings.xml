@@ -37,4 +37,5 @@
     <string name="account_updated">Account updated successfully</string>
     <string name="no_changes_to_update">No changes to update</string>
     <string name="friend_email">Friend E-mail</string>
+    <string name="opening_email_app_error">Can not find installed app concerned with sending emails</string>
 </resources>

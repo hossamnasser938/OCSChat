@@ -50,26 +50,4 @@ class LoginViewModelImpl : LoginViewModel {
         }
         return true
     }
-
-    /**
-     * checks if email is in valid format
-     * Got from "https://codereview.stackexchange.com/questions/33546/simple-code-to-check-format-of-user-inputted-email-address"
-     */
-    override fun isValidEmail(email: String): Boolean {
-        return email.matches("[a-zA-Z0-9\\.]+@[a-zA-Z0-9\\-\\_\\.]+\\.[a-zA-Z0-9]{3}".toRegex())
-    }
-
-    /**
-     * Checks if name is valid(starts with a letter)
-     */
-    override fun isValidName(name: String): Boolean {
-        return name[0].isLetter()
-    }
-
-    /**
-     * checks is password is valid(6 characters or more)
-     */
-    override fun isValidPassword(password: String): Boolean {
-        return password.length >= 6
-    }
 }
