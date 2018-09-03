@@ -21,7 +21,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private Context context;
     private List<User> friendsList;
-    private int lastPosition = -1;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView name;
@@ -52,24 +51,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         User currentFriend = friendsList.get(position);
         holder.name.setText(currentFriend.getName());
         if(currentFriend.getHasImage()){
-            //Postponed functionality
+            //TODO: Postponed functionality
         }
         else{
             holder.image.setImageResource(R.drawable.person_placeholder);
         }
-        setAnimation(holder.itemView, position);
     }
 
     @Override
     public int getItemCount() {
         return friendsList.size();
-    }
-
-    private void setAnimation(View viewToAnimate, int position){
-        if(position != lastPosition){
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
-            viewToAnimate.setAnimation(animation);
-            lastPosition= position;
-        }
     }
 }
