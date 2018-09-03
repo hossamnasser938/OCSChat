@@ -14,8 +14,7 @@
             android:id="@+id/update_profile_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+            android:gravity="center" />
 
     </LinearLayout>
 
@@ -28,7 +27,7 @@
         <ImageView
             android:id="@+id/update_profile_image_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scaleType="fitCenter"
             android:adjustViewBounds="true" />
 

@@ -27,7 +27,10 @@
     <string name="error_adding_friend">Error occured while adding Friend</string>
     <string name="add_friend">Add Friend</string>
     <string name="chat">Chat</string>
-    <string name="choose_profile_picture">Choose profile picture</string>
-    <string name="update_profile_picture">Update profile picture</string>
+    <string name="choose_profile_picture">\tChoose\nprofile picture</string>
+    <string name="update_profile_picture">\tUpdate\nprofile picture</string>
     <string name="update_profile">Update profile</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="updating_profile">Updating profile &#8230;</string>
 </resources>
