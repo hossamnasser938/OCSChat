@@ -56,7 +56,7 @@ class AddFriendFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.invite_friend_menu_item -> {
-                //TODO: invite friend functionality
+                transition.openFragment(InviteFriendFragment())
             }
         }
         return true
