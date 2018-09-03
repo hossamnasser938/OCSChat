@@ -64,6 +64,12 @@ class UpdateProfileFragment : Fragment(){
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.update_menu_item -> {
+                //check if user changed something to be updated or not
+                if(!checkSomethingUpdated()){
+                    Toast.makeText(context, R.string.no_changes_to_update, Toast.LENGTH_SHORT).show()
+                    return true
+                }
+
                 //Show progress dialog
                 val progressDialog = ProgressDialog(activity)
                 progressDialog.setTitle(R.string.updating_profile)
@@ -76,7 +82,7 @@ class UpdateProfileFragment : Fragment(){
                         .subscribe({
                             //Inform user and go back to Home activity
                             Log.d("UpdateProfileFragment", "Updated")
-                            Toast.makeText(context, Constants.ACCOUNT_UPDATED_SUCCESSFULLY, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, R.string.account_updated, Toast.LENGTH_SHORT).show()
                             progressDialog.dismiss()
                             activity?.finish()
                         }, {
@@ -92,6 +98,15 @@ class UpdateProfileFragment : Fragment(){
             }
         }
         return true
+    }
+
+    /**
+     * check if user updated something or not
+     */
+    private fun checkSomethingUpdated() : Boolean{
+        if(!update_profile_name_edit_text.text.toString().equals(currentlyLoggedUser.name, false))
+            return true
+        return false
     }
 
     private fun updateUserProperties() {

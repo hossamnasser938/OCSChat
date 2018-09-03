@@ -19,7 +19,6 @@ public class Constants {
     public static final String ERROR_GENERATING_MESSAGE_KEY = "error generating message key .. Two users with identical keys";
     public static final String ERROR_FETCHING_USER_INFO = "error fetching user info";
     public static final String ERROR_UPDATING_ACCOUNT = "error updating account";
-    public static final String ACCOUNT_UPDATED_SUCCESSFULLY = "account updated successfully";
     public static final String FRIEND_ID_KEY = "friend_id";
     public static final String DATE_FORMAT = "dd-MM-yyyy (HH:mm:ss)";
     public static final int PICK_IMAGE_REQUEST = 100;
