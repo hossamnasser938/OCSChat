@@ -33,4 +33,5 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="updating_profile">Updating profile &#8230;</string>
+    <string name="invite_friend">Invite friend</string>
 </resources>

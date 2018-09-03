@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/cancel_menu_item"
-        android:title="@string/cancel"
-        app:showAsAction="ifRoom" />
-
     <item android:id="@+id/update_menu_item"
         android:title="@string/update"
+        android:icon="@drawable/icon_checkmark_48"
         app:showAsAction="always" />
+
+    <item android:id="@+id/cancel_menu_item"
+        android:title="@string/cancel" />
 
 
 </menu>

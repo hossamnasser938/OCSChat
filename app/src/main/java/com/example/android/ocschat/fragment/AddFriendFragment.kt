@@ -3,9 +3,7 @@ package com.example.android.ocschat.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
@@ -36,6 +34,7 @@ class AddFriendFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_add_friend, container, false)
     }
 
@@ -48,6 +47,19 @@ class AddFriendFragment : Fragment() {
         else{
             setAutoCompleteProperty()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.add_friend_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            R.id.invite_friend_menu_item -> {
+                //TODO: invite friend functionality
+            }
+        }
+        return true
     }
 
     override fun onPause() {
