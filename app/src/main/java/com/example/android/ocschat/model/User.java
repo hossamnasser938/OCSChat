@@ -11,29 +11,52 @@ import java.util.List;
 public class User implements Serializable {
 
     private String id;
-    private String name;
+    private String name;   //TODO: remove this property
+    private String firstName;
+    private String lastName;
+    private int age;
     private List<Friend> friends;
     private boolean hasImage;
+    private String education;   //Student, Diploma, Bachelor, master, or PHD
+    private String educationOrganization;  //University, institute, or school
+    private String major;
+    private String jobPosition;
+    private String company;
 
     public User() {
-        //Required for firebase database operations
+        //No-arg constructor Required for firebase database operations
         this.friends = new ArrayList<>();
     }
 
-    public User(String id, String name) {
+    public User(String id, String name) {   //TODO: Remove this constructor
         this.id = id;
         this.name = name;
         this.friends = new ArrayList<>();
-        this.setHasImage(false);
+        this.hasImage = false;
     }
 
-    public User(String id, String name, boolean hasImage) {
+    public User(String id, String name, boolean hasImage) {   //TODO: Remove this constructor
         this.id = id;
         this.name = name;
         this.friends = new ArrayList<>();
-        this.setHasImage(hasImage);
+        this.hasImage = hasImage;
     }
 
+    public User(String id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.friends = new ArrayList<>();
+        this.hasImage = false;
+    }
+
+    public User(String id, String firstName, String lastName, boolean hasImage) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.friends = new ArrayList<>();
+        this.hasImage = hasImage;
+    }
 
     public String getId() {
         return id;
@@ -45,10 +68,34 @@ public class User implements Serializable {
 
     public String getName() {
         return name;
-    }
+    }  //TODO: remove this method
 
     public void setName(String name) {
         this.name = name;
+    }  //TODO: remove this method
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public List<Friend> getFriends(){
@@ -73,5 +120,45 @@ public class User implements Serializable {
 
     public void setHasImage(boolean hasImage) {
         this.hasImage = hasImage;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getEducationOrganization() {
+        return educationOrganization;
+    }
+
+    public void setEducationOrganization(String educationOrganization) {
+        this.educationOrganization = educationOrganization;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getJobPosition() {
+        return jobPosition;
+    }
+
+    public void setJobPosition(String jobPosition) {
+        this.jobPosition = jobPosition;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
     }
 }
