@@ -38,4 +38,5 @@
     <string name="no_changes_to_update">No changes to update</string>
     <string name="friend_email">Friend E-mail</string>
     <string name="opening_email_app_error">Can not find installed app concerned with sending emails</string>
+    <string name="enter_email">Enter email of a friend to invite</string>
 </resources>

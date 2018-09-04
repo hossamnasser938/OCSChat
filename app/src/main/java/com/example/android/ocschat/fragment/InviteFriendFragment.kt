@@ -39,6 +39,12 @@ class InviteFriendFragment : Fragment() {
                 //hide error text
                 invite_friend_error_text_view.visibility = View.GONE
 
+                //check empty email field
+                if(checkEmptyEmail()){
+                    showErrorText(R.string.enter_email)
+                    return true
+                }
+
                 //check email validity format
                 if(!Utils.isValidEmail(invite_friend_email_edit_text.text.toString())){
                     showErrorText(R.string.invalid_email)
@@ -59,6 +65,12 @@ class InviteFriendFragment : Fragment() {
             }
         }
         return true
+    }
+
+    private fun checkEmptyEmail() : Boolean{
+        if(invite_friend_email_edit_text.text.toString().isEmpty())
+            return true
+        return false
     }
 
     private fun showErrorText(stringID : Int){
