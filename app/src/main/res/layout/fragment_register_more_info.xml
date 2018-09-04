@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/education" />
+
+        <EditText
+            android:id="@+id/register_education_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/education_examples" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/education_org" />
+
+        <EditText
+            android:id="@+id/register_education_org_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/education_org_examples" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/major" />
+
+        <EditText
+            android:id="@+id/register_major_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/major_examples" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/work" />
+
+        <EditText
+            android:id="@+id/register_work_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/work_examples" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/company" />
+
+        <EditText
+            android:id="@+id/register_company_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/company_examples" />
+
+        <TextView
+            android:id="@+id/register_error_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone"
+            android:gravity="center_horizontal"
+            android:textColor="@color/red" />
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default16_margin"
+            android:text="@string/register" />
+
+        <ProgressBar
+            android:id="@+id/register_loading_progress_bar"
+            android:layout_width="@dimen/progress_bar_dimens"
+            android:layout_height="@dimen/progress_bar_dimens"
+            android:layout_margin="@dimen/default16_margin"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/click_login_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default16_margin"
+            android:text="@string/click_here_to_login"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+
+</LinearLayout>
+
+

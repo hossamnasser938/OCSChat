@@ -34,10 +34,14 @@ public class Utils {
     }
 
     /**
-     * Checks if name is valid(starts with a letter)
+     * Checks if name is valid(consists of only letters)
      */
     public static boolean isValidName(String name){
-        return name.charAt(0) >= 65 && name.charAt(0) <= 120;
+        for(int i = 0; i < name.length(); i++){
+            if(!((name.charAt(i) >= 65 && name.charAt(i) <= 90) || ((name.charAt(i) >= 97 && name.charAt(i) <= 122))))
+                return false;
+        }
+        return true;
     }
 
     /**

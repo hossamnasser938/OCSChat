@@ -6,6 +6,7 @@ import com.example.android.ocschat.fragment.FriendInfoFragment;
 import com.example.android.ocschat.fragment.HomeFragment;
 import com.example.android.ocschat.fragment.LoginFragment;
 import com.example.android.ocschat.fragment.RegisterFragment;
+import com.example.android.ocschat.fragment.RegisterMoreInfoFragment;
 import com.example.android.ocschat.fragment.SettingsFragment;
 import com.example.android.ocschat.fragment.UpdateProfileFragment;
 import com.example.android.ocschat.fragment.UserInfoFragment;
@@ -20,6 +21,7 @@ public interface AppComponent {
 
     void inject(LoginFragment loginFragment);
     void inject(RegisterFragment registerFragment);
+    void inject(RegisterMoreInfoFragment registerMoreInfoFragment);
     void inject(HomeFragment homeFragment);
     void inject(AddFriendFragment addFriendFragment);
     void inject(FriendInfoFragment friendInfoFragment);

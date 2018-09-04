@@ -29,10 +29,10 @@ class RegisterFragment : Fragment() {
 
     @Inject
     lateinit var loginViewModel : LoginViewModel
-    private lateinit var disposable : Disposable
+
     private lateinit var transient: LoginFragment.LoginTransitionInterface
 
-    private lateinit var filePath: Uri
+    private lateinit var filePath: Uri //postponed
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,22 +46,12 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setRegisterButtonOnClickListener()
+        setNextButtonOnClickListener()
         setClickLoginOnClickListener()
-        setChooseProfilePictureClickListener()
+        setChooseProfilePictureClickListener() //Postponed
     }
 
-    override fun onPause() {
-        super.onPause()
-        try {
-            disposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //Just stop
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //postponed
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             filePath = data.data
@@ -76,9 +66,8 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun setRegisterButtonOnClickListener(){
-        val context : Context? = context
-        register_button.setOnClickListener {
+    private fun setNextButtonOnClickListener(){
+        next_button.setOnClickListener {
             //Do not respond to user clicks for now
             it.isClickable = false
             //hide error text view
@@ -91,63 +80,54 @@ class RegisterFragment : Fragment() {
             }
 
             //get email and password entered by user
-            val userInput : HashMap<String, String> = getUserInput()
+            val userInput = getUserInput()
 
             //check empty email or password
-            if(!loginViewModel.checkEmptyInputs(userInput[Constants.EMAIL_KEY], userInput[Constants.NAME_KEY], userInput[Constants.PASSWORD_KEY])){
+            if(!loginViewModel.checkEmptyInputs(userInput[Constants.EMAIL_KEY] as String, userInput[Constants.NAME_KEY] as String, userInput[Constants.PASSWORD_KEY] as String)){
                 showErrorMessage(R.string.forgot_email_password_name)
                 return@setOnClickListener
             }
 
             //check email validity
-            if(!Utils.isValidEmail(userInput[Constants.EMAIL_KEY])){
+            if(!Utils.isValidEmail(userInput[Constants.EMAIL_KEY] as String)){
                 showErrorMessage(R.string.invalid_email)
                 return@setOnClickListener
             }
 
-            //check name validity
-            if(!Utils.isValidName(userInput[Constants.NAME_KEY])){
+            //check first name validity
+            if(!Utils.isValidName(userInput[Constants.FIRST_NAME_KEY] as String)){
+                showErrorMessage(R.string.invalid_name)
+                return@setOnClickListener
+            }
+
+            //check last name validity
+            if(!Utils.isValidName(userInput[Constants.LAST_NAME_KEY] as String)){
                 showErrorMessage(R.string.invalid_name)
                 return@setOnClickListener
             }
 
             //check password validity
-            if(!Utils.isValidPassword(userInput[Constants.PASSWORD_KEY])){
+            if(!Utils.isValidPassword(userInput[Constants.PASSWORD_KEY] as String)){
                 showErrorMessage(R.string.invalid_password)
                 return@setOnClickListener
             }
 
-            //show loading progress bar
-            register_loading_progress_bar.visibility = View.VISIBLE
-
-            //Call web service
-            callRegisterApi(userInput)
+            performNext(userInput)
         }
     }
 
-    private fun callRegisterApi(body : HashMap<String, String>){
-        disposable = loginViewModel.register(body).subscribe({
-            //hide loading progress bar
-            register_loading_progress_bar.visibility = View.GONE
-            //Open Home Activity with user info
-            val intent = Intent(context, HomeActivity::class.java)
-            startActivity(intent)
-            activity?.finish()
-        }, {
-            //hide loading progress bar
-            register_loading_progress_bar.visibility = View.GONE
-            //show error message
-            showErrorMessage(it.message)
-        })
+    private fun performNext(inputs : HashMap<String, Any>){
+        transient.openFragment(RegisterMoreInfoFragment.newInstance(inputs))
     }
 
-    fun setClickLoginOnClickListener(){
+    private fun setClickLoginOnClickListener(){
         click_login_text_view.setOnClickListener{
             transient.openFragment(LoginFragment())
         }
     }
 
-    fun setChooseProfilePictureClickListener(){
+
+    private fun setChooseProfilePictureClickListener(){
         register_user_image_view.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
@@ -156,13 +136,15 @@ class RegisterFragment : Fragment() {
         }
     }
 
+
     /**
      * extract email and password of user in a HashMap
      */
-    private fun getUserInput() : HashMap<String, String>{
-        val userInput : HashMap<String, String> = HashMap()
+    private fun getUserInput() : HashMap<String, Any>{
+        val userInput : HashMap<String, Any> = HashMap()
         userInput[Constants.EMAIL_KEY] = register_email_edit_text.text.toString()
-        userInput[Constants.NAME_KEY] = register_username_edit_text.text.toString()
+        userInput[Constants.FIRST_NAME_KEY] = register_firstname_edit_text.text.toString()
+        userInput[Constants.LAST_NAME_KEY] = register_lastname_edit_text.text.toString()
         userInput[Constants.PASSWORD_KEY] = register_password_edit_text.text.toString()
         return userInput
     }
@@ -173,13 +155,13 @@ class RegisterFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         register_error_text_view.visibility = View.VISIBLE
         register_error_text_view.text = getString(messageId)
-        register_button.isClickable = true
+        next_button.isClickable = true
     }
 
     private fun showErrorMessage(message : String?){
-        login_error_text_view.visibility = View.VISIBLE
-        login_error_text_view.text = message
-        register_button.isClickable = true
+        register_error_text_view.visibility = View.VISIBLE
+        register_error_text_view.text = message
+        next_button.isClickable = true
     }
 
 }

@@ -7,6 +7,15 @@ public class Constants {
     public static final String EMAIL_KEY = "email";
     public static final String PASSWORD_KEY = "password";
     public static final String NAME_KEY = "name";
+    public static final String FIRST_NAME_KEY = "first_name";
+    public static final String LAST_NAME_KEY = "last_name";
+    public static final String AGE_KEY = "age";
+    public static final String EDUCATION_KEY = "education";
+    public static final String EDUCATION_ORG_KEY = "education_org";
+    public static final String MAJOR_KEY = "major";
+    public static final String WORK_KEY = "work";
+    public static final String COMPANY_KEY = "company";
+    public static final String INPUTS_KEY = "inputs";
     public static final String ID_KEY = "id";
     public static final String USERS_KEY = "users";
     public static final String USER_KEY = "user";

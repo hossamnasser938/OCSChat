@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * User class used to hold more info about user for scalability
- * will be Connected with firebase User class through id property
+ * will be Connected with fire-base User class through id property
  */
 public class User implements Serializable {
 
@@ -20,7 +20,7 @@ public class User implements Serializable {
     private String education;   //Student, Diploma, Bachelor, master, or PHD
     private String educationOrganization;  //University, institute, or school
     private String major;
-    private String jobPosition;
+    private String work;
     private String company;
 
     public User() {
@@ -146,12 +146,12 @@ public class User implements Serializable {
         this.major = major;
     }
 
-    public String getJobPosition() {
-        return jobPosition;
+    public String getWork() {
+        return work;
     }
 
-    public void setJobPosition(String jobPosition) {
-        this.jobPosition = jobPosition;
+    public void setWork(String work) {
+        this.work = work;
     }
 
     public String getCompany() {
