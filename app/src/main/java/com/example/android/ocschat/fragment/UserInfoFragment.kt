@@ -73,10 +73,10 @@ class UserInfoFragment : Fragment() {
     }
 
     private fun displayCurrentUserInfo(user : User){
-        user_info_name_text_view.text = user.firstName + " " + user.lastName
+        user_info_name_text_view.text = user.name
         if(user.age != null){
             user_info_age_text_view.visibility = View.VISIBLE
-            user_info_age_text_view.setText(user.age)
+            user_info_age_text_view.setText(user.age.toString())
         }
         if(user.education != null){
             user_info_education_text_view.visibility = View.VISIBLE

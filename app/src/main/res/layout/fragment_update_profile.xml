@@ -1,38 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/default16_margin"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/update_profile_firstname_edit_text"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:layout_margin="@dimen/default8_margin"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/update_profile_lastname_edit_text"
+                <EditText
+                    android:id="@+id/update_profile_firstname_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/update_profile_lastname_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields"
+                    android:visibility="visible" />
+
+                <EditText
+                    android:id="@+id/update_profile_age_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center" />
+                android:layout_margin="@dimen/default8_margin">
+
+                <ImageView
+                    android:id="@+id/update_profile_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitCenter"
+                    android:adjustViewBounds="true" />
+
+                <TextView
+                    android:id="@+id/update_profile_update_image_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/update_profile_picture" />
+
+            </RelativeLayout>
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/update_profile_age_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_education_edit_text"
@@ -56,26 +81,4 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/default16_margin">
-
-        <ImageView
-            android:id="@+id/update_profile_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/update_profile_update_image_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/update_profile_picture" />
-
-    </RelativeLayout>
-
-</LinearLayout>
+</ScrollView>

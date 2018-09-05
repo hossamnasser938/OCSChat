@@ -116,10 +116,10 @@ class FriendInfoFragment : Fragment() {
     }
 
     private fun displayFriendInfo(user : User){
-        friend_info_name_text_view.text = user.firstName + " " + user.lastName
+        friend_info_name_text_view.text = user.name
         if(user.age != null){
             friend_info_age_text_view.visibility = View.VISIBLE
-            friend_info_age_text_view.setText(user.age)
+            friend_info_age_text_view.setText(user.age.toString())
         }
         if(user.education != null){
             friend_info_education_text_view.visibility = View.VISIBLE

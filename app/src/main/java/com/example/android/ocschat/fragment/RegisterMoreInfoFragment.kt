@@ -72,7 +72,7 @@ class RegisterMoreInfoFragment : Fragment() {
 
     private fun getUserInputs(inputs : HashMap<String, Any>){
         if(!register_age_edit_text.text.toString().isEmpty())
-            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString()
+            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString().toInt()
         if(!register_education_edit_text.text.toString().isEmpty())
             inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.toString()
         if(!register_education_org_edit_text.text.toString().isEmpty())
