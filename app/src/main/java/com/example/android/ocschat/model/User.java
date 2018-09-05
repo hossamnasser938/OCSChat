@@ -14,7 +14,7 @@ public class User implements Serializable {
     private String name;   //TODO: remove this property
     private String firstName;
     private String lastName;
-    private int age;
+    private Integer age;
     private List<Friend> friends;
     private boolean hasImage;
     private String education;   //Student, Diploma, Bachelor, master, or PHD
@@ -90,11 +90,11 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

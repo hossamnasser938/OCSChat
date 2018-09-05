@@ -73,7 +73,32 @@ class UserInfoFragment : Fragment() {
     }
 
     private fun displayCurrentUserInfo(user : User){
-        user_info_name_text_view.text = user.name
+        user_info_name_text_view.text = user.firstName + " " + user.lastName
+        if(user.age != null){
+            user_info_age_text_view.visibility = View.VISIBLE
+            user_info_age_text_view.setText(user.age)
+        }
+        if(user.education != null){
+            user_info_education_text_view.visibility = View.VISIBLE
+            user_info_education_text_view.setText(user.education)
+        }
+        if(user.educationOrganization != null){
+            user_info_education_org_text_view.visibility = View.VISIBLE
+            user_info_education_org_text_view.setText(user.educationOrganization)
+        }
+        if(user.major != null){
+            user_info_major_text_view.visibility = View.VISIBLE
+            user_info_major_text_view.setText(user.major)
+        }
+        if(user.work != null){
+            user_info_work_text_view.visibility = View.VISIBLE
+            user_info_work_text_view.setText(user.work)
+        }
+        if(user.company != null){
+            user_info_company_text_view.visibility = View.VISIBLE
+            user_info_company_text_view.setText(user.company)
+        }
+
         checkUserImage(user)
     }
 

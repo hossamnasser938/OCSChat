@@ -104,26 +104,82 @@ class UpdateProfileFragment : Fragment(){
      * check if user updated something or not
      */
     private fun checkSomethingUpdated() : Boolean{
-        if(!update_profile_name_edit_text.text.toString().equals(currentlyLoggedUser.name, false))
+        if(!update_profile_firstname_edit_text.text.toString().equals(currentlyLoggedUser.firstName, false))
             return true
+        if(!update_profile_lastname_edit_text.text.toString().equals(currentlyLoggedUser.lastName, false))
+            return true
+        if(update_profile_age_edit_text.visibility == View.VISIBLE){
+            if(update_profile_age_edit_text.text.toString().toInt() != currentlyLoggedUser.age)
+                return true
+        }
+        if(update_profile_education_edit_text.visibility == View.VISIBLE){
+            if(!update_profile_education_edit_text.text.toString().equals(currentlyLoggedUser.education, false))
+                return true
+        }
+        if(update_profile_education_org_edit_text.visibility == View.VISIBLE){
+            if(!update_profile_education_org_edit_text.text.toString().equals(currentlyLoggedUser.educationOrganization, false))
+                return true
+        }
+        if(update_profile_major_edit_text.visibility == View.VISIBLE){
+            if(!update_profile_major_edit_text.text.toString().equals(currentlyLoggedUser.major, false))
+                return true
+        }
+        if(update_profile_work_edit_text.visibility == View.VISIBLE){
+            if(!update_profile_work_edit_text.text.toString().equals(currentlyLoggedUser.work, false))
+                return true
+        }
+        if(update_profile_company_edit_text.visibility == View.VISIBLE){
+            if(!update_profile_company_edit_text.text.toString().equals(currentlyLoggedUser.company, false))
+                return true
+        }
         return false
     }
 
     private fun updateUserProperties() {
-        currentlyLoggedUser.name = update_profile_name_edit_text.text.toString()
+        currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.toString()
+        currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.toString()
+        currentlyLoggedUser.age = update_profile_age_edit_text.text.toString().toInt()
+        currentlyLoggedUser.education = update_profile_education_edit_text.text.toString()
+        currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.toString()
+        currentlyLoggedUser.major = update_profile_major_edit_text.text.toString()
+        currentlyLoggedUser.work = update_profile_work_edit_text.text.toString()
+        currentlyLoggedUser.company = update_profile_company_edit_text.text.toString()
     }
 
 
     private fun loadUserInfo(){
-        try {
-            update_profile_name_edit_text.setText(currentlyLoggedUser.name)
-            if(currentlyLoggedUser.hasImage){
-                //TODO: set user image
-            }
-            else{
-                update_profile_image_view.setImageResource(R.drawable.person_placeholder)
-            }
+        update_profile_firstname_edit_text.setText(currentlyLoggedUser.firstName)
+        update_profile_lastname_edit_text.setText(currentlyLoggedUser.lastName)
+        if(currentlyLoggedUser.age != null){
+            update_profile_age_edit_text.visibility = View.VISIBLE
+            update_profile_age_edit_text.setText(currentlyLoggedUser.age.toString())
         }
-        catch (e : UninitializedPropertyAccessException){ }
+        if(currentlyLoggedUser.education != null){
+            update_profile_education_edit_text.visibility = View.VISIBLE
+            update_profile_education_edit_text.setText(currentlyLoggedUser.education)
+        }
+        if(currentlyLoggedUser.educationOrganization != null){
+            update_profile_education_org_edit_text.visibility = View.VISIBLE
+            update_profile_education_org_edit_text.setText(currentlyLoggedUser.educationOrganization)
+        }
+        if(currentlyLoggedUser.major != null){
+            update_profile_major_edit_text.visibility = View.VISIBLE
+            update_profile_major_edit_text.setText(currentlyLoggedUser.major)
+        }
+        if(currentlyLoggedUser.work != null){
+            update_profile_work_edit_text.visibility = View.VISIBLE
+            update_profile_work_edit_text.setText(currentlyLoggedUser.work)
+        }
+        if(currentlyLoggedUser.company != null){
+            update_profile_company_edit_text.visibility = View.VISIBLE
+            update_profile_company_edit_text.setText(currentlyLoggedUser.company)
+        }
+
+        if(currentlyLoggedUser.hasImage){
+            //TODO: set user image
+        }
+        else{
+            update_profile_image_view.setImageResource(R.drawable.person_placeholder)
+        }
     }
 }

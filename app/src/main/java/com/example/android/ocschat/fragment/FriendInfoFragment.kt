@@ -116,7 +116,32 @@ class FriendInfoFragment : Fragment() {
     }
 
     private fun displayFriendInfo(user : User){
-        friend_info_name_text_view.text = user.name
+        friend_info_name_text_view.text = user.firstName + " " + user.lastName
+        if(user.age != null){
+            friend_info_age_text_view.visibility = View.VISIBLE
+            friend_info_age_text_view.setText(user.age)
+        }
+        if(user.education != null){
+            friend_info_education_text_view.visibility = View.VISIBLE
+            friend_info_education_text_view.setText(user.education)
+        }
+        if(user.educationOrganization != null){
+            friend_info_education_org_text_view.visibility = View.VISIBLE
+            friend_info_education_org_text_view.setText(user.educationOrganization)
+        }
+        if(user.major != null){
+            friend_info_major_text_view.visibility = View.VISIBLE
+            friend_info_major_text_view.setText(user.major)
+        }
+        if(user.work != null){
+            friend_info_work_text_view.visibility = View.VISIBLE
+            friend_info_work_text_view.setText(user.work)
+        }
+        if(user.company != null){
+            friend_info_company_text_view.visibility = View.VISIBLE
+            friend_info_company_text_view.setText(user.company)
+        }
+
         checkFriendImage(user)
     }
 
