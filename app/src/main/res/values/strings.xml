@@ -13,13 +13,13 @@
     <string name="last_name">Last name</string>
     <string name="age">Age</string>
     <string name="education">Education</string>
-    <string name="education_examples">e.g Student, Diploma, Bachelor, Master, PHD</string>
+    <string name="education_examples">e.g Student, Bachelor, PHD</string>
     <string name="education_org">Education Organization</string>
-    <string name="education_org_examples">e.g Cairo University, Carneigie Institute, Manyal Secondary School</string>
+    <string name="education_org_examples">e.g Cairo University</string>
     <string name="major">Major</string>
-    <string name="major_examples">e.g Marketing, Social Media, Computer Science</string>
+    <string name="major_examples">e.g Marketing, Computer Science</string>
     <string name="work">Work</string>
-    <string name="work_examples">e.g Marketing Manager, Software Engineer, Teacher</string>
+    <string name="work_examples">e.g Software Engineer, Teacher</string>
     <string name="company">Company</string>
     <string name="company_examples">e.g Microsoft, Adidas, Pepsi</string>
     <string name="forgot_email_password">Please Enter your email and password</string>
@@ -52,4 +52,5 @@
     <string name="friend_email">Friend E-mail</string>
     <string name="opening_email_app_error">Can not find installed app concerned with sending emails</string>
     <string name="enter_email">Enter email of a friend to invite</string>
+    <string name="welcome">Welcome,&#160;</string>
 </resources>

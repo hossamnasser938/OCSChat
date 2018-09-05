@@ -83,7 +83,7 @@ class RegisterFragment : Fragment() {
             val userInput = getUserInput()
 
             //check empty email or password
-            if(!loginViewModel.checkEmptyInputs(userInput[Constants.EMAIL_KEY] as String, userInput[Constants.NAME_KEY] as String, userInput[Constants.PASSWORD_KEY] as String)){
+            if(!loginViewModel.checkEmptyInputs(userInput[Constants.EMAIL_KEY] as String, userInput[Constants.FIRST_NAME_KEY] as String, userInput[Constants.LAST_NAME_KEY] as String, userInput[Constants.PASSWORD_KEY] as String)){
                 showErrorMessage(R.string.forgot_email_password_name)
                 return@setOnClickListener
             }

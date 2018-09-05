@@ -3,9 +3,11 @@ package com.example.android.ocschat.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.HomeActivity
@@ -69,6 +71,8 @@ class RegisterMoreInfoFragment : Fragment() {
     }
 
     private fun getUserInputs(inputs : HashMap<String, Any>){
+        if(!register_age_edit_text.text.toString().isEmpty())
+            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString()
         if(!register_education_edit_text.text.toString().isEmpty())
             inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.toString()
         if(!register_education_org_edit_text.text.toString().isEmpty())
@@ -91,12 +95,14 @@ class RegisterMoreInfoFragment : Fragment() {
             //Open Home Activity with user info
             val intent = Intent(context, HomeActivity::class.java)
             startActivity(intent)
+            Toast.makeText(context, getString(R.string.welcome) + body[Constants.FIRST_NAME_KEY], Toast.LENGTH_SHORT).show()
             activity?.finish()
         }, {
+            Log.d("RegisterMoreFragment", it.message)
             //hide loading progress bar
             register_loading_progress_bar.visibility = View.GONE
             //show error message
-            showErrorMessage(it.message)
+            showErrorMessage(Constants.FAILED_REGISTERING_MESSAGE)
         })
     }
 
@@ -105,7 +111,6 @@ class RegisterMoreInfoFragment : Fragment() {
             transient.openFragment(LoginFragment())
         }
     }
-
 
     /**
      * show error message to user

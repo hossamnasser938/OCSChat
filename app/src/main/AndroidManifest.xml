@@ -30,7 +30,9 @@
             android:name=".activity.ChatActivity"
             android:label="@string/chat"
             android:parentActivityName=".activity.HomeActivity" />
-        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity android:name=".activity.SettingsActivity"
+            android:label="@string/settings"
+            android:parentActivityName=".activity.HomeActivity" />
     </application>
 
 </manifest>

@@ -6,7 +6,6 @@ public class Constants {
     public static final String FAILED_LOGIN_MESSAGE = "Failed to login";
     public static final String EMAIL_KEY = "email";
     public static final String PASSWORD_KEY = "password";
-    public static final String NAME_KEY = "name";
     public static final String FIRST_NAME_KEY = "first_name";
     public static final String LAST_NAME_KEY = "last_name";
     public static final String AGE_KEY = "age";

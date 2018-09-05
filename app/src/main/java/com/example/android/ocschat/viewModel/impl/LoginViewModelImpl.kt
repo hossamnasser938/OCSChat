@@ -24,10 +24,10 @@ class LoginViewModelImpl : LoginViewModel {
         return api.registerInFirebaseAuth(body[Constants.EMAIL_KEY] as String, body[Constants.PASSWORD_KEY] as String)
                 .flatMap { AuthResult ->
             if(AuthResult.user != null) {
-                val user = User(AuthResult.user.uid, body[Constants.NAME_KEY] as String)
+                val user = User(AuthResult.user.uid, body[Constants.FIRST_NAME_KEY] as String, body[Constants.LAST_NAME_KEY] as String)
                 addUserInfo(user, body)
                 api.registerInFirebaseDatabase(user)
-                        .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(it.message)) })//removed: Constants.FAILED_REGISTERING_MESSAGE
+                        .subscribe({  }, { Maybe.error<OCSChatThrowable>(OCSChatThrowable(it.message)) })
                 Maybe.just(AuthResult.user)
             }
             else Maybe.error(OCSChatThrowable(Constants.FAILED_REGISTERING_MESSAGE)) }
@@ -55,7 +55,6 @@ class LoginViewModelImpl : LoginViewModel {
     }
 
     private fun addUserInfo(user : User, body: HashMap<String, Any>){
-        //TODO: add existing info
         if(body.containsKey(Constants.AGE_KEY))
             user.age = body[Constants.AGE_KEY] as Int
         if(body.containsKey(Constants.EDUCATION_KEY))

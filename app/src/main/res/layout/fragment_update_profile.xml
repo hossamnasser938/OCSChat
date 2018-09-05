@@ -32,45 +32,27 @@
 
         <EditText
             android:id="@+id/update_profile_age_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_education_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_education_org_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_major_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_work_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
         <EditText
             android:id="@+id/update_profile_company_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:visibility="gone" />
+            style="@style/UpdateProfileMoreInfoFields" />
 
     </LinearLayout>
 

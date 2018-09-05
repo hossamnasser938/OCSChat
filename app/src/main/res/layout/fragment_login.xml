@@ -36,13 +36,6 @@
             android:gravity="center_horizontal"
             android:textColor="@color/red" />
 
-        <Button
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default16_margin"
-            android:text="@string/login" />
-
         <ProgressBar
             android:id="@+id/login_loading_progress_bar"
             android:layout_width="@dimen/progress_bar_dimens"
@@ -50,6 +43,13 @@
             android:layout_margin="@dimen/default16_margin"
             android:visibility="gone"
             android:layout_gravity="center_horizontal" />
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default16_margin"
+            android:text="@string/login" />
 
         <TextView
             android:id="@+id/click_register_text_view"

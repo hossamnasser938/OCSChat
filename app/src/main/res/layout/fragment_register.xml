@@ -39,14 +39,6 @@
                 android:layout_weight="1"
                 android:hint="@string/last_name" />
 
-            <EditText
-                android:id="@+id/register_age_edit_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:inputType="number"
-                android:hint="@string/age" />
-
         </LinearLayout>
 
         <EditText

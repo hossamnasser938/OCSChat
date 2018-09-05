@@ -11,7 +11,6 @@ import java.util.List;
 public class User implements Serializable {
 
     private String id;
-    private String name;   //TODO: remove this property
     private String firstName;
     private String lastName;
     private Integer age;
@@ -26,20 +25,6 @@ public class User implements Serializable {
     public User() {
         //No-arg constructor Required for firebase database operations
         this.friends = new ArrayList<>();
-    }
-
-    public User(String id, String name) {   //TODO: Remove this constructor
-        this.id = id;
-        this.name = name;
-        this.friends = new ArrayList<>();
-        this.hasImage = false;
-    }
-
-    public User(String id, String name, boolean hasImage) {   //TODO: Remove this constructor
-        this.id = id;
-        this.name = name;
-        this.friends = new ArrayList<>();
-        this.hasImage = hasImage;
     }
 
     public User(String id, String firstName, String lastName) {
@@ -67,12 +52,8 @@ public class User implements Serializable {
     }
 
     public String getName() {
-        return name;
-    }  //TODO: remove this method
-
-    public void setName(String name) {
-        this.name = name;
-    }  //TODO: remove this method
+        return firstName + " " + lastName;
+    }
 
     public String getFirstName() {
         return firstName;
