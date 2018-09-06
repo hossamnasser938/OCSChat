@@ -33,6 +33,10 @@
         <activity android:name=".activity.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".activity.HomeActivity" />
+        <provider
+            android:authorities="com.example.android.ocschat"
+            android:name=".localDatabase.OCSChatProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

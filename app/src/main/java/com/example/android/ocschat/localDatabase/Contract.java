@@ -44,9 +44,9 @@ public class Contract {
         public static final String COLUMN_AGE = "Age";
         public static final String COLUMN_EDUCATION = "Education";
         public static final String COLUMN_EDUCATION_ORGANIZATION = "Education_Organization";
-        public static final String COLUMN_MAJOR = "major";
-        public static final String COLUMN_WORK = "work";
-        public static final String COLUMN_COMPANY = "company";
+        public static final String COLUMN_MAJOR = "Major";
+        public static final String COLUMN_WORK = "Work";
+        public static final String COLUMN_COMPANY = "Company";
 
     }
 

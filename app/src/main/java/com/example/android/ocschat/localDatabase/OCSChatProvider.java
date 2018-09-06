@@ -76,7 +76,8 @@ public class OCSChatProvider extends ContentProvider {
             default :
                     throw new IllegalArgumentException("Unknown Uri:" + uri);
         }
-        //TODO: setNotificationUri
+
+        //TODO: notification
         return cursor;
     }
 
@@ -220,8 +221,10 @@ public class OCSChatProvider extends ContentProvider {
         }
         //Validate user hasImage property
         Integer hasImage = values.getAsInteger(Contract.User.COLUMN_HAS_IMAGE);
-        if(!(hasImage == 0 || hasImage == 1)){
-            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_hasImage_property));
+        if(hasImage != null){
+            if(!(hasImage == 0 || hasImage == 1)){
+                throw new IllegalArgumentException(getContext().getString(R.string.not_valid_hasImage_property));
+            }
         }
     }
 
