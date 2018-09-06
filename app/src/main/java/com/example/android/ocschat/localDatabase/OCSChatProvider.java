@@ -1,0 +1,202 @@
+package com.example.android.ocschat.localDatabase;
+
+import android.content.ContentProvider;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.UriMatcher;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+import com.example.android.ocschat.R;
+import com.example.android.ocschat.model.FriendState;
+
+public class OCSChatProvider extends ContentProvider {
+
+    private static final int USERS = 100;
+    private static final int USER_ID = 101;
+    private static final int FRIENDS = 102;
+
+    private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static{
+        sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_USER, USERS);
+        sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_USER + "/#", USER_ID);
+        sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_FRIEND, FRIENDS);
+    }
+
+    Helper mDbHelper;
+
+
+    @Override
+    public boolean onCreate() {
+        mDbHelper = new Helper(getContext());
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+        final int match = sUriMatcher.match(uri);
+        final Cursor cursor;
+        switch (match){
+            case USERS :
+                cursor = database.query(Contract.User.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case USER_ID :
+                selection = Contract.User._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                cursor = database.query(Contract.User.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            case  FRIENDS :
+                cursor = database.query(Contract.Friend.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            default :
+                    throw new IllegalArgumentException("Unknown Uri:" + uri);
+        }
+        //TODO: setNotificationUri
+        return cursor;
+    }
+
+    @Nullable
+    @Override
+    public String getType(@NonNull Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match){
+            case USERS :
+                return Contract.User.CONTENT_LIST_TYPE;
+            case USER_ID :
+                return Contract.User.CONTENT_ITEM_TYPE;
+            case FRIENDS :
+                return Contract.Friend.CONTENT_LIST_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
+        }
+    }
+
+    @Nullable
+    @Override
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
+        final int match = sUriMatcher.match(uri);
+        switch (match){
+            case USERS :
+                return insertUser(values);
+            case FRIENDS :
+                return insertFriend(values);
+            default :
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
+        }
+    }
+
+    private Uri insertUser(ContentValues values){
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        final long rowId;
+
+        /*
+        Validate data before inserting
+         */
+        //Validate user id
+        String id = values.getAsString(Contract.User._ID);
+        if(id == null || TextUtils.isEmpty(id)){
+            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_id_property));
+        }
+        //Validate user first name
+        String firstName = values.getAsString(Contract.User.COLUMN_FIRST_NAME);
+        if(firstName == null || TextUtils.isEmpty(firstName)){
+            throw new IllegalArgumentException(getContext().getString(R.string.enter_first_name));
+        }
+        //Validate user last name
+        String lastName = values.getAsString(Contract.User.COLUMN_LAST_NAME);
+        if(lastName == null || TextUtils.isEmpty(lastName)){
+            throw new IllegalArgumentException(getContext().getString(R.string.enter_last_name));
+        }
+        //Validate user age
+        Integer age = values.getAsInteger(Contract.User.COLUMN_AGE);
+        if(age <= 0){
+            throw new IllegalArgumentException(getContext().getString(R.string.enter_valid_age));
+        }
+        //Validate user hasImage property
+        Integer hasImage = values.getAsInteger(Contract.User.COLUMN_HAS_IMAGE);
+        if(!(hasImage == 0 || hasImage == 1)){
+            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_hasImage_property));
+        }
+
+        rowId = database.insert(Contract.User.TABLE_NAME,
+                null,
+                values);
+
+        if(rowId != -1){
+            Uri insertedRowUri = ContentUris.withAppendedId(Contract.User.CONTENT_URI, rowId);
+            //TODO: notifychange
+            return insertedRowUri;
+        }
+        return null;
+    }
+
+    private Uri insertFriend(ContentValues values){
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        final long rowId;
+
+        /*
+        validate data before inserting
+         */
+        //validate user id
+        String userId = values.getAsString(Contract.Friend.COLUMN_USER_ID);
+        if(userId == null || TextUtils.isEmpty(userId)){
+            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_user_id_property));
+        }
+        //validate friend id
+        String friendId = values.getAsString(Contract.Friend.COLUMN_FRIEND_ID);
+        if(friendId == null || TextUtils.isEmpty(friendId)){
+            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_friend_id_property));
+        }
+        //validate friend state
+        Integer friendState = values.getAsInteger(Contract.Friend.COLUMN_FRIEND_STATE);
+        if(friendState == null || !(friendState == FriendState.NORMAL.ordinal() || friendState == FriendState.BEST.ordinal() || friendState== FriendState.MUTED.ordinal() || friendState== FriendState.BLOCKED.ordinal())){
+            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_friend_state_property));
+        }
+
+        rowId = database.insert(Contract.Friend.TABLE_NAME,
+                null,
+                values);
+
+        if(rowId != -1){
+            Uri insertedRowUri = ContentUris.withAppendedId(Contract.Friend.CONTENT_URI, rowId);
+            //TODO: notifychange
+            return insertedRowUri;
+        }
+        return null;
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return 0;
+    }
+}

@@ -61,12 +61,6 @@ public class Contract {
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FRIEND;
 
-        /**
-         * The MIME type of the {@link #CONTENT_URI} for a single friend.
-         */
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FRIEND;
-
 
         public static final String COLUMN_USER_ID = "User_Id";
         public static final String COLUMN_FRIEND_ID = "Friend_Id";

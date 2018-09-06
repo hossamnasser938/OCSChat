@@ -53,4 +53,12 @@
     <string name="opening_email_app_error">Can not find installed app concerned with sending emails</string>
     <string name="enter_email">Enter email of a friend to invite</string>
     <string name="welcome">Welcome,&#160;</string>
+    <string name="enter_first_name">Please enter user first name</string>
+    <string name="enter_last_name">Please enter user last name</string>
+    <string name="enter_valid_age">Please enter valid age</string>
+    <string name="not_valid_hasImage_property">Not valid value for hasImage property</string>
+    <string name="not_valid_id_property">Not valid value for id property</string>
+    <string name="not_valid_user_id_property">Not valid value for userId property</string>
+    <string name="not_valid_friend_id_property">Not valid value for friendId property</string>
+    <string name="not_valid_friend_state_property">Not valid value for friend state property</string>
 </resources>
