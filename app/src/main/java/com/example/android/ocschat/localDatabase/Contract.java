@@ -30,17 +30,12 @@ public class Contract {
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
 
-        /**
-         * The MIME type of the {@link #CONTENT_URI} for a single user.
-         */
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_USER;
-
 
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_FIRST_NAME = "First_Name";
         public static final String COLUMN_LAST_NAME = "Last_Name";
         public static final String COLUMN_HAS_IMAGE = "Has_Image";
+        public static final String COLUMN_IMAGE = "Image";
         public static final String COLUMN_AGE = "Age";
         public static final String COLUMN_EDUCATION = "Education";
         public static final String COLUMN_EDUCATION_ORGANIZATION = "Education_Organization";

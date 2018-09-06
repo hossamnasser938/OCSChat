@@ -17,14 +17,12 @@ import com.example.android.ocschat.model.FriendState;
 public class OCSChatProvider extends ContentProvider {
 
     private static final int USERS = 100;
-    private static final int USER_ID = 101;
-    private static final int FRIENDS = 102;
+    private static final int FRIENDS = 101;
 
     private static final UriMatcher sUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static{
         sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_USER, USERS);
-        sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_USER + "/#", USER_ID);
         sUriMatcher.addURI(Contract.CONTENT_AUTHORITY, Contract.PATH_FRIEND, FRIENDS);
     }
 
@@ -45,17 +43,6 @@ public class OCSChatProvider extends ContentProvider {
         final Cursor cursor;
         switch (match){
             case USERS :
-                cursor = database.query(Contract.User.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-                break;
-            case USER_ID :
-                selection = Contract.User._ID + "=?";
-                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
                 cursor = database.query(Contract.User.TABLE_NAME,
                         projection,
                         selection,
@@ -88,8 +75,6 @@ public class OCSChatProvider extends ContentProvider {
         switch (match){
             case USERS :
                 return Contract.User.CONTENT_LIST_TYPE;
-            case USER_ID :
-                return Contract.User.CONTENT_ITEM_TYPE;
             case FRIENDS :
                 return Contract.Friend.CONTENT_LIST_TYPE;
             default:
@@ -160,10 +145,6 @@ public class OCSChatProvider extends ContentProvider {
         switch (match){
             case USERS :
                 return updateUser(uri, values, selection, selectionArgs);
-            case USER_ID :
-                selection = Contract.User._ID + "=?";
-                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
-                return updateUser(uri, values, selection, selectionArgs);
             case FRIENDS :
                 return updateFriend(uri, values, selection, selectionArgs);
             default :
@@ -216,8 +197,10 @@ public class OCSChatProvider extends ContentProvider {
         }
         //Validate user age
         Integer age = values.getAsInteger(Contract.User.COLUMN_AGE);
-        if(age <= 0){
-            throw new IllegalArgumentException(getContext().getString(R.string.enter_valid_age));
+        if(age != null){
+            if(age <= 0){
+                throw new IllegalArgumentException(getContext().getString(R.string.enter_valid_age));
+            }
         }
         //Validate user hasImage property
         Integer hasImage = values.getAsInteger(Contract.User.COLUMN_HAS_IMAGE);
