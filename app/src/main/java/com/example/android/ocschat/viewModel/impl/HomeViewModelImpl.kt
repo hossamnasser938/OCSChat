@@ -1,7 +1,7 @@
 package com.example.android.ocschat.viewModel.impl
 
 import android.util.Log
-import com.example.android.ocschat.dataLayer.HomeApi
+import com.example.android.ocschat.api.HomeApi
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.HomeViewModel

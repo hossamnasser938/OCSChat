@@ -1,6 +1,6 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.dataLayer.LoginApi
+import com.example.android.ocschat.api.LoginApi
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.OCSChatThrowable

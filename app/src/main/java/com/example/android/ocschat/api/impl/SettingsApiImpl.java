@@ -1,6 +1,6 @@
-package com.example.android.ocschat.dataLayer.impl;
+package com.example.android.ocschat.api.impl;
 
-import com.example.android.ocschat.dataLayer.SettingsApi;
+import com.example.android.ocschat.api.SettingsApi;
 import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;
 import com.google.firebase.auth.FirebaseAuth;

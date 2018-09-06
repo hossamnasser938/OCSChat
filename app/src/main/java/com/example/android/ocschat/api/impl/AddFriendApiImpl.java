@@ -1,6 +1,6 @@
-package com.example.android.ocschat.dataLayer.impl;
+package com.example.android.ocschat.api.impl;
 
-import com.example.android.ocschat.dataLayer.AddFriendApi;
+import com.example.android.ocschat.api.AddFriendApi;
 import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;

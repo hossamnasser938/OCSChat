@@ -1,6 +1,6 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.dataLayer.ChatApi
+import com.example.android.ocschat.api.ChatApi
 import com.example.android.ocschat.model.Message
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.ChatViewModel

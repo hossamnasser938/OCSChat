@@ -1,10 +1,10 @@
 package com.example.android.ocschat.viewModel.impl;
 
-import com.example.android.ocschat.dataLayer.AddFriendApi;
-import com.example.android.ocschat.dataLayer.ChatApi;
-import com.example.android.ocschat.dataLayer.HomeApi;
-import com.example.android.ocschat.dataLayer.LoginApi;
-import com.example.android.ocschat.dataLayer.SettingsApi;
+import com.example.android.ocschat.api.AddFriendApi;
+import com.example.android.ocschat.api.ChatApi;
+import com.example.android.ocschat.api.HomeApi;
+import com.example.android.ocschat.api.LoginApi;
+import com.example.android.ocschat.api.SettingsApi;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
 import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;

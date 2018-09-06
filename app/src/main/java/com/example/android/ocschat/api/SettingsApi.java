@@ -1,4 +1,4 @@
-package com.example.android.ocschat.dataLayer;
+package com.example.android.ocschat.api;
 
 import com.example.android.ocschat.model.User;
 import com.google.firebase.database.DataSnapshot;

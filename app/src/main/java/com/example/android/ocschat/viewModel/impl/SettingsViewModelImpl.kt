@@ -1,6 +1,6 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.dataLayer.SettingsApi
+import com.example.android.ocschat.api.SettingsApi
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.Completable
