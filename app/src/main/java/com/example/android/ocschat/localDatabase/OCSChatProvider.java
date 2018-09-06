@@ -104,7 +104,7 @@ public class OCSChatProvider extends ContentProvider {
             case USERS :
                 return insertUser(values);
             case FRIENDS :
-                return insertFriend(values);
+                return insertFriend(uri, values);
             default :
                 throw new IllegalArgumentException("Unknown Uri:" + uri);
         }
@@ -114,9 +114,90 @@ public class OCSChatProvider extends ContentProvider {
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
         final long rowId;
 
-        /*
-        Validate data before inserting
-         */
+        //Validate data before inserting
+        validateUser(values);
+
+        rowId = database.insert(Contract.User.TABLE_NAME,
+                null,
+                values);
+
+        if(rowId != -1){
+            Uri insertedRowUri = ContentUris.withAppendedId(Contract.User.CONTENT_URI, rowId);
+            //TODO: notifychange
+            return insertedRowUri;
+        }
+        return null;
+    }
+
+    private Uri insertFriend(Uri uri, ContentValues values){
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+        final long rowId;
+
+        //validate data before inserting
+        validateFriend(values);
+
+        rowId = database.insert(Contract.Friend.TABLE_NAME,
+                null,
+                values);
+
+        if(rowId != -1){
+            Uri insertedRowUri = ContentUris.withAppendedId(Contract.Friend.CONTENT_URI, rowId);
+            //TODO: notifychange
+            return insertedRowUri;
+        }
+        return null;
+    }
+
+    @Override
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
+        return 0;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match){
+            case USERS :
+                return updateUser(uri, values, selection, selectionArgs);
+            case USER_ID :
+                selection = Contract.User._ID + "=?";
+                selectionArgs = new String[]{ String.valueOf(ContentUris.parseId(uri)) };
+                return updateUser(uri, values, selection, selectionArgs);
+            case FRIENDS :
+                return updateFriend(uri, values, selection, selectionArgs);
+            default :
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
+        }
+    }
+
+    private int updateUser(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+
+        //Validate data before updating
+        validateUser(values);
+
+        //TODO: notifyChange
+        return database.update(Contract.User.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+    }
+
+    private int updateFriend(Uri uri, ContentValues values, String selection, String[] selectionArgs){
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        //Validate data before updating
+        validateFriend(values);
+
+        //TODO: notifyChange
+        return database.update(Contract.Friend.TABLE_NAME,
+                values,
+                selection,
+                selectionArgs);
+    }
+
+    private void validateUser(ContentValues values){
         //Validate user id
         String id = values.getAsString(Contract.User._ID);
         if(id == null || TextUtils.isEmpty(id)){
@@ -142,26 +223,9 @@ public class OCSChatProvider extends ContentProvider {
         if(!(hasImage == 0 || hasImage == 1)){
             throw new IllegalArgumentException(getContext().getString(R.string.not_valid_hasImage_property));
         }
-
-        rowId = database.insert(Contract.User.TABLE_NAME,
-                null,
-                values);
-
-        if(rowId != -1){
-            Uri insertedRowUri = ContentUris.withAppendedId(Contract.User.CONTENT_URI, rowId);
-            //TODO: notifychange
-            return insertedRowUri;
-        }
-        return null;
     }
 
-    private Uri insertFriend(ContentValues values){
-        SQLiteDatabase database = mDbHelper.getWritableDatabase();
-        final long rowId;
-
-        /*
-        validate data before inserting
-         */
+    private void validateFriend(ContentValues values){
         //validate user id
         String userId = values.getAsString(Contract.Friend.COLUMN_USER_ID);
         if(userId == null || TextUtils.isEmpty(userId)){
@@ -177,26 +241,5 @@ public class OCSChatProvider extends ContentProvider {
         if(friendState == null || !(friendState == FriendState.NORMAL.ordinal() || friendState == FriendState.BEST.ordinal() || friendState== FriendState.MUTED.ordinal() || friendState== FriendState.BLOCKED.ordinal())){
             throw new IllegalArgumentException(getContext().getString(R.string.not_valid_friend_state_property));
         }
-
-        rowId = database.insert(Contract.Friend.TABLE_NAME,
-                null,
-                values);
-
-        if(rowId != -1){
-            Uri insertedRowUri = ContentUris.withAppendedId(Contract.Friend.CONTENT_URI, rowId);
-            //TODO: notifychange
-            return insertedRowUri;
-        }
-        return null;
-    }
-
-    @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
-    }
-
-    @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
     }
 }
