@@ -37,6 +37,8 @@ public class Gate {
             return null;
         }
 
+        cursor.moveToNext();
+
         //get columns indices
         int firstNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_FIRST_NAME);
         int lastNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_LAST_NAME);

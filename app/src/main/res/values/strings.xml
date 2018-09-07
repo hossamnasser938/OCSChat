@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OCSChat</string>
     <string name="home">Home</string>
-    <string name="no_internet_connection">No internet connection, \n please connect to the internet and try again</string>
+    <string name="no_internet_connection">No internet connection,\nplease connect to the internet and try again</string>
     <string name="login">Login</string>
     <string name="next">Next</string>
     <string name="register">Register</string>
