@@ -33,5 +33,6 @@ public class Constants {
     public static final String EMAIL_SUBJECT = "Invitation";
     public static final String EMAIL_BODY = "Let's chat using OCSChat";
     public static final String EMAIL_SENDER = "hossamnasser938@gmail.com";
+    public static final String ERROR_FROM_DATABASE = "Error caused by local database";
 
 }
