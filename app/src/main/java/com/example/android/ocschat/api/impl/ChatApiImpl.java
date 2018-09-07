@@ -35,7 +35,7 @@ public class ChatApiImpl implements ChatApi {
     }
 
     @Override
-    public Maybe<DataSnapshot> getUser(String userId) {
+    public Maybe<DataSnapshot> getUser(String userId) {  //TODO: remove
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(userId);
         return RxFirebaseDatabase.observeSingleValueEvent(userRef);
     }

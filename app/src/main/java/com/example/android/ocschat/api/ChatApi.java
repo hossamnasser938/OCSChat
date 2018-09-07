@@ -13,6 +13,6 @@ public interface ChatApi {
 
     Flowable<RxFirebaseChildEvent<DataSnapshot>> getMessages(String friendId) throws OCSChatThrowable;
     Completable pushMessage(String friendId, Message message) throws OCSChatThrowable;
-    Maybe<DataSnapshot> getUser(String userId);
+    Maybe<DataSnapshot> getUser(String userId);  //TODO: remove
 
 }

@@ -9,7 +9,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public interface HomeApi {
+public interface HomeApi {  //TODO: remove
 
     Flowable<DataSnapshot> getCurrentUserFriends();
     Single<List<DataSnapshot>> getCurrentUserFriendsAsUsers(List<String> friendsIdsList);

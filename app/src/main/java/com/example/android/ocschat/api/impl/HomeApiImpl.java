@@ -18,7 +18,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 
-public class HomeApiImpl implements HomeApi {
+public class HomeApiImpl implements HomeApi {  //TODO: remove
 
     @Override
     public Flowable<DataSnapshot> getCurrentUserFriends() {

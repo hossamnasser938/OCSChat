@@ -29,13 +29,13 @@ public class AddFriendApiImpl implements AddFriendApi {
     }
 
     @Override
-    public Flowable<DataSnapshot> getCurrentUserFriends(){
+    public Flowable<DataSnapshot> getCurrentUserFriends(){  //TODO: remove
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DatabaseReference currentUserFriends = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(currentUserId).child(Constants.FRIENDS_KEY);
         return RxFirebaseDatabase.observeValueEvent(currentUserFriends);
     }
 
-    private Maybe<DataSnapshot> getUser(String uid){
+    private Maybe<DataSnapshot> getUser(String uid){  //TODO: remove
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
         return RxFirebaseDatabase.observeSingleValueEvent(userReference);
     }

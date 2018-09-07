@@ -19,7 +19,7 @@ import io.reactivex.functions.Function;
 
 public class SettingsApiImpl implements SettingsApi {
 
-    public Maybe<DataSnapshot> getUser(String uid){
+    public Maybe<DataSnapshot> getUser(String uid){  //TODO: remove
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
         return RxFirebaseDatabase.observeSingleValueEvent(userReference);
     }

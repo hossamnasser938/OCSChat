@@ -7,6 +7,6 @@ import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
 public interface SettingsApi {
-    Maybe<DataSnapshot> getUser(String uid);
+    Maybe<DataSnapshot> getUser(String uid);  //TODO: remove
     Completable updateCurrentUser(User user);
 }
