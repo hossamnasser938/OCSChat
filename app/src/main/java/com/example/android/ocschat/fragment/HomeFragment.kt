@@ -25,8 +25,12 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var homeViewModel : HomeViewModel
+
     private lateinit var disposable: Disposable
     private lateinit var homeAdapter: HomeAdapter
+
+    private val friendsList = ArrayList<User>()
+    private lateinit var adapter : HomeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,14 +43,11 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Check internet connection before fetching friends
-        if(!Utils.isNetworkConnected(context)){
-            //Hide loading progress bar and show no internet connection text view
-            showNoInternetText()
-        }else{
-            //Fetch friends from api
-            fetchCurrentUserFriends()
-        }
+
+        prepareforDisplayingFriends()
+
+        //Fetch friends from repository
+        fetchCurrentUserFriends()
 
         handleAddFriendButton()
     }
@@ -82,24 +83,17 @@ class HomeFragment : Fragment() {
 
     private fun fetchCurrentUserFriends() {
         disposable = homeViewModel.currentUserFriends.subscribe({
-            Log.d("HomeFragment", "Got friends list: " + it.size)
-            if(it.size > 0){
-                displayCurrentUserFriends(it)
-            }
-            else{
-                //Hide loading progress bar and show empty list text view
-                showEmptyListText()
-            }
-
+            Log.d("HomeFragment", "Got friend: " + it.firstName)
+            failure_list_text_view.visibility = View.GONE
+            friendsList.add(it)
         }, {
             Log.d("HomeFragment", "Got throwable: " + it.message)
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
         })
     }
 
-    fun displayCurrentUserFriends(friendsList : List<User>){
-        //Hide failure text view
-        failure_list_text_view.visibility = View.GONE
+    fun prepareforDisplayingFriends(){
+        showEmptyListText()
 
         val layoutManager = LinearLayoutManager(context)
 
@@ -124,11 +118,6 @@ class HomeFragment : Fragment() {
     private fun showEmptyListText(){
         failure_list_text_view.visibility = View.VISIBLE
         failure_list_text_view.text = resources.getString(R.string.empty_friends_list)
-    }
-
-    private fun showNoInternetText(){
-        failure_list_text_view.visibility = View.VISIBLE
-        failure_list_text_view.text = resources.getString(R.string.no_internet_connection)
     }
 
     interface HomeTransitionInterface{
