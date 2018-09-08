@@ -25,7 +25,6 @@ class AddFriendRepositoryImpl : AddFriendRepository {
     }
 
     override fun getCurrentUserNonFriends(): Flowable<User> {
-
         //create custom flowable that emits non friend users and ignore friends ones
         return api.allUsers.flatMap {
             val user = it.value.getValue(User::class.java)
@@ -39,8 +38,8 @@ class AddFriendRepositoryImpl : AddFriendRepository {
     }
 
     override fun addFriend(friend: Friend?): Completable {
-        return api.addFriend(friend)
-                .concatWith(gate.addFriend(friend))
+        return gate.addFriend(friend)
+                .concatWith(api.addFriend(friend))
     }
 
     override fun isFriend(friendID: String?): Single<Boolean> {

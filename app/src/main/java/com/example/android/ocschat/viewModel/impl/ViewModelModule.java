@@ -5,6 +5,7 @@ import com.example.android.ocschat.api.ChatApi;
 import com.example.android.ocschat.api.HomeApi;
 import com.example.android.ocschat.api.LoginApi;
 import com.example.android.ocschat.api.SettingsApi;
+import com.example.android.ocschat.repository.AddFriendRepository;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
 import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;
@@ -30,8 +31,8 @@ public class ViewModelModule {
     }
 
     @Provides @Singleton
-    AddFriendViewModel provideAddFriendViewModel(AddFriendApi api){
-        return new AddFriendViewModelImpl(api);
+    AddFriendViewModel provideAddFriendViewModel(AddFriendRepository repository){
+        return new AddFriendViewModelImpl(repository);
     }
 
     @Provides @Singleton
