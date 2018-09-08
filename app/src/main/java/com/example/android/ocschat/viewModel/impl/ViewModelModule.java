@@ -1,11 +1,10 @@
 package com.example.android.ocschat.viewModel.impl;
 
-import com.example.android.ocschat.api.AddFriendApi;
-import com.example.android.ocschat.api.ChatApi;
-import com.example.android.ocschat.api.HomeApi;
-import com.example.android.ocschat.api.LoginApi;
-import com.example.android.ocschat.api.SettingsApi;
 import com.example.android.ocschat.repository.AddFriendRepository;
+import com.example.android.ocschat.repository.ChatRepository;
+import com.example.android.ocschat.repository.HomeRepository;
+import com.example.android.ocschat.repository.LoginRepository;
+import com.example.android.ocschat.repository.SettingsRepository;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
 import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;
@@ -21,13 +20,13 @@ import dagger.Provides;
 public class ViewModelModule {
 
     @Provides @Singleton
-    LoginViewModel provideLoginViewModel(LoginApi api){
-        return new LoginViewModelImpl(api);
+    LoginViewModel provideLoginViewModel(LoginRepository repository){
+        return new LoginViewModelImpl(repository);
     }
 
     @Provides @Singleton
-    HomeViewModel provideHomeViewModel(HomeApi api){
-        return new HomeViewModelImpl(api);
+    HomeViewModel provideHomeViewModel(HomeRepository repository){
+        return new HomeViewModelImpl(repository);
     }
 
     @Provides @Singleton
@@ -36,13 +35,13 @@ public class ViewModelModule {
     }
 
     @Provides @Singleton
-    ChatViewModel provideChatViewModel(ChatApi api){
-        return new ChatViewModelImpl(api);
+    ChatViewModel provideChatViewModel(ChatRepository repository){
+        return new ChatViewModelImpl(repository);
     }
 
     @Provides @Singleton
-    SettingsViewModel provideSettingsViewModel(SettingsApi api){
-        return new SettingsViewModelImpl(api);
+    SettingsViewModel provideSettingsViewModel(SettingsRepository repository){
+        return new SettingsViewModelImpl(repository);
     }
 
 }
