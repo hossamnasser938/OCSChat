@@ -20,6 +20,7 @@ class AddFriendFragment : Fragment() {
 
     @Inject
     lateinit var addFriendViewModel: AddFriendViewModel
+
     lateinit var transition : AddFriendTransitionInterface
 
     private lateinit var disposable : Disposable
@@ -76,7 +77,7 @@ class AddFriendFragment : Fragment() {
 
         adapter = AddFriendAdapter(context, usersList)
         add_friend_auto_complete.setAdapter(adapter)
-        disposable = addFriendViewModel.allUsers.subscribe({
+        disposable = addFriendViewModel.suggestedUsers.subscribe({
             //Check if it is the currently logged user do not add it to the list
             if(!it.id.equals(currentUserID, false)){
                 usersList.add(it)

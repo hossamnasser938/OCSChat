@@ -28,14 +28,7 @@ public class AddFriendApiImpl implements AddFriendApi {
         return RxFirebaseDatabase.observeChildEvent(usersReference);
     }
 
-    @Override
-    public Flowable<DataSnapshot> getCurrentUserFriends(){  //TODO: remove
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference currentUserFriends = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(currentUserId).child(Constants.FRIENDS_KEY);
-        return RxFirebaseDatabase.observeValueEvent(currentUserFriends);
-    }
-
-    private Maybe<DataSnapshot> getUser(String uid){  //TODO: remove
+    private Maybe<DataSnapshot> getUser(String uid){
         DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
         return RxFirebaseDatabase.observeSingleValueEvent(userReference);
     }
@@ -53,13 +46,13 @@ public class AddFriendApiImpl implements AddFriendApi {
                 u.addFriend(friend);
                 Map<String, Object> map = new HashMap<>();
                 map.put(Constants.FRIENDS_KEY, u.getFriends());
-                return RxFirebaseDatabase.updateChildren(userRef, map);
+                return RxFirebaseDatabase.updateChildren(userRef, map)
+                        .concatWith(confirmAddFriend(friend));
             }
         });
     }
 
-    @Override
-    public Completable confirmAddFriend(final Friend friend) {
+    private Completable confirmAddFriend(final Friend friend) {
         //Add the current user as a friend to friend
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(friend.getId());

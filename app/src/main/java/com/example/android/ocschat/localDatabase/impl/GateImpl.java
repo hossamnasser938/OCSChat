@@ -6,9 +6,12 @@ import android.database.Cursor;
 
 import com.example.android.ocschat.localDatabase.Contract;
 import com.example.android.ocschat.localDatabase.Gate;
+import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;
 import com.example.android.ocschat.util.OCSChatThrowable;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -130,18 +133,19 @@ public class GateImpl implements Gate {
 
     /**
      * checks whether users with given ids are friends or not
-     * @param userID
      * @param friendId
      * @return
      */
     @Override
-    public Single<Boolean> isFriend(String userID, String friendId) {
+    public Single<Boolean> isFriend(String friendId) {
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         String[] projection = new String[] { Contract.Friend.COLUMN_USER_ID,
                 Contract.Friend.COLUMN_FRIEND_ID };
 
         String selection = Contract.Friend.COLUMN_USER_ID + "=?" + " AND "
                 + Contract.Friend.COLUMN_FRIEND_ID + "=?";
-        String[] selectionArgs = new String[]{ userID, friendId };
+        String[] selectionArgs = new String[]{ currentUserId, friendId };
 
         final Cursor cursor = context.getContentResolver()
                 .query(Contract.Friend.CONTENT_URI,
@@ -171,6 +175,24 @@ public class GateImpl implements Gate {
         final ContentValues values = userToContentValues(user);
 
         if(context.getContentResolver().insert(Contract.User.CONTENT_URI, values) != null)
+            return Completable.complete();  //inserted successfully
+
+        return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+    }
+
+    /**
+     * adds friend to user in the database
+     * @param friend
+     * @return
+     */
+    @Override
+    public Completable addFriend(Friend friend) {
+        String currentUSerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        final ContentValues userValues = friendToContentValues(currentUSerId, friend);
+        final ContentValues friendValues = friendToContentValues(friend.getId(), new Friend(currentUSerId));
+
+        if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userValues) != null && context.getContentResolver().insert(Contract.Friend.CONTENT_URI, friendValues) != null)
             return Completable.complete();  //inserted successfully
 
         return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
@@ -242,6 +264,16 @@ public class GateImpl implements Gate {
         values.put(Contract.User.COLUMN_MAJOR, user.getMajor());
         values.put(Contract.User.COLUMN_WORK, user.getWork());
         values.put(Contract.User.COLUMN_COMPANY, user.getCompany());
+
+        return values;
+    }
+
+    private ContentValues friendToContentValues(String userId, Friend friend){
+        final ContentValues values = new ContentValues();
+
+        values.put(Contract.Friend.COLUMN_USER_ID, userId);
+        values.put(Contract.Friend.COLUMN_FRIEND_ID, friend.getId());
+        values.put(Contract.Friend.COLUMN_FRIEND_STATE, friend.getState().ordinal());
 
         return values;
     }

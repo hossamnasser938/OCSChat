@@ -3,6 +3,7 @@ package com.example.android.ocschat.model;
 import java.io.Serializable;
 
 public class Friend implements Serializable {
+
     private String id;
     private FriendState state;
 

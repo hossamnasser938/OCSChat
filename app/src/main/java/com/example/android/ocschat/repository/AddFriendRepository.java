@@ -1,4 +1,4 @@
-package com.example.android.ocschat.viewModel;
+package com.example.android.ocschat.repository;
 
 import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
@@ -7,11 +7,11 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+public interface AddFriendRepository {
 
-public interface AddFriendViewModel {
-
-    Flowable<User> getSuggestedUsers();
-    Single<Boolean> isFriend(String uid);
+    Flowable<User> getCurrentUserFriends();
+    Flowable<User> getCurrentUserNonFriends();
     Completable addFriend(Friend friend);
+    Single<Boolean> isFriend(String friendId);
 
 }

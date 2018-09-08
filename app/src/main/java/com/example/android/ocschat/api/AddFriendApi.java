@@ -11,8 +11,6 @@ import io.reactivex.Flowable;
 public interface AddFriendApi {
 
     Flowable<RxFirebaseChildEvent<DataSnapshot>> getAllUsers();
-    Flowable<DataSnapshot> getCurrentUserFriends();  //TODO: remove
     Completable addFriend(Friend friend);
-    Completable confirmAddFriend(Friend friend);
 
 }
