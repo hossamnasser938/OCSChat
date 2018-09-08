@@ -1,32 +1,29 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.api.SettingsApi
 import com.example.android.ocschat.model.User
+import com.example.android.ocschat.repository.SettingsRepository
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.Completable
-import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class SettingsViewModelImpl : SettingsViewModel {
 
-    private val api : SettingsApi
+    private val repository : SettingsRepository
 
-    constructor(api: SettingsApi) {
-        this.api = api
+    constructor(repository : SettingsRepository) {
+        this.repository = repository
     }
 
-    override fun getUser(uid: String?): Maybe<User> {
-        return api.getUser(uid)
-                .flatMap {
-                    val user = it.getValue(User::class.java)
-                    Maybe.just(user)
-                }.subscribeOn(Schedulers.io())
+    override fun getUser(uid: String?): Single<User> {
+        return repository.getUser(uid)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun updateCurrentUser(user: User?): Completable {
-        return api.updateCurrentUser(user)
+        return repository.updateCurrentUser(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
