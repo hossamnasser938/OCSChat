@@ -43,9 +43,9 @@ class AddFriendRepositoryImpl : AddFriendRepository {
         }
     }
 
-    override fun addFriend(friend: Friend?): Completable {
-        return gate.addFriend(friend)
-                .concatWith(api.addFriend(friend))
+    override fun addFriend(user: User?): Completable {
+        return gate.addFriend(user)
+                .concatWith(api.addFriend(Friend(user?.id)))
     }
 
     override fun isFriend(friendID: String?): Single<Boolean> {

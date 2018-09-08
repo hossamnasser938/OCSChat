@@ -12,6 +12,6 @@ public interface AddFriendViewModel {
 
     Flowable<User> getSuggestedUsers();
     Single<Boolean> isFriend(String uid);
-    Completable addFriend(Friend friend);
+    Completable addFriend(User user);
 
 }

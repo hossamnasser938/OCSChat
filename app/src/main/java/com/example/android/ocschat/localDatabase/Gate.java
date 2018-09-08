@@ -1,6 +1,5 @@
 package com.example.android.ocschat.localDatabase;
 
-import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
 
 import io.reactivex.Completable;
@@ -13,7 +12,7 @@ public interface Gate {
     public Flowable<User> getUserFriends(final String userId);
     public Single<Boolean> isFriend(String friendId);
     public Completable insertUser(User user);
-    public Completable addFriend(Friend friend);
+    public Completable addFriend(User user);
     public Completable updateUser(User user);
 
 }

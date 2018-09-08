@@ -31,8 +31,8 @@ class AddFriendViewModelImpl : AddFriendViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun addFriend(friend: Friend?): Completable {
-        return repository.addFriend(friend)
+    override fun addFriend(user: User?): Completable {
+        return repository.addFriend(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

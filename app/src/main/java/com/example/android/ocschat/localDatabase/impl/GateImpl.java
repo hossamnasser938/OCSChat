@@ -91,6 +91,8 @@ public class GateImpl implements Gate {
         String work = cursor.getString(workIndex);
         String company = cursor.getString(companyIndex);
 
+        Log.d(TAG, "getUser : " + firstName);
+
         cursor.close();
 
         //construct User object
@@ -139,7 +141,6 @@ public class GateImpl implements Gate {
                 }
             }
         }, BackpressureStrategy.BUFFER);
-
     }
 
 
@@ -195,17 +196,18 @@ public class GateImpl implements Gate {
 
     /**
      * adds friend to user in the database
-     * @param friend
+     * @param user
      * @return
      */
     @Override
-    public Completable addFriend(Friend friend) {
+    public Completable addFriend(User user) {
         String currentUSerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        final ContentValues userValues = friendToContentValues(currentUSerId, friend);
-        final ContentValues friendValues = friendToContentValues(friend.getId(), new Friend(currentUSerId));
+        final ContentValues userFriendValues = friendToContentValues(currentUSerId, new Friend(user.getId()));
+        final ContentValues friendFriendValues = friendToContentValues(user.getId(), new Friend(currentUSerId));
+        final ContentValues userValues = userToContentValues(user);
 
-        if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userValues) != null && context.getContentResolver().insert(Contract.Friend.CONTENT_URI, friendValues) != null)
+        if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userFriendValues) != null && context.getContentResolver().insert(Contract.Friend.CONTENT_URI, friendFriendValues) != null && context.getContentResolver().insert(Contract.User.CONTENT_URI, userValues) != null)
             return Completable.complete();  //inserted successfully
 
         return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong

@@ -95,8 +95,7 @@ class FriendInfoFragment : Fragment() {
 
     private fun setAddFriendButtonClickListen(currentUser: User) {
         friend_info_add_friend_button.setOnClickListener {
-            val friend = Friend(currentUser.id)
-            addFriendDisposable = addFriendViewMdel.addFriend(friend).subscribe({
+            addFriendDisposable = addFriendViewMdel.addFriend(currentUser).subscribe({
                 showFriendState()
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 activity?.finish()
