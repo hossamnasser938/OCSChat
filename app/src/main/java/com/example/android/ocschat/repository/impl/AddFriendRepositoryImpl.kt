@@ -1,5 +1,6 @@
 package com.example.android.ocschat.repository.impl
 
+import android.util.Log
 import com.example.android.ocschat.api.AddFriendApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
@@ -9,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.*
 
 class AddFriendRepositoryImpl : AddFriendRepository {
+
+    private val TAG = "AddFriendRepoImpl"
 
     private val gate : Gate
     private val api : AddFriendApi
@@ -26,13 +29,16 @@ class AddFriendRepositoryImpl : AddFriendRepository {
 
     override fun getCurrentUserNonFriends(): Flowable<User> {
         //create custom flowable that emits non friend users and ignore friends ones
+        Log.d(TAG, "got into api fetching");
         return api.allUsers.flatMap {
             val user = it.value.getValue(User::class.java)
+            Log.d(TAG, "got friend from api: " + user.firstName)
             gate.isFriend(user.id).flatMapPublisher {
                 if(!it)
                     Flowable.just(user)
-                else
-                    Flowable.just(null)
+                else {
+                    Flowable.empty()
+                }
             }
         }
     }

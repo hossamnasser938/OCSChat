@@ -19,8 +19,8 @@ class AddFriendViewModelImpl : AddFriendViewModel {
     }
 
     override fun getSuggestedUsers(): Flowable<User> {
-        return repository.currentUserFriends
-                .concatWith(repository.currentUserNonFriends)
+        return repository.currentUserNonFriends
+                .concatWith(repository.currentUserFriends)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }

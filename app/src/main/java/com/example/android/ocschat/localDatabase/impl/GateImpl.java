@@ -3,6 +3,7 @@ package com.example.android.ocschat.localDatabase.impl;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.example.android.ocschat.localDatabase.Contract;
 import com.example.android.ocschat.localDatabase.Gate;
@@ -13,6 +14,8 @@ import com.example.android.ocschat.util.OCSChatThrowable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.reactivestreams.Publisher;
+
 import java.util.ArrayList;
 
 import io.reactivex.BackpressureStrategy;
@@ -21,10 +24,14 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 public class GateImpl implements Gate {
+
+    private final String TAG = "GateImpl";
 
     private Context context;
 
@@ -107,14 +114,17 @@ public class GateImpl implements Gate {
     public Flowable<User> getUserFriends(String userId) {
         final ArrayList<String> friendsIds = getUserFriendsIds(userId);
 
-        if(friendsIds == null){
+        if (friendsIds == null) {
+            Log.d(TAG, "error from getUserFriends");
             return Flowable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));
         }
+        Log.d(TAG, "friendsSize = " + friendsIds.size());
 
         return Flowable.create(new FlowableOnSubscribe<User>() {
             @Override
             public void subscribe(final FlowableEmitter<User> emitter) {
                 for(String friendId : friendsIds){
+                    Log.d(TAG, friendId);
                     Disposable disposable = getUser(friendId).subscribe(new Consumer<User>() {
                         @Override
                         public void accept(User user) {
@@ -129,7 +139,9 @@ public class GateImpl implements Gate {
                 }
             }
         }, BackpressureStrategy.BUFFER);
+
     }
+
 
     /**
      * checks whether users with given ids are friends or not
@@ -155,6 +167,7 @@ public class GateImpl implements Gate {
                         null);
 
         if(cursor == null || cursor.getCount() > 1){
+            Log.d(TAG, "error from isFriend");
             return Single.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));
         }
 
@@ -231,7 +244,7 @@ public class GateImpl implements Gate {
         final Cursor cursor = context.getContentResolver()
                 .query(Contract.Friend.CONTENT_URI, projection, selection, selectionArgs, null);
 
-        if(cursor == null || cursor.getCount() < 1){
+        if(cursor == null){
             return null;
         }
 

@@ -79,7 +79,7 @@ class AddFriendFragment : Fragment() {
         add_friend_auto_complete.setAdapter(adapter)
         disposable = addFriendViewModel.suggestedUsers.subscribe({
             //Check if it is the currently logged user do not add it to the list
-            if(!it.id.equals(currentUserID, false)){
+            if(it != null && !it.id.equals(currentUserID, false)){
                 usersList.add(it)
                 Log.d("AddFriendFragment", it.id)
                 Log.d("AddFriendFragment", usersList.size.toString())
