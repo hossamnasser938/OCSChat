@@ -29,7 +29,7 @@ class AddFriendRepositoryImpl : AddFriendRepository {
 
     override fun getCurrentUserNonFriends(): Flowable<User> {
         //create custom flowable that emits non friend users and ignore friends ones
-        Log.d(TAG, "got into api fetching");
+        Log.d(TAG, "got into api fetching")
         return api.allUsers.flatMap {
             val user = it.value.getValue(User::class.java)
             Log.d(TAG, "got friend from api: " + user.firstName)

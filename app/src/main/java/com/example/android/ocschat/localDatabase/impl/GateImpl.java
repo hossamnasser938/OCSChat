@@ -140,6 +140,7 @@ public class GateImpl implements Gate {
                         }
                     });
                 }
+                emitter.onComplete();
             }
         }, BackpressureStrategy.BUFFER);
     }

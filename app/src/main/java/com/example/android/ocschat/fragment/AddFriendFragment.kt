@@ -18,6 +18,8 @@ import javax.inject.Inject
 
 class AddFriendFragment : Fragment() {
 
+    private val TAG = "AddFriendFragment"
+
     @Inject
     lateinit var addFriendViewModel: AddFriendViewModel
 
@@ -29,6 +31,7 @@ class AddFriendFragment : Fragment() {
     private lateinit var adapter : AddFriendAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as AddFriendTransitionInterface
@@ -64,9 +67,30 @@ class AddFriendFragment : Fragment() {
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause executes")
         super.onPause()
+
         try { disposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onResume() {
+        Log.d(TAG, "onResume executes")
+        super.onResume()
+        try {
+            if(disposable.isDisposed){
+                Log.d(TAG, "disposed")
+                if(!Utils.isNetworkConnected(context)){
+                    Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+                }
+                else{
+                    setAutoCompleteProperty()
+                }
+            }
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just resume
+        }
     }
 
     /**
@@ -79,13 +103,14 @@ class AddFriendFragment : Fragment() {
         add_friend_auto_complete.setAdapter(adapter)
         disposable = addFriendViewModel.suggestedUsers.subscribe({
             //Check if it is the currently logged user do not add it to the list
-            if(it != null && !it.id.equals(currentUserID, false)){
+            if(!it.id.equals(currentUserID, false)){
                 usersList.add(it)
-                Log.d("AddFriendFragment", it.id)
-                Log.d("AddFriendFragment", usersList.size.toString())
+                Log.d(TAG, "got friend: " + it.firstName)
+                Log.d(TAG, it.id)
+                Log.d(TAG, usersList.size.toString())
             }
         }, {
-            Log.d("AddFriendFragment", it.message)
+            Log.d(TAG, it.message)
         })
     }
 

@@ -1,6 +1,5 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.AddFriendRepository
 import com.example.android.ocschat.viewModel.AddFriendViewModel
@@ -19,8 +18,8 @@ class AddFriendViewModelImpl : AddFriendViewModel {
     }
 
     override fun getSuggestedUsers(): Flowable<User> {
-        return repository.currentUserNonFriends
-                .concatWith(repository.currentUserFriends)
+        return repository.currentUserFriends
+                .concatWith(repository.currentUserNonFriends)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
