@@ -135,6 +135,7 @@ public class GateImpl implements Gate {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) {
+                            Log.d(TAG, "emits throwable = " + throwable.getMessage());
                             emitter.onError(throwable);
                         }
                     });

@@ -23,16 +23,18 @@ import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
+    private val TAG = "HomeFragment"
+
     @Inject
     lateinit var homeViewModel : HomeViewModel
 
     private lateinit var disposable: Disposable
-    private lateinit var homeAdapter: HomeAdapter
 
     private val friendsList = ArrayList<User>()
     private lateinit var adapter : HomeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated executes")
         super.onViewCreated(view, savedInstanceState)
 
         prepareforDisplayingFriends()
@@ -53,19 +56,21 @@ class HomeFragment : Fragment() {
     }
 
     override fun onPause() {
+        Log.d(TAG, "onPause executes")
         super.onPause()
-        try {
-            disposable.dispose()
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //just stop
-        }
+
+        try { disposable.dispose() }
+        catch (e : UninitializedPropertyAccessException){ }
     }
 
+
     override fun onResume() {
+        Log.d(TAG, "onResume executes")
         super.onResume()
         try {
             if(disposable.isDisposed){
+                Log.d(TAG, "disposed")
+                prepareforDisplayingFriends()
                 fetchCurrentUserFriends()
             }
         }
@@ -83,11 +88,12 @@ class HomeFragment : Fragment() {
 
     private fun fetchCurrentUserFriends() {
         disposable = homeViewModel.currentUserFriends.subscribe({
-            Log.d("HomeFragment", "Got friend: " + it.firstName)
+            Log.d(TAG, "Got friend: " + it.firstName)
             failure_list_text_view.visibility = View.GONE
             friendsList.add(it)
+            adapter.notifyDataSetChanged()
         }, {
-            Log.d("HomeFragment", "Got throwable: " + it.message)
+            Log.d(TAG, "Got throwable: " + it.message)
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
         })
     }
@@ -100,8 +106,8 @@ class HomeFragment : Fragment() {
         friends_recycler_view.layoutManager = layoutManager
         friends_recycler_view.setHasFixedSize(true)
 
-        homeAdapter = HomeAdapter(context, friendsList)
-        friends_recycler_view.adapter = homeAdapter
+        adapter = HomeAdapter(context, friendsList)
+        friends_recycler_view.adapter = adapter
 
         friends_recycler_view
                 .addOnItemTouchListener(HomeOnClickListener(context, friends_recycler_view,

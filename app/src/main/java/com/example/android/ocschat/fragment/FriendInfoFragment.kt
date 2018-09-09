@@ -95,11 +95,13 @@ class FriendInfoFragment : Fragment() {
 
     private fun setAddFriendButtonClickListen(currentUser: User) {
         friend_info_add_friend_button.setOnClickListener {
+            friend_info_add_friend_button.isClickable = false
             addFriendDisposable = addFriendViewMdel.addFriend(currentUser).subscribe({
                 showFriendState()
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 activity?.finish()
             }, {
+                friend_info_add_friend_button.isClickable = true
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d("FriendInfoFragment", it.message)
             })
