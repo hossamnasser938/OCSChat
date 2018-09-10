@@ -174,9 +174,11 @@ public class GateImpl implements Gate {
             return Single.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));
         }
 
-        if(cursor.getCount() == 1){
+        final int count = cursor.getCount();
+        cursor.close();
+
+        if(count == 1)
             return Single.just(true);
-        }
 
         return Single.just(false);
     }

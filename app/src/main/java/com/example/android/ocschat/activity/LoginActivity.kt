@@ -19,4 +19,9 @@ class LoginActivity : AppCompatActivity() , LoginFragment.LoginTransitionInterfa
                 .replace(R.id.login_frame_layout, fragment)
                 .commit()
     }
+
+    override fun onBackPressed() {
+        //Nothing
+    }
+
 }

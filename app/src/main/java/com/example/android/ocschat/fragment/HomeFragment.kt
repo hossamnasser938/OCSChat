@@ -63,14 +63,13 @@ class HomeFragment : Fragment() {
         catch (e : UninitializedPropertyAccessException){ }
     }
 
-
     override fun onResume() {
         Log.d(TAG, "onResume executes")
         super.onResume()
         try {
-            if(disposable.isDisposed){
+            if(disposable.isDisposed) {
                 Log.d(TAG, "disposed")
-                prepareforDisplayingFriends()
+                adapter.clear()
                 fetchCurrentUserFriends()
             }
         }
@@ -84,18 +83,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(activity, AddFriendActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun fetchCurrentUserFriends() {
-        disposable = homeViewModel.currentUserFriends.subscribe({
-            Log.d(TAG, "Got friend: " + it.firstName)
-            failure_list_text_view.visibility = View.GONE
-            friendsList.add(it)
-            adapter.notifyDataSetChanged()
-        }, {
-            Log.d(TAG, "Got throwable: " + it.message)
-            Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
-        })
     }
 
     fun prepareforDisplayingFriends(){
@@ -112,13 +99,25 @@ class HomeFragment : Fragment() {
         friends_recycler_view
                 .addOnItemTouchListener(HomeOnClickListener(context, friends_recycler_view,
                         HomeOnClickListener.ClickListener {
-            view, position ->
+                            view, position ->
                             val clickedFriend = friendsList[position]
                             //Navigate to chat activity passing clicked friend
                             val intent = Intent(activity, ChatActivity::class.java)
                             intent.putExtra(Constants.FRIEND_ID_KEY, clickedFriend.id)
                             startActivity(intent)
                         }))
+    }
+
+    private fun fetchCurrentUserFriends() {
+        disposable = homeViewModel.currentUserFriends.subscribe({
+            Log.d(TAG, "Got friend at home: " + it.firstName)
+            failure_list_text_view.visibility = View.GONE
+            friendsList.add(it)
+            adapter.notifyDataSetChanged()
+        }, {
+            Log.d(TAG, "Got throwable: " + it.message)
+            Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun showEmptyListText(){

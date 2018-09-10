@@ -62,4 +62,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public int getItemCount() {
         return friendsList.size();
     }
+
+    /**
+     * clear friends list and notify adapter
+     */
+    public void clear(){
+        final int size = getItemCount();
+
+        if(size > 0){
+            friendsList.clear();
+            notifyItemRangeRemoved(0, size);
+        }
+    }
 }

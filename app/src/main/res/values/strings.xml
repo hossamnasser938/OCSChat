@@ -61,4 +61,6 @@
     <string name="not_valid_user_id_property">Not valid value for userId property</string>
     <string name="not_valid_friend_id_property">Not valid value for friendId property</string>
     <string name="not_valid_friend_state_property">Not valid value for friend state property</string>
+    <string name="signed_in">Signed in successfully</string>
+    <string name="signed_out">Signed out successfully</string>
 </resources>

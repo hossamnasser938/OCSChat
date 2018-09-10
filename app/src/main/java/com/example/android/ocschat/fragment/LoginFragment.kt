@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.HomeActivity
@@ -101,6 +102,7 @@ class LoginFragment : Fragment() {
             val intent = Intent(context, HomeActivity::class.java)
             startActivity(intent)
             activity?.finish()
+            Toast.makeText(activity, R.string.signed_in, Toast.LENGTH_SHORT).show()
         }, {
             //hide loading progress bar
             login_loading_progress_bar.visibility = View.GONE

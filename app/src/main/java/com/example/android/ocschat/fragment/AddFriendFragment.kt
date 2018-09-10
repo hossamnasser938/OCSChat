@@ -14,6 +14,8 @@ import com.example.android.ocschat.viewModel.AddFriendViewModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_add_friend.*
+import rx.Observer
+import rx.Subscription
 import javax.inject.Inject
 
 class AddFriendFragment : Fragment() {
@@ -43,14 +45,15 @@ class AddFriendFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         setDropDownItemsClickListener()
+
         if(!Utils.isNetworkConnected(context)){
             Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
         }
-        else{
-            setAutoCompleteProperty()
-        }
+
+        setAutoCompleteProperty()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -70,22 +73,28 @@ class AddFriendFragment : Fragment() {
         Log.d(TAG, "onPause executes")
         super.onPause()
 
-        try { disposable.dispose() }
+        try {
+            Log.d(TAG, "dispose")
+            usersList.clear()
+            disposable.dispose()
+        }
         catch (e : UninitializedPropertyAccessException){ }
     }
 
     override fun onResume() {
         Log.d(TAG, "onResume executes")
         super.onResume()
+
         try {
             if(disposable.isDisposed){
-                Log.d(TAG, "disposed")
+                Log.d(TAG, "isDisposed")
+
                 if(!Utils.isNetworkConnected(context)){
                     Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
                 }
-                else{
-                    setAutoCompleteProperty()
-                }
+
+                Log.d(TAG, "usersList size = " + usersList.size)
+                fetchSuggestions()
             }
         }
         catch (e : UninitializedPropertyAccessException){
@@ -97,15 +106,20 @@ class AddFriendFragment : Fragment() {
      * Set Auto complete property while search for friends
      */
     fun setAutoCompleteProperty(){
-        val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
-
         adapter = AddFriendAdapter(context, usersList)
         add_friend_auto_complete.setAdapter(adapter)
+
+        fetchSuggestions()
+    }
+
+    private fun fetchSuggestions() {
+        val currentUserID = FirebaseAuth.getInstance().currentUser?.uid
+
         disposable = addFriendViewModel.suggestedUsers.subscribe({
             //Check if it is the currently logged user do not add it to the list
-            if(!it.id.equals(currentUserID, false)){
+            if (!it.id.equals(currentUserID, false)) {
                 usersList.add(it)
-                Log.d(TAG, "got friend: " + it.firstName)
+                Log.d(TAG, "got friend at add: " + it.firstName)
                 Log.d(TAG, it.id)
                 Log.d(TAG, usersList.size.toString())
             }

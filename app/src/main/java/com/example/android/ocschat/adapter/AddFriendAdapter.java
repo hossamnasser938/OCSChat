@@ -35,6 +35,7 @@ public class AddFriendAdapter extends ArrayAdapter<User> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
+
         if(listItem == null){
             listItem = LayoutInflater.from(context).inflate(R.layout.friend_item, parent, false);
         }
