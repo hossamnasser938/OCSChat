@@ -35,7 +35,12 @@ class LoginRepositoryImpl : LoginRepository {
 
     override fun login(body : HashMap<String, String>): Maybe<FirebaseUser> {
         return api.login(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY]).flatMap {
-            if(it.user != null) Maybe.just(it.user)
+            if(it.user != null){
+                api.getUser(it.user.uid).flatMapCompletable { dataSnapshot ->
+                    val user = dataSnapshot.getValue(User::class.java)
+                    gate.insertUser(user) }
+                        .andThen(Maybe.just(it.user))
+            }
             else Maybe.error(OCSChatThrowable(Constants.FAILED_LOGIN_MESSAGE)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

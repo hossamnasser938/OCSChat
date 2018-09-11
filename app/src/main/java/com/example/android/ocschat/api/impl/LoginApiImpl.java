@@ -6,6 +6,8 @@ import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import durdinapps.rxfirebase2.RxFirebaseAuth;
@@ -28,5 +30,11 @@ public class LoginApiImpl implements LoginApi {
     @Override
     public Maybe<AuthResult> login(String email, String password) {
         return RxFirebaseAuth.signInWithEmailAndPassword(FirebaseAuth.getInstance(), email, password);
+    }
+
+    @Override
+    public Maybe<DataSnapshot> getUser(String uid){
+        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
+        return RxFirebaseDatabase.observeSingleValueEvent(userReference);
     }
 }
