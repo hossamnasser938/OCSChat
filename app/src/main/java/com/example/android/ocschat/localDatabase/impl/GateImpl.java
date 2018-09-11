@@ -170,7 +170,10 @@ public class GateImpl implements Gate {
                         null);
 
         if(cursor == null || cursor.getCount() > 1){
-            Log.d(TAG, "error from isFriend");
+            if(cursor == null)
+                Log.d(TAG, "error from isFriend : null coursor");
+            else
+                Log.d(TAG, "error from isFriend : cursor.getCount() > 1");
             return Single.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));
         }
 
