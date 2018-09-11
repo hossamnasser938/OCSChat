@@ -136,7 +136,15 @@ public class OCSChatProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+        final int match = sUriMatcher.match(uri);
+        switch (match){
+            case USERS :
+                return deleteUser(uri, selection, selectionArgs);
+            case FRIENDS :
+                return deleteFriend(uri, selection, selectionArgs);
+            default :
+                throw new IllegalArgumentException("Unknown Uri:" + uri);
+        }
     }
 
     @Override
@@ -175,6 +183,24 @@ public class OCSChatProvider extends ContentProvider {
         //TODO: notifyChange
         return database.update(Contract.Friend.TABLE_NAME,
                 values,
+                selection,
+                selectionArgs);
+    }
+
+    private int deleteUser(Uri uri, String selection, String[] selectionArgs){
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+
+        //TODO: notifyChange
+        return database.delete(Contract.User.TABLE_NAME,
+                selection,
+                selectionArgs);
+    }
+
+    private int deleteFriend(Uri uri, String selection, String[] selectionArgs){
+        SQLiteDatabase database = mDbHelper.getReadableDatabase();
+
+        //TODO: notifyChange
+        return database.delete(Contract.Friend.TABLE_NAME,
                 selection,
                 selectionArgs);
     }

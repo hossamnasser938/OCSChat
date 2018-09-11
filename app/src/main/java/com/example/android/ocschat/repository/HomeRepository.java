@@ -8,5 +8,6 @@ public interface HomeRepository {
 
     Flowable<User> getCurrentUserFriends();
     Flowable<User> getJustLoggedUserFriends();
+    void clearDatabase();
 
 }

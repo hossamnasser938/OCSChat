@@ -193,6 +193,7 @@ public class GateImpl implements Gate {
      */
     @Override
     public Completable insertUser(User user) {
+        Log.d(TAG, "add user : " + user.getFirstName());
         final ContentValues values = userToContentValues(user);
 
         if(context.getContentResolver().insert(Contract.User.CONTENT_URI, values) != null)
@@ -208,6 +209,7 @@ public class GateImpl implements Gate {
      */
     @Override
     public Completable addFriend(User user) {
+        Log.d(TAG, "add friend : " + user.getFirstName());
         String currentUSerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         final ContentValues userFriendValues = friendToContentValues(currentUSerId, new Friend(user.getId()));
@@ -218,6 +220,19 @@ public class GateImpl implements Gate {
             return Completable.complete();  //inserted successfully
 
         return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+    }
+
+    @Override
+    public void clearDatabase() {
+        //delete all users
+        context.getContentResolver().delete(Contract.User.CONTENT_URI,
+                null,
+                null);
+
+        //delete all friends
+        context.getContentResolver().delete(Contract.Friend.CONTENT_URI,
+                null,
+                null);
     }
 
     /**

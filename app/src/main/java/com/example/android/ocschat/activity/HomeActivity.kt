@@ -5,21 +5,30 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.fragment.HomeFragment
 import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.viewModel.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
+
+    @Inject
+    lateinit var homeViewModel : HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        (application as OCSChatApplication).component.inject(this)
+
         supportActionBar?.title = getString(R.string.home)
+
         if(FirebaseAuth.getInstance().currentUser == null){
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
@@ -51,7 +60,8 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
             R.id.sign_out_menu_item -> {
-                //Sign user out and go to LoginActivity
+                //clear database,sign user out and go to LoginActivity
+                homeViewModel.clearDatabase()
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 startActivity(intent)

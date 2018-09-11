@@ -8,11 +8,12 @@ import io.reactivex.Single;
 
 public interface Gate {
 
-    public Single<User> getUser(String userId);
-    public Flowable<User> getUserFriends(final String userId);
-    public Single<Boolean> isFriend(String friendId);
-    public Completable insertUser(User user);
-    public Completable addFriend(User user);
-    public Completable updateUser(User user);
+    Single<User> getUser(String userId);
+    Flowable<User> getUserFriends(final String userId);
+    Single<Boolean> isFriend(String friendId);
+    Completable insertUser(User user);
+    Completable addFriend(User user);
+    Completable updateUser(User user);
+    void clearDatabase();
 
 }

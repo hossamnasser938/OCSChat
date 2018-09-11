@@ -31,4 +31,8 @@ HomeViewModelImpl : HomeViewModel {
                     .observeOn(AndroidSchedulers.mainThread())
         }
     }
+
+    override fun clearDatabase() {
+        repository.clearDatabase()
+    }
 }

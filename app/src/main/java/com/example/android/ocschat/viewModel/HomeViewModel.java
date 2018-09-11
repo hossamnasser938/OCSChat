@@ -8,5 +8,6 @@ import io.reactivex.Flowable;
 public interface HomeViewModel {
 
     Flowable<User> getCurrentUserFriends(UserState userState);
+    void clearDatabase();
 
 }

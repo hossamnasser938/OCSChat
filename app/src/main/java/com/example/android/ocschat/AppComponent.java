@@ -1,5 +1,6 @@
 package com.example.android.ocschat;
 
+import com.example.android.ocschat.activity.HomeActivity;
 import com.example.android.ocschat.fragment.AddFriendFragment;
 import com.example.android.ocschat.fragment.ChatFragment;
 import com.example.android.ocschat.fragment.FriendInfoFragment;
@@ -28,5 +29,6 @@ public interface AppComponent {
     void inject(ChatFragment chatFragment);
     void inject(SettingsFragment settingsFragment);
     void inject(UpdateProfileFragment updateProfileFragment);
+    void inject(HomeActivity homeActivity);
 
 }

@@ -29,10 +29,13 @@ class HomeRepositoryImpl : HomeRepository {
             val friend = it.value.getValue(Friend::class.java)
             api.getUser(friend.id).flatMapPublisher {
                 val user = it.getValue(User::class.java)
-                gate.addFriend(user).
-                        andThen(gate.insertUser(user))
+                gate.addFriend(user)
                         .andThen(Flowable.just(user))
             }
         }
+    }
+
+    override fun clearDatabase() {
+        gate.clearDatabase()
     }
 }
