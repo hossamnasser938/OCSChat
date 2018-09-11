@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.HomeActivity
+import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.LoginViewModel
@@ -100,6 +101,7 @@ class LoginFragment : Fragment() {
             login_loading_progress_bar.visibility = View.GONE
             //Open Home Activity with user info
             val intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra(Constants.USER_STATE_KEY, UserState.JUST_LOGGED)
             startActivity(intent)
             activity?.finish()
             Toast.makeText(activity, R.string.signed_in, Toast.LENGTH_SHORT).show()

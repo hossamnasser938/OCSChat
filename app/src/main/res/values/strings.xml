@@ -63,4 +63,5 @@
     <string name="not_valid_friend_state_property">Not valid value for friend state property</string>
     <string name="signed_in">Signed in successfully</string>
     <string name="signed_out">Signed out successfully</string>
+    <string name="new_user_message">Add Friends and start chatting now</string>
 </resources>

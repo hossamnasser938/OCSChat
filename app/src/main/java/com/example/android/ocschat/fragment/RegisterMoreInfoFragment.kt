@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.activity.HomeActivity
+import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.LoginViewModel
 import io.reactivex.disposables.Disposable
@@ -94,6 +95,7 @@ class RegisterMoreInfoFragment : Fragment() {
             register_loading_progress_bar.visibility = View.GONE
             //Open Home Activity with user info
             val intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra(Constants.USER_STATE_KEY, UserState.JUST_REGISTERED)
             startActivity(intent)
             Toast.makeText(context, getString(R.string.welcome) + body[Constants.FIRST_NAME_KEY], Toast.LENGTH_SHORT).show()
             activity?.finish()

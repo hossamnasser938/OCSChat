@@ -1,17 +1,14 @@
 package com.example.android.ocschat.api;
 
-
 import com.google.firebase.database.DataSnapshot;
 
-import java.util.List;
-
+import durdinapps.rxfirebase2.RxFirebaseChildEvent;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 
+public interface HomeApi {
 
-public interface HomeApi {  //TODO: remove
-
-    Flowable<DataSnapshot> getCurrentUserFriends();
-    Single<List<DataSnapshot>> getCurrentUserFriendsAsUsers(List<String> friendsIdsList);
+    Flowable<RxFirebaseChildEvent<DataSnapshot>> getCurrentUserFriends();
+    Maybe<DataSnapshot> getUser(String friendId);
 
 }

@@ -7,5 +7,6 @@ import io.reactivex.Flowable;
 public interface HomeRepository {
 
     Flowable<User> getCurrentUserFriends();
+    Flowable<User> getJustLoggedUserFriends();
 
 }

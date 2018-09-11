@@ -14,6 +14,7 @@ import com.example.android.ocschat.activity.ChatActivity
 import com.example.android.ocschat.adapter.HomeAdapter
 import com.example.android.ocschat.listener.HomeOnClickListener
 import com.example.android.ocschat.model.User
+import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.HomeViewModel
@@ -25,6 +26,8 @@ class HomeFragment : Fragment() {
 
     private val TAG = "HomeFragment"
 
+    private lateinit var userState: UserState
+
     @Inject
     lateinit var homeViewModel : HomeViewModel
 
@@ -32,6 +35,16 @@ class HomeFragment : Fragment() {
 
     private val friendsList = ArrayList<User>()
     private lateinit var adapter : HomeAdapter
+
+    companion object {
+        fun newInstance(userState: UserState) : HomeFragment{
+            val homeFragment = HomeFragment()
+            val args = Bundle()
+            args.putSerializable(Constants.USER_STATE_KEY, userState)
+            homeFragment.arguments = args
+            return homeFragment
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate executes")
@@ -47,10 +60,19 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onViewCreated executes")
         super.onViewCreated(view, savedInstanceState)
 
-        prepareforDisplayingFriends()
+        userState = arguments?.getSerializable(Constants.USER_STATE_KEY) as UserState
 
-        //Fetch friends from repository
-        fetchCurrentUserFriends()
+        when(userState){
+            UserState.JUST_REGISTERED -> {
+                showNewUserText()
+            }
+            UserState.JUST_LOGGED, UserState.LOGGED_BEFORE -> {
+                prepareforDisplayingFriends()
+
+                //Fetch friends from repository
+                fetchCurrentUserFriends(userState)
+            }
+        }
 
         handleAddFriendButton()
     }
@@ -70,7 +92,7 @@ class HomeFragment : Fragment() {
             if(disposable.isDisposed) {
                 Log.d(TAG, "disposed")
                 adapter.clear()
-                fetchCurrentUserFriends()
+                fetchCurrentUserFriends(userState)
             }
         }
         catch (e : UninitializedPropertyAccessException){
@@ -108,8 +130,8 @@ class HomeFragment : Fragment() {
                         }))
     }
 
-    private fun fetchCurrentUserFriends() {
-        disposable = homeViewModel.currentUserFriends.subscribe({
+    private fun fetchCurrentUserFriends(userState: UserState) {
+        disposable = homeViewModel.getCurrentUserFriends(userState).subscribe({
             Log.d(TAG, "Got friend at home: " + it.firstName)
             failure_list_text_view.visibility = View.GONE
             friendsList.add(it)
@@ -123,6 +145,11 @@ class HomeFragment : Fragment() {
     private fun showEmptyListText(){
         failure_list_text_view.visibility = View.VISIBLE
         failure_list_text_view.text = resources.getString(R.string.empty_friends_list)
+    }
+
+    private fun showNewUserText(){
+        failure_list_text_view.visibility = View.VISIBLE
+        failure_list_text_view.text = resources.getString(R.string.new_user_message)
     }
 
     interface HomeTransitionInterface{

@@ -10,6 +10,8 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.example.android.ocschat.R
 import com.example.android.ocschat.fragment.HomeFragment
+import com.example.android.ocschat.model.UserState
+import com.example.android.ocschat.util.Constants
 import com.google.firebase.auth.FirebaseAuth
 
 class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
@@ -22,8 +24,17 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)
         }
-        else
-            openFragment(HomeFragment())
+        else{
+            if(intent.hasExtra(Constants.USER_STATE_KEY)){
+                val userState = intent.extras[Constants.USER_STATE_KEY] as UserState
+                openFragment(HomeFragment.newInstance(userState))
+            }
+            else{
+                openFragment(HomeFragment.newInstance(UserState.LOGGED_BEFORE))
+            }
+
+        }
+
     }
 
     override fun openFragment(fragment: Fragment) {
