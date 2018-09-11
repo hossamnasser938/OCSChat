@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         userState = arguments?.getSerializable(Constants.USER_STATE_KEY) as UserState
-
+        Log.d(TAG, userState.name)
         when(userState){
             UserState.JUST_REGISTERED -> {
                 showNewUserText()
