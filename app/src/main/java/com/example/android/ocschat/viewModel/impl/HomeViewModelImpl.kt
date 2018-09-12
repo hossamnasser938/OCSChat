@@ -32,16 +32,6 @@ HomeViewModelImpl : HomeViewModel {
         }
     }
 
-    override fun userExists(friendsList: List<User>, user : User) :Boolean{
-        if(friendsList.isNotEmpty()){
-            friendsList.forEach {
-                if(it.id.equals(user.id, false))
-                    return true
-            }
-        }
-        return false
-    }
-
     override fun clearDatabase() {
         repository.clearDatabase()
     }

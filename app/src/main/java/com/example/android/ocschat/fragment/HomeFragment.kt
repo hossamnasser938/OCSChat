@@ -94,7 +94,6 @@ class HomeFragment : Fragment() {
         try {
             if(disposable.isDisposed) {
                 Log.d(TAG, "disposed")
-                //adapter.clear()
                 fetchCurrentUserFriends(userState)
             }
         }
@@ -137,7 +136,7 @@ class HomeFragment : Fragment() {
         disposable = homeViewModel.getCurrentUserFriends(userState).subscribe({
             Log.d(TAG, "Got friend at home: " + it.firstName)
             failure_list_text_view.visibility = View.GONE
-            if(!homeViewModel.userExists(friendsList, it)){
+            if(!Utils.userExistsInList(friendsList, it)){
                 Log.d(TAG, "got user : " + it.firstName + " and displayed")
                 friendsList.add(it)
                 adapter.notifyDataSetChanged()

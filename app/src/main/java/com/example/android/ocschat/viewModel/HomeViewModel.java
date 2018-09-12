@@ -10,7 +10,6 @@ import io.reactivex.Flowable;
 public interface HomeViewModel {
 
     Flowable<User> getCurrentUserFriends(UserState userState);
-    boolean userExists(List<User> friendsList, User user);
     void clearDatabase();
 
 }

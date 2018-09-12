@@ -4,6 +4,11 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.example.android.ocschat.model.User;
+
+import java.util.List;
+import java.util.function.Consumer;
+
 public class Utils {
 
     /**
@@ -66,6 +71,22 @@ public class Utils {
             if(counter >= largestSize)
                 throw new OCSChatThrowable(Constants.ERROR_GENERATING_MESSAGE_KEY);
         }
+    }
+
+    /**
+     * checks if list of users contains a specific user object
+     * @param usersList
+     * @param user
+     * @return
+     */
+    public static boolean userExistsInList(List<User> usersList, User user){
+        if(usersList.size() != 0){
+            for(User listUser : usersList){
+                if(listUser.getId().equals(user.getId()))
+                    return true;
+            }
+        }
+        return false;
     }
 
 }
