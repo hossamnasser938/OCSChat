@@ -134,7 +134,6 @@ class HomeFragment : Fragment() {
 
     private fun fetchCurrentUserFriends(userState: UserState) {
         disposable = homeViewModel.getCurrentUserFriends(userState).subscribe({
-            Log.d(TAG, "Got friend at home: " + it.firstName)
             failure_list_text_view.visibility = View.GONE
             if(!Utils.userExistsInList(friendsList, it)){
                 Log.d(TAG, "got user : " + it.firstName + " and displayed")

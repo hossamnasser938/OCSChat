@@ -75,7 +75,6 @@ class AddFriendFragment : Fragment() {
 
         try {
             Log.d(TAG, "dispose")
-            usersList.clear()
             disposable.dispose()
         }
         catch (e : UninitializedPropertyAccessException){ }
@@ -117,11 +116,14 @@ class AddFriendFragment : Fragment() {
 
         disposable = addFriendViewModel.suggestedUsers.subscribe({
             //Check if it is the currently logged user do not add it to the list
-            if (!it.id.equals(currentUserID, false)) {
+            if (!it.id.equals(currentUserID, false) && !Utils.userExistsInList(usersList, it)) {
                 usersList.add(it)
-                Log.d(TAG, "got friend at add: " + it.firstName)
+                Log.d(TAG, "got friend : " + it.firstName + " and added")
                 Log.d(TAG, it.id)
                 Log.d(TAG, usersList.size.toString())
+            }
+            else{
+                Log.d(TAG, "got friend : " + it.firstName + " but not added")
             }
         }, {
             Log.d(TAG, it.message)
