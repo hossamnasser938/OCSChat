@@ -1,9 +1,12 @@
 package com.example.android.ocschat.activity
 
+import android.content.Context
 import android.content.Intent
+import android.nfc.Tag
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -17,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 
 class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
+
+    private val TAG = "HomeActivity"
 
     @Inject
     lateinit var homeViewModel : HomeViewModel
@@ -39,7 +44,24 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
                 openFragment(HomeFragment.newInstance(userState))
             }
             else{
-                openFragment(HomeFragment.newInstance(UserState.LOGGED_BEFORE))
+                //
+                Log.d(TAG, "default logging get needsDownload sharedPreferences")
+                val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                if(prefs.contains("needsDownload")){
+                    Log.d(TAG, "Found needsDownload sharedPreferences")
+                    if(prefs.getBoolean("needsDownload",false)){
+                        Log.d(TAG, "found value true")
+                        openFragment(HomeFragment.newInstance(UserState.JUST_LOGGED))
+                    }
+                    else{
+                        Log.d(TAG, "found value false")
+                        openFragment(HomeFragment.newInstance(UserState.LOGGED_BEFORE))
+                    }
+                }
+                else {
+                    openFragment(HomeFragment.newInstance(UserState.LOGGED_BEFORE))
+                }
+                //
             }
 
         }

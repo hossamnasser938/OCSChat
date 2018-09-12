@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
@@ -48,10 +49,10 @@ public class GateImpl implements Gate {
     public Single<User> getUser(String userId) {
         String[] projection = new String[] { Contract.User.COLUMN_FIRST_NAME,
                 Contract.User.COLUMN_LAST_NAME, Contract.User.COLUMN_AGE,
-                Contract.User.COLUMN_HAS_IMAGE, Contract.User.COLUMN_IMAGE,
-                Contract.User.COLUMN_EDUCATION, Contract.User.COLUMN_EDUCATION_ORGANIZATION,
-                Contract.User.COLUMN_MAJOR, Contract.User.COLUMN_WORK,
-                Contract.User.COLUMN_COMPANY };
+                Contract.User.COLUMN_FRIENDS_COUNT, Contract.User.COLUMN_HAS_IMAGE,
+                Contract.User.COLUMN_IMAGE, Contract.User.COLUMN_EDUCATION,
+                Contract.User.COLUMN_EDUCATION_ORGANIZATION, Contract.User.COLUMN_MAJOR,
+                Contract.User.COLUMN_WORK, Contract.User.COLUMN_COMPANY };
 
         String selection = Contract.User._ID + "=?";
         String[] selectionArgs = new String[]{ userId };
@@ -68,6 +69,7 @@ public class GateImpl implements Gate {
         //get columns indices
         final int firstNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_FIRST_NAME);
         final int lastNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_LAST_NAME);
+        final int friendsCountIndex = cursor.getColumnIndex(Contract.User.COLUMN_FRIENDS_COUNT);
         final int ageIndex = cursor.getColumnIndex(Contract.User.COLUMN_AGE);
         final int hasImageIndex = cursor.getColumnIndex(Contract.User.COLUMN_HAS_IMAGE);
         final int imageIndex = cursor.getColumnIndex(Contract.User.COLUMN_IMAGE);
@@ -80,6 +82,7 @@ public class GateImpl implements Gate {
         //get properties values from cursor
         String firstName = cursor.getString(firstNameIndex);
         String lastName = cursor.getString(lastNameIndex);
+        Integer friendsCount = cursor.getInt(friendsCountIndex);
         Integer age = cursor.getInt(ageIndex);
         Integer hasImage = cursor.getInt(hasImageIndex);
         if(hasImage == 1){  //User has image
@@ -97,6 +100,7 @@ public class GateImpl implements Gate {
 
         //construct User object
         final User user = new User(userId, firstName, lastName);
+        user.setFriendsCount(friendsCount);
         user.setAge(age);
         user.setEducation(education);
         user.setEducationOrganization(educationOrg);
@@ -212,14 +216,26 @@ public class GateImpl implements Gate {
         Log.d(TAG, "add friend : " + user.getFirstName());
         String currentUSerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        //add friend in friends table
         final ContentValues userFriendValues = friendToContentValues(currentUSerId, new Friend(user.getId()));
-        final ContentValues friendFriendValues = friendToContentValues(user.getId(), new Friend(currentUSerId));
+        //add friend as user in users table
         final ContentValues userValues = userToContentValues(user);
+        //update current user to increment his friends count
+        final ContentValues currentUserValues = new ContentValues();
 
-        if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userFriendValues) != null && context.getContentResolver().insert(Contract.Friend.CONTENT_URI, friendFriendValues) != null && context.getContentResolver().insert(Contract.User.CONTENT_URI, userValues) != null)
-            return Completable.complete();  //inserted successfully
-
-        return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+        return getUser(currentUSerId).flatMapCompletable(new Function<User, CompletableSource>() {
+            @Override
+            public CompletableSource apply(User user) {
+                Log.d(TAG, "got current user");
+                currentUserValues.put(Contract.User.COLUMN_COMPANY, user.getFriendsCount() + 1);
+                if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userFriendValues) != null && context.getContentResolver().insert(Contract.User.CONTENT_URI, userValues) != null){
+                    Log.d(TAG, "inserted friend and user in database");
+                    return Completable.complete();  //inserted successfully
+                }
+                Log.d(TAG, "error occurred");
+                return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+            }
+        });
     }
 
     @Override
@@ -291,6 +307,7 @@ public class GateImpl implements Gate {
         values.put(Contract.User._ID, user.getId());
         values.put(Contract.User.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(Contract.User.COLUMN_LAST_NAME, user.getLastName());
+        values.put(Contract.User.COLUMN_FRIENDS_COUNT, user.getFriendsCount());
         values.put(Contract.User.COLUMN_AGE, user.getAge());
         if(user.getHasImage()){
             values.put(Contract.User.COLUMN_HAS_IMAGE, 1);

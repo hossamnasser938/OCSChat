@@ -1,6 +1,8 @@
 package com.example.android.ocschat.fragment
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -18,9 +20,6 @@ import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.HomeViewModel
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
-import io.reactivex.FlowableOnSubscribe
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -28,6 +27,8 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
 
     private val TAG = "HomeFragment"
+
+    private var sharedPreferences : SharedPreferences? = null
 
     private lateinit var userState: UserState
 
@@ -68,6 +69,10 @@ class HomeFragment : Fragment() {
         when(userState){
             UserState.JUST_REGISTERED -> {
                 showNewUserText()
+                //set download flag in shared preferences
+                Log.d(TAG, "put needsDownload sharedPreferences")
+                sharedPreferences = activity?.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
+                sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, true)?.apply()
             }
             UserState.JUST_LOGGED, UserState.LOGGED_BEFORE -> {
                 prepareforDisplayingFriends()
@@ -158,6 +163,14 @@ class HomeFragment : Fragment() {
         }, {
             Log.d(TAG, "Got throwable: " + it.message)
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
+        }, {
+            //onComplete
+            Log.d(TAG, "onComplete getUserFriends")
+            if(userState == UserState.JUST_REGISTERED){
+                //clear download flag in shared preferences
+                Log.d(TAG, "onComplete set needsDownload false")
+                sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, false)?.apply()
+            }
         })
     }
 

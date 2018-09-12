@@ -37,16 +37,16 @@ public class AddFriendApiImpl implements AddFriendApi {
     @Override
     public Completable addFriend(final Friend friend){
         //Add a friend to the current user
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(currentUserId);
+        final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
         return getUser(currentUserId).flatMapCompletable(new Function<DataSnapshot, CompletableSource>() {
             @Override
             public CompletableSource apply(DataSnapshot dataSnapshot) throws Exception {
                 User u = dataSnapshot.getValue(User.class);
                 u.addFriend(friend);
                 Map<String, Object> map = new HashMap<>();
-                map.put(Constants.FRIENDS_KEY, u.getFriends());
-                return RxFirebaseDatabase.updateChildren(userRef, map)
+                map.put(currentUserId, u);
+                return RxFirebaseDatabase.updateChildren(usersRef, map)
                         .concatWith(confirmAddFriend(friend));
             }
         });
@@ -55,15 +55,15 @@ public class AddFriendApiImpl implements AddFriendApi {
     private Completable confirmAddFriend(final Friend friend) {
         //Add the current user as a friend to friend
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(friend.getId());
+        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(friend.getId());
         return getUser(friend.getId()).flatMapCompletable(new Function<DataSnapshot, CompletableSource>() {
             @Override
             public CompletableSource apply(DataSnapshot dataSnapshot) throws Exception {
                 User u = dataSnapshot.getValue(User.class);
                 u.addFriend(new Friend(currentUserId));
                 Map<String, Object> map = new HashMap<>();
-                map.put(Constants.FRIENDS_KEY, u.getFriends());
-                return RxFirebaseDatabase.updateChildren(userRef, map);
+                map.put(u.getId(), u);
+                return RxFirebaseDatabase.updateChildren(usersRef, map);
             }
         });
     }

@@ -7,11 +7,14 @@ import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.HomeRepository
 import com.google.firebase.auth.FirebaseAuth
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 
 class HomeRepositoryImpl : HomeRepository {
 
     private val TAG = "HomeRepository"
+
+    private var friendsFetchedCounter = 0
 
     private val gate : Gate
     private val api : HomeApi
@@ -28,23 +31,54 @@ class HomeRepositoryImpl : HomeRepository {
     }
 
     override fun getJustLoggedUserFriends(): Flowable<User> {
-        return api.currentUserFriends.flatMap {
-            val friend = it.value.getValue(Friend::class.java)
-            api.getUser(friend.id).flatMapPublisher {
-                val user = it.getValue(User::class.java)
-                gate.isFriend(user.id).flatMapPublisher {
-                    if(!it) {
-                        Log.d(TAG, "got user : " + user.firstName + " and inserted")
-                        gate.addFriend(user).andThen(Flowable.just(user))
-                    }
-                    else{
-                        Log.d(TAG, "got user : " + user.firstName + " but not inserted")
-                        Flowable.just(user)
+        //get current user to find his friends count
+        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+
+        return gate.getUser(currentUserId).flatMapPublisher { currentUser ->
+            api.currentUserFriends.flatMap {
+                val friend = it.value.getValue(Friend::class.java)
+                api.getUser(friend.id).flatMapPublisher {
+                    val user = it.getValue(User::class.java)
+                    gate.isFriend(user.id).flatMapPublisher {
+                        friendsFetchedCounter++
+                        if(!it) {
+                            Log.d(TAG, "got user : " + user.firstName + " and inserted")
+                            if(friendsFetchedCounter == currentUser.friendsCount){
+                                Log.d(TAG, "reached last friend")
+                                gate.addFriend(user)
+                                        .andThen(Flowable.create( {
+                                            it.onNext(user)
+                                            it.onComplete()
+                                        }, BackpressureStrategy.BUFFER))
+                            }
+                            else{
+                                Log.d(TAG, "did not reach last friend")
+                                gate.addFriend(user).andThen(Flowable.just(user))
+                            }
+
+                        }
+                        else{
+                            Log.d(TAG, "got user : " + user.firstName + " but not inserted")
+                            if(friendsFetchedCounter == currentUser.friendsCount){
+                                Log.d(TAG, "reached last friend")
+                                Flowable.create( {
+                                    it.onNext(user)
+                                    it.onComplete()
+                                }, BackpressureStrategy.BUFFER)
+                            }
+                            else{
+                                Log.d(TAG, "did not reach last friend")
+                                Flowable.just(user)
+                            }
+
+                        }
                     }
                 }
             }
         }
-    }
+        }
+
+
 
     override fun clearDatabase() {
         gate.clearDatabase()

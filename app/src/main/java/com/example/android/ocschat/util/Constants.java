@@ -35,5 +35,7 @@ public class Constants {
     public static final String EMAIL_SENDER = "hossamnasser938@gmail.com";
     public static final String ERROR_FROM_DATABASE = "Error caused by local database";
     public static final String USER_STATE_KEY = "user_state";
+    public static final String SHARED_PREFERENCES_KEY = "preferences";
+    public static final String DOWNLOAD_FLAG_KEY = "needs_download";
 
 }

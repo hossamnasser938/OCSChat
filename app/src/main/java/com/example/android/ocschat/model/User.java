@@ -15,6 +15,7 @@ public class User implements Serializable {
     private String lastName;
     private Integer age;
     private List<Friend> friends;
+    private Integer friendsCount;
     private boolean hasImage;
     private String education;   //Student, Diploma, Bachelor, master, or PHD
     private String educationOrganization;  //University, institute, or school
@@ -32,6 +33,7 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.friends = new ArrayList<>();
+        this.friendsCount = 0;
         this.hasImage = false;
     }
 
@@ -40,6 +42,7 @@ public class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.friends = new ArrayList<>();
+        this.friendsCount = 0;
         this.hasImage = hasImage;
     }
 
@@ -84,15 +87,33 @@ public class User implements Serializable {
     }
 
     public void addFriend(Friend friend){
+        incrementFriendsCount();
         friends.add(friend);
     }
 
     public boolean deleteFriend(Friend friend){
         if(friends.contains(friend)){
             friends.remove(friend);
+            decrementFriendsCount();
             return true;
         }
         return false;
+    }
+
+    public Integer getFriendsCount() {
+        return friendsCount;
+    }
+
+    public void setFriendsCount(Integer friendsCount) {
+        this.friendsCount = friendsCount;
+    }
+
+    public void incrementFriendsCount() {
+        this.friendsCount++;
+    }
+
+    public void decrementFriendsCount() {
+        this.friendsCount--;
     }
 
     public boolean getHasImage() {
