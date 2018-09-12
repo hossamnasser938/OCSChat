@@ -90,9 +90,10 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         Log.d(TAG, "onResume executes")
+        Log.d(TAG, "userState = " + userState.name)
         super.onResume()
         try {
-            if(disposable.isDisposed) {
+            if (disposable.isDisposed) {
                 Log.d(TAG, "disposed")
                 fetchCurrentUserFriends(userState)
             }
@@ -100,6 +101,18 @@ class HomeFragment : Fragment() {
         catch (e : UninitializedPropertyAccessException){
             //just resume
         }
+        try {
+            if(userState == UserState.JUST_REGISTERED){
+                Log.d(TAG, "just registered")
+                prepareforDisplayingFriends()
+                showNewUserText()
+                fetchCurrentUserFriends(UserState.LOGGED_BEFORE)
+            }
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just resume
+        }
+
     }
 
     fun handleAddFriendButton(){
