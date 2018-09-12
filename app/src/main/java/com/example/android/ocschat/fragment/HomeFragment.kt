@@ -18,6 +18,9 @@ import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.HomeViewModel
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.FlowableOnSubscribe
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -91,7 +94,7 @@ class HomeFragment : Fragment() {
         try {
             if(disposable.isDisposed) {
                 Log.d(TAG, "disposed")
-                adapter.clear()
+                //adapter.clear()
                 fetchCurrentUserFriends(userState)
             }
         }
@@ -134,8 +137,13 @@ class HomeFragment : Fragment() {
         disposable = homeViewModel.getCurrentUserFriends(userState).subscribe({
             Log.d(TAG, "Got friend at home: " + it.firstName)
             failure_list_text_view.visibility = View.GONE
-            friendsList.add(it)
-            adapter.notifyDataSetChanged()
+            if(!homeViewModel.userExists(friendsList, it)){
+                Log.d(TAG, "got user : " + it.firstName + " and displayed")
+                friendsList.add(it)
+                adapter.notifyDataSetChanged()
+            }
+            else
+                Log.d(TAG, "got user : " + it.firstName + " but not displayed")
         }, {
             Log.d(TAG, "Got throwable: " + it.message)
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()

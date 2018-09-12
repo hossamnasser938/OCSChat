@@ -1,5 +1,6 @@
 package com.example.android.ocschat.repository.impl
 
+import android.util.Log
 import com.example.android.ocschat.api.HomeApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
@@ -9,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Flowable
 
 class HomeRepositoryImpl : HomeRepository {
+
+    private val TAG = "HomeRepository"
 
     private val gate : Gate
     private val api : HomeApi
@@ -29,8 +32,16 @@ class HomeRepositoryImpl : HomeRepository {
             val friend = it.value.getValue(Friend::class.java)
             api.getUser(friend.id).flatMapPublisher {
                 val user = it.getValue(User::class.java)
-                gate.addFriend(user)
-                        .andThen(Flowable.just(user))
+                gate.isFriend(user.id).flatMapPublisher {
+                    if(!it) {
+                        Log.d(TAG, "got user : " + user.firstName + " and inserted")
+                        gate.addFriend(user).andThen(Flowable.just(user))
+                    }
+                    else{
+                        Log.d(TAG, "got user : " + user.firstName + " but not inserted")
+                        Flowable.just(user)
+                    }
+                }
             }
         }
     }
