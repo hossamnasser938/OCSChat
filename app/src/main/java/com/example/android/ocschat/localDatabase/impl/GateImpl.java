@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
+import io.reactivex.CompletableObserver;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
@@ -49,10 +50,10 @@ public class GateImpl implements Gate {
     public Single<User> getUser(String userId) {
         String[] projection = new String[] { Contract.User.COLUMN_FIRST_NAME,
                 Contract.User.COLUMN_LAST_NAME, Contract.User.COLUMN_AGE,
-                Contract.User.COLUMN_FRIENDS_COUNT, Contract.User.COLUMN_HAS_IMAGE,
-                Contract.User.COLUMN_IMAGE, Contract.User.COLUMN_EDUCATION,
-                Contract.User.COLUMN_EDUCATION_ORGANIZATION, Contract.User.COLUMN_MAJOR,
-                Contract.User.COLUMN_WORK, Contract.User.COLUMN_COMPANY };
+                Contract.User.COLUMN_HAS_IMAGE, Contract.User.COLUMN_IMAGE,
+                Contract.User.COLUMN_EDUCATION, Contract.User.COLUMN_EDUCATION_ORGANIZATION,
+                Contract.User.COLUMN_MAJOR, Contract.User.COLUMN_WORK,
+                Contract.User.COLUMN_COMPANY };
 
         String selection = Contract.User._ID + "=?";
         String[] selectionArgs = new String[]{ userId };
@@ -69,7 +70,6 @@ public class GateImpl implements Gate {
         //get columns indices
         final int firstNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_FIRST_NAME);
         final int lastNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_LAST_NAME);
-        final int friendsCountIndex = cursor.getColumnIndex(Contract.User.COLUMN_FRIENDS_COUNT);
         final int ageIndex = cursor.getColumnIndex(Contract.User.COLUMN_AGE);
         final int hasImageIndex = cursor.getColumnIndex(Contract.User.COLUMN_HAS_IMAGE);
         final int imageIndex = cursor.getColumnIndex(Contract.User.COLUMN_IMAGE);
@@ -82,7 +82,6 @@ public class GateImpl implements Gate {
         //get properties values from cursor
         String firstName = cursor.getString(firstNameIndex);
         String lastName = cursor.getString(lastNameIndex);
-        Integer friendsCount = cursor.getInt(friendsCountIndex);
         Integer age = cursor.getInt(ageIndex);
         Integer hasImage = cursor.getInt(hasImageIndex);
         if(hasImage == 1){  //User has image
@@ -100,7 +99,6 @@ public class GateImpl implements Gate {
 
         //construct User object
         final User user = new User(userId, firstName, lastName);
-        user.setFriendsCount(friendsCount);
         user.setAge(age);
         user.setEducation(education);
         user.setEducationOrganization(educationOrg);
@@ -134,6 +132,7 @@ public class GateImpl implements Gate {
                     Disposable disposable = getUser(friendId).subscribe(new Consumer<User>() {
                         @Override
                         public void accept(User user) {
+                            Log.d(TAG, "fetched user : " + user.getFirstName());
                             emitter.onNext(user);
                         }
                     }, new Consumer<Throwable>() {
@@ -144,6 +143,7 @@ public class GateImpl implements Gate {
                         }
                     });
                 }
+                Log.d(TAG, "send onComplete");
                 emitter.onComplete();
             }
         }, BackpressureStrategy.BUFFER);
@@ -207,35 +207,33 @@ public class GateImpl implements Gate {
     }
 
     /**
-     * adds friend to user in the database
-     * @param user
+     * add friend in the database
+     * @param friend
      * @return
      */
     @Override
-    public Completable addFriend(User user) {
-        Log.d(TAG, "add friend : " + user.getFirstName());
-        String currentUSerId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    public Completable addFriend(final User friend) {
+        Log.d(TAG, "add friend : " + friend.getFirstName());
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        //add friend in friends table
-        final ContentValues userFriendValues = friendToContentValues(currentUSerId, new Friend(user.getId()));
+        final ContentValues friendValues = friendToContentValues(currentUserId, new Friend(friend.getId()));
+
         //add friend as user in users table
-        final ContentValues userValues = userToContentValues(user);
-        //update current user to increment his friends count
-        final ContentValues currentUserValues = new ContentValues();
-
-        return getUser(currentUSerId).flatMapCompletable(new Function<User, CompletableSource>() {
-            @Override
-            public CompletableSource apply(User user) {
-                Log.d(TAG, "got current user");
-                currentUserValues.put(Contract.User.COLUMN_COMPANY, user.getFriendsCount() + 1);
-                if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, userFriendValues) != null && context.getContentResolver().insert(Contract.User.CONTENT_URI, userValues) != null){
-                    Log.d(TAG, "inserted friend and user in database");
-                    return Completable.complete();  //inserted successfully
-                }
-                Log.d(TAG, "error occurred");
-                return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
-            }
-        });
+        //and then add friend in friends table
+        return insertUser(friend)
+                .andThen(new CompletableSource() {
+                    @Override
+                    public void subscribe(CompletableObserver cs) {
+                        if(context.getContentResolver().insert(Contract.Friend.CONTENT_URI, friendValues) != null){
+                            Log.d(TAG, "inserted friend " + friend.getFirstName() + " in database");
+                            cs.onComplete();  //inserted successfully
+                        }
+                        else{
+                            Log.d(TAG, "error occurred");
+                            cs.onError(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+                        }
+                    }
+                });
     }
 
     @Override
@@ -287,17 +285,19 @@ public class GateImpl implements Gate {
         if(cursor == null){
             return null;
         }
-
+        Log.d(TAG, "cursor count = " + cursor.getCount());
         final int friendIdIndex = cursor.getColumnIndex(Contract.Friend.COLUMN_FRIEND_ID);
 
         final ArrayList<String> friendsIds = new ArrayList<>();
 
-        if(cursor.moveToNext()){
+        while(cursor.moveToNext()){
+            Log.d(TAG, "add friend id " + cursor.getString(friendIdIndex));
             friendsIds.add(cursor.getString(friendIdIndex));
         }
 
         cursor.close();
 
+        Log.d(TAG, "got friends ids count = " + friendsIds.size());
         return friendsIds;
     }
 
@@ -307,7 +307,6 @@ public class GateImpl implements Gate {
         values.put(Contract.User._ID, user.getId());
         values.put(Contract.User.COLUMN_FIRST_NAME, user.getFirstName());
         values.put(Contract.User.COLUMN_LAST_NAME, user.getLastName());
-        values.put(Contract.User.COLUMN_FRIENDS_COUNT, user.getFriendsCount());
         values.put(Contract.User.COLUMN_AGE, user.getAge());
         if(user.getHasImage()){
             values.put(Contract.User.COLUMN_HAS_IMAGE, 1);

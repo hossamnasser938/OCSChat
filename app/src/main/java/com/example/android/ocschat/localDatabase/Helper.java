@@ -22,7 +22,6 @@ public class Helper extends SQLiteOpenHelper {
                 + Contract.User._ID + Contract.DATA_TEXT + Contract.CONSTRAINT_PRIMARY_KEY + ", "
                 + Contract.User.COLUMN_FIRST_NAME + Contract.DATA_TEXT + Contract.CONSTRAINT_NOT_NULL + ", "
                 + Contract.User.COLUMN_LAST_NAME + Contract.DATA_TEXT + Contract.CONSTRAINT_NOT_NULL + ", "
-                + Contract.User.COLUMN_FRIENDS_COUNT + Contract.DATA_INTEGER + Contract.CONSTRAINT_NOT_NULL + ", "
                 + Contract.User.COLUMN_HAS_IMAGE + Contract.DATA_INTEGER + Contract.CONSTRAINT_DEFAULT + " \'0\'" + ", "  //default = 0: has no image
                 + Contract.User.COLUMN_IMAGE + Contract.DATA_BLOB + ", "
                 + Contract.User.COLUMN_AGE + Contract.DATA_INTEGER + ", "

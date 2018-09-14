@@ -221,11 +221,6 @@ public class OCSChatProvider extends ContentProvider {
         if(lastName == null || TextUtils.isEmpty(lastName)){
             throw new IllegalArgumentException(getContext().getString(R.string.enter_last_name));
         }
-        //validate friendsCount
-        Integer friendsCount = values.getAsInteger(Contract.User.COLUMN_FRIENDS_COUNT);
-        if(friendsCount == null || friendsCount < 0){
-            throw new IllegalArgumentException(getContext().getString(R.string.not_valid_friends_count_property));
-        }
         //Validate user age
         Integer age = values.getAsInteger(Contract.User.COLUMN_AGE);
         if(age != null){

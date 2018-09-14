@@ -34,21 +34,28 @@ class HomeRepositoryImpl : HomeRepository {
         //get current user to find his friends count
         val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
 
-        return gate.getUser(currentUserId).flatMapPublisher { currentUser ->
+        return api.getUser(currentUserId).flatMapPublisher { datasnapshot ->
+            val currentUser = datasnapshot.getValue(User::class.java)
+            Log.d(TAG, "Current user " + currentUser.firstName + " friends count = " + currentUser.friendsCount)
+            //get current user friends from api
             api.currentUserFriends.flatMap {
+                friendsFetchedCounter++
+                Log.d(TAG, "friendsFetchedCounter = " + friendsFetchedCounter)
                 val friend = it.value.getValue(Friend::class.java)
                 api.getUser(friend.id).flatMapPublisher {
                     val user = it.getValue(User::class.java)
                     gate.isFriend(user.id).flatMapPublisher {
-                        friendsFetchedCounter++
+                        //insert fetched users in local database if not inserted yet
                         if(!it) {
                             Log.d(TAG, "got user : " + user.firstName + " and inserted")
+                            //if it is the last element just and onComplete
                             if(friendsFetchedCounter == currentUser.friendsCount){
                                 Log.d(TAG, "reached last friend")
                                 gate.addFriend(user)
                                         .andThen(Flowable.create( {
                                             it.onNext(user)
                                             it.onComplete()
+                                            Log.d(TAG, "Sent on complete from getJustLoggedUserFriends")
                                         }, BackpressureStrategy.BUFFER))
                             }
                             else{

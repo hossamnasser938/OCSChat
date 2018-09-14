@@ -69,17 +69,25 @@ class HomeFragment : Fragment() {
         when(userState){
             UserState.JUST_REGISTERED -> {
                 showNewUserText()
+            }
+            UserState.JUST_LOGGED -> {
                 //set download flag in shared preferences
                 Log.d(TAG, "put needsDownload sharedPreferences")
                 sharedPreferences = activity?.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
                 sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, true)?.apply()
-            }
-            UserState.JUST_LOGGED, UserState.LOGGED_BEFORE -> {
+
                 prepareforDisplayingFriends()
 
                 //Fetch friends from repository
                 fetchCurrentUserFriends(userState)
             }
+            UserState.LOGGED_BEFORE -> {
+                prepareforDisplayingFriends()
+
+                //Fetch friends from repository
+                fetchCurrentUserFriends(userState)
+            }
+
         }
 
         handleAddFriendButton()
@@ -104,18 +112,23 @@ class HomeFragment : Fragment() {
             }
         }
         catch (e : UninitializedPropertyAccessException){
-            //just resume
-        }
-        try {
-            if(userState == UserState.JUST_REGISTERED){
-                Log.d(TAG, "just registered")
+            //if disposable has not been initialized before so check just registered user state
+            try {
+                if(userState == UserState.JUST_REGISTERED){
+                    Log.d(TAG, "just registered")
+                    //try to access adapter to see if it has been initialized or not
+                    adapter.toString()
+                    //if it has been initialized fetch friends
+                    showNewUserText()
+                    fetchCurrentUserFriends(UserState.LOGGED_BEFORE)
+                }
+            }
+            catch (e : UninitializedPropertyAccessException){
+                //if the adapter has not been initialized initialize it
+                Log.d(TAG, "adapter has not been initialized")
                 prepareforDisplayingFriends()
                 showNewUserText()
-                fetchCurrentUserFriends(UserState.LOGGED_BEFORE)
             }
-        }
-        catch (e : UninitializedPropertyAccessException){
-            //just resume
         }
 
     }

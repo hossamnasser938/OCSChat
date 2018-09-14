@@ -34,7 +34,6 @@ public class Contract {
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_FIRST_NAME = "First_Name";
         public static final String COLUMN_LAST_NAME = "Last_Name";
-        public static final String COLUMN_FRIENDS_COUNT = "Friends_Count";
         public static final String COLUMN_HAS_IMAGE = "Has_Image";
         public static final String COLUMN_IMAGE = "Image";
         public static final String COLUMN_AGE = "Age";
