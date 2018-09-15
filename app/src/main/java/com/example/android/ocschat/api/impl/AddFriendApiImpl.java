@@ -1,5 +1,7 @@
 package com.example.android.ocschat.api.impl;
 
+import android.util.Log;
+
 import com.example.android.ocschat.api.AddFriendApi;
 import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
@@ -22,6 +24,8 @@ import io.reactivex.functions.Function;
 
 public class AddFriendApiImpl implements AddFriendApi {
 
+    private final String TAG = "AddFriendIapiImpl";
+
     @Override
     public Flowable<RxFirebaseChildEvent<DataSnapshot>> getAllUsers() {
         DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
@@ -37,6 +41,8 @@ public class AddFriendApiImpl implements AddFriendApi {
     @Override
     public Completable addFriend(final Friend friend){
         //Add a friend to the current user
+        Log.d(TAG, "add friend");
+
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
         return getUser(currentUserId).flatMapCompletable(new Function<DataSnapshot, CompletableSource>() {
@@ -54,8 +60,10 @@ public class AddFriendApiImpl implements AddFriendApi {
 
     private Completable confirmAddFriend(final Friend friend) {
         //Add the current user as a friend to friend
+        Log.d(TAG, "confirm add friend");
+
         final String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(friend.getId());
+        final DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
         return getUser(friend.getId()).flatMapCompletable(new Function<DataSnapshot, CompletableSource>() {
             @Override
             public CompletableSource apply(DataSnapshot dataSnapshot) throws Exception {
