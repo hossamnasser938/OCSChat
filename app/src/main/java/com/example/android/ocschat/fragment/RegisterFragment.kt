@@ -32,8 +32,6 @@ class RegisterFragment : Fragment() {
 
     private lateinit var transient: LoginFragment.LoginTransitionInterface
 
-    private lateinit var filePath: Uri //postponed
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
@@ -48,22 +46,6 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setNextButtonOnClickListener()
         setClickLoginOnClickListener()
-        setChooseProfilePictureClickListener() //Postponed
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //postponed
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            filePath = data.data
-            try {
-                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
-                register_user_image_view.setImageBitmap(bitmap)
-                choose_image_text_view.visibility = View.GONE
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
     }
 
     private fun setNextButtonOnClickListener(){
@@ -127,18 +109,8 @@ class RegisterFragment : Fragment() {
     }
 
 
-    private fun setChooseProfilePictureClickListener(){
-        register_user_image_view.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
-        }
-    }
-
-
     /**
-     * extract email and password of user in a HashMap
+     * extract user inputs in a HashMap
      */
     private fun getUserInput() : HashMap<String, Any>{
         val userInput : HashMap<String, Any> = HashMap()

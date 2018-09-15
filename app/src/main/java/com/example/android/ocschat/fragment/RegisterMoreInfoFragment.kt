@@ -1,7 +1,10 @@
 package com.example.android.ocschat.fragment
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,14 +19,18 @@ import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.LoginViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_register_more_info.*
+import java.io.IOException
 import javax.inject.Inject
 
 class RegisterMoreInfoFragment : Fragment() {
 
     @Inject
     lateinit var loginViewModel : LoginViewModel
+
     private lateinit var disposable : Disposable
     private lateinit var transient: LoginFragment.LoginTransitionInterface
+
+    private lateinit var filePath: Uri
 
     companion object {
         fun newInstance(map : HashMap<String, Any>) : RegisterMoreInfoFragment{
@@ -51,6 +58,7 @@ class RegisterMoreInfoFragment : Fragment() {
         //get inputs received from Register fragment as arguments
         val userInputs = arguments?.getSerializable(Constants.INPUTS_KEY) as HashMap<String, Any>
 
+        setChooseProfilePictureClickListener()
         setClickLoginOnClickListener()
         setRegisterButtonClickListener(userInputs)
     }
@@ -60,6 +68,30 @@ class RegisterMoreInfoFragment : Fragment() {
 
         try { disposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //postponed
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            filePath = data.data
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
+                register_user_image_view.setImageBitmap(bitmap)
+                register_choose_image_text_view.visibility = View.GONE
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+    }
+
+    private fun setChooseProfilePictureClickListener(){
+        register_user_image_view.setOnClickListener {
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_GET_CONTENT
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
+        }
     }
 
     private fun setRegisterButtonClickListener(inputs : HashMap<String, Any>){

@@ -41,30 +41,6 @@
         android:visibility="gone"
         android:textColor="@color/red" />
 
-    <!-- Postponed functionality -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/default16_margin"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/register_user_image_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/person_placeholder"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true" />
-
-        <TextView
-            android:id="@+id/choose_image_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="@string/choose_profile_picture" />
-
-    </RelativeLayout>
-
     <Button
         android:id="@+id/next_button"
         style="@style/RegisterFields"
