@@ -28,12 +28,12 @@ class HomeFragment : Fragment() {
 
     private val TAG = "HomeFragment"
 
+    @Inject
+    lateinit var homeViewModel : HomeViewModel
+
     private var sharedPreferences : SharedPreferences? = null
 
     private lateinit var userState: UserState
-
-    @Inject
-    lateinit var homeViewModel : HomeViewModel
 
     private lateinit var disposable: Disposable
 
@@ -54,6 +54,7 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
+        sharedPreferences = activity?.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,6 +65,8 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onViewCreated executes")
         super.onViewCreated(view, savedInstanceState)
 
+        handleAddFriendButton()
+
         userState = arguments?.getSerializable(Constants.USER_STATE_KEY) as UserState
         Log.d(TAG, userState.name)
         when(userState){
@@ -73,24 +76,32 @@ class HomeFragment : Fragment() {
             UserState.JUST_LOGGED -> {
                 //set download flag in shared preferences
                 Log.d(TAG, "put needsDownload sharedPreferences")
-                sharedPreferences = activity?.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
                 sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, true)?.apply()
-
+                Log.d(TAG, "needsDownload = " + sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false))
+                //download friends
                 prepareforDisplayingFriends()
-
-                //Fetch friends from repository
                 fetchCurrentUserFriends(userState)
             }
             UserState.LOGGED_BEFORE -> {
                 prepareforDisplayingFriends()
 
-                //Fetch friends from repository
-                fetchCurrentUserFriends(userState)
+                Log.d(TAG, "check download flag")
+                val downloadFlag = sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false)
+                if(downloadFlag != null){
+                    Log.d(TAG, "Download flag = " + downloadFlag)
+                    if(downloadFlag){
+                        fetchCurrentUserFriends(UserState.JUST_LOGGED)
+                    }
+                    else{
+                        fetchCurrentUserFriends(userState)  //normal logged before
+                    }
+                }
+                else{
+                    throw error(R.string.shared_preferences_error)
+                }
             }
 
         }
-
-        handleAddFriendButton()
     }
 
     override fun onPause() {
@@ -108,7 +119,26 @@ class HomeFragment : Fragment() {
         try {
             if (disposable.isDisposed) {
                 Log.d(TAG, "disposed")
-                fetchCurrentUserFriends(userState)
+                //check if user has just logged but already downloaded friends
+                if(userState == UserState.JUST_LOGGED){
+                    Log.d(TAG, "check download flag")
+                    val downloadFlag = sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false)
+                    if(downloadFlag != null){
+                        Log.d(TAG, "Download flag = " + downloadFlag)
+                        if(downloadFlag){
+                            fetchCurrentUserFriends(userState)
+                        }
+                        else{
+                            fetchCurrentUserFriends(UserState.LOGGED_BEFORE)  //normal logged before
+                        }
+                    }
+                    else{
+                        throw error(R.string.shared_preferences_error)
+                    }
+                }
+                else{
+                    fetchCurrentUserFriends(userState)
+                }
             }
         }
         catch (e : UninitializedPropertyAccessException){
@@ -119,15 +149,13 @@ class HomeFragment : Fragment() {
                     //try to access adapter to see if it has been initialized or not
                     adapter.toString()
                     //if it has been initialized fetch friends
-                    showNewUserText()
-                    fetchCurrentUserFriends(UserState.LOGGED_BEFORE)
+                    fetchCurrentUserFriends(userState)
                 }
             }
             catch (e : UninitializedPropertyAccessException){
                 //if the adapter has not been initialized initialize it
                 Log.d(TAG, "adapter has not been initialized")
                 prepareforDisplayingFriends()
-                showNewUserText()
             }
         }
 
@@ -141,8 +169,6 @@ class HomeFragment : Fragment() {
     }
 
     fun prepareforDisplayingFriends(){
-        showEmptyListText()
-
         val layoutManager = LinearLayoutManager(context)
 
         friends_recycler_view.layoutManager = layoutManager
@@ -163,9 +189,16 @@ class HomeFragment : Fragment() {
                         }))
     }
 
-    private fun fetchCurrentUserFriends(userState: UserState) {
-        disposable = homeViewModel.getCurrentUserFriends(userState).subscribe({
-            failure_list_text_view.visibility = View.GONE
+    private fun fetchCurrentUserFriends(sentUserState: UserState) {
+        //show loading progress bar
+        loading_progress_bar.visibility = View.VISIBLE
+        //hide failure list text
+        failure_list_text_view.visibility = View.GONE
+
+        disposable = homeViewModel.getCurrentUserFriends(sentUserState).subscribe({
+            //hide loading progress bar
+            loading_progress_bar.visibility = View.GONE
+
             if(!Utils.userExistsInList(friendsList, it)){
                 Log.d(TAG, "got user : " + it.firstName + " and displayed")
                 friendsList.add(it)
@@ -179,10 +212,34 @@ class HomeFragment : Fragment() {
         }, {
             //onComplete
             Log.d(TAG, "onComplete getUserFriends")
-            if(userState == UserState.JUST_REGISTERED){
+            //if loading progress bar is still visible hence user has no friends
+            if(loading_progress_bar.visibility == View.VISIBLE){
+                Log.d(TAG, "hide loading PB")
+                loading_progress_bar.visibility = View.GONE
+                when(sentUserState){
+                    UserState.JUST_LOGGED -> {
+                        Log.d(TAG, "show empty list text")
+                        showEmptyListText()
+                    }
+                    UserState.LOGGED_BEFORE -> {
+                        if(userState == sentUserState){  //user logged before
+                            Log.d(TAG, "show empty list text")
+                            showEmptyListText()
+                        }
+                        else{  //user just registered
+                            Log.d(TAG, "show new user text")
+                            showNewUserText()
+                        }
+
+                    }
+                }
+            }
+
+            if(sentUserState == UserState.JUST_LOGGED){
                 //clear download flag in shared preferences
                 Log.d(TAG, "onComplete set needsDownload false")
                 sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, false)?.apply()
+                Log.d(TAG, "needsDownload = " + sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false))
             }
         })
     }

@@ -37,43 +37,45 @@ class HomeRepositoryImpl : HomeRepository {
         return api.getUser(currentUserId).flatMapPublisher { datasnapshot ->
             val currentUser = datasnapshot.getValue(User::class.java)
             Log.d(TAG, "Current user " + currentUser.firstName + " friends count = " + currentUser.friendsCount)
-            //get current user friends from api
-            api.currentUserFriends.flatMap {
-                friendsFetchedCounter++
-                Log.d(TAG, "friendsFetchedCounter = " + friendsFetchedCounter)
-                val friend = it.value.getValue(Friend::class.java)
-                api.getUser(friend.id).flatMapPublisher {
-                    val user = it.getValue(User::class.java)
-                    gate.isFriend(user.id).flatMapPublisher {
-                        //insert fetched users in local database if not inserted yet
-                        if(!it) {
-                            Log.d(TAG, "got user : " + user.firstName + " and inserted")
-                            //if it is the last element just and onComplete
-                            if(friendsFetchedCounter == currentUser.friendsCount){
-                                Log.d(TAG, "reached last friend")
-                                gate.addFriend(user)
-                                        .andThen(Flowable.create( {
-                                            it.onNext(user)
-                                            it.onComplete()
-                                            Log.d(TAG, "Sent on complete from getJustLoggedUserFriends")
-                                        }, BackpressureStrategy.BUFFER))
-                            }
-                            else{
-                                Log.d(TAG, "did not reach last friend")
-                                gate.addFriend(user).andThen(Flowable.just(user))
-                            }
+            //check if user has friends to download or not
+            if(currentUser.friendsCount == 0){
+                //user has no friends
+                Flowable.create( {
+                    it.onComplete()
+                }, BackpressureStrategy.BUFFER)
+            }
+            else{
+                //user has friends so get his friends from api
+                api.currentUserFriends.flatMap {
+                    val friend = it.value.getValue(Friend::class.java)
+                    api.getUser(friend.id).flatMapPublisher {
+                        val user = it.getValue(User::class.java)
+                        gate.isFriend(user.id).flatMapPublisher {
+                            //insert fetched users in local database if not inserted yet
+                            if(!it) {
+                                friendsFetchedCounter++
+                                Log.d(TAG, "friendsFetchedCounter = " + friendsFetchedCounter)
 
-                        }
-                        else{
-                            Log.d(TAG, "got user : " + user.firstName + " but not inserted")
-                            if(friendsFetchedCounter == currentUser.friendsCount){
-                                Log.d(TAG, "reached last friend")
-                                Flowable.create( {
-                                    it.onNext(user)
-                                    it.onComplete()
-                                }, BackpressureStrategy.BUFFER)
+                                Log.d(TAG, "got user : " + user.firstName + " and inserted")
+                                //if it is the last element just and onComplete
+                                if(friendsFetchedCounter == currentUser.friendsCount){
+                                    Log.d(TAG, "reached last friend")
+                                    gate.addFriend(user)
+                                            .andThen(Flowable.create( {
+                                                Log.d(TAG, "last friend = " + user.firstName)
+                                                it.onNext(user)
+                                                it.onComplete()
+                                                Log.d(TAG, "Sent on complete from getJustLoggedUserFriends")
+                                            }, BackpressureStrategy.BUFFER))
+                                }
+                                else{
+                                    Log.d(TAG, "did not reach last friend")
+                                    gate.addFriend(user).andThen(Flowable.just(user))
+                                }
+
                             }
                             else{
+                                Log.d(TAG, "got user : " + user.firstName + " but not inserted")
                                 Log.d(TAG, "did not reach last friend")
                                 Flowable.just(user)
                             }
@@ -83,9 +85,7 @@ class HomeRepositoryImpl : HomeRepository {
                 }
             }
         }
-        }
-
-
+    }
 
     override fun clearDatabase() {
         gate.clearDatabase()

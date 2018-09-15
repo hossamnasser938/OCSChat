@@ -19,16 +19,17 @@ HomeViewModelImpl : HomeViewModel {
 
 
     override fun getCurrentUserFriends(userState: UserState) : Flowable<User> {
-        if(userState == UserState.JUST_LOGGED){
-               return repository.justLoggedUserFriends
-                       .subscribeOn(Schedulers.io())
-                       .observeOn(AndroidSchedulers.mainThread())
-        }
-        else{
-            //Default: UserState.LOGGED_BEFORE
-            return repository.currentUserFriends
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+        when(userState){
+            UserState.JUST_LOGGED -> {
+                return repository.justLoggedUserFriends
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+            }
+            UserState.LOGGED_BEFORE, UserState.JUST_REGISTERED -> {
+                return repository.currentUserFriends
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+            }
         }
     }
 
