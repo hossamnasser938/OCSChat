@@ -1,5 +1,7 @@
 package com.example.android.ocschat.repository.impl;
 
+import android.content.Context;
+
 import com.example.android.ocschat.api.AddFriendApi;
 import com.example.android.ocschat.api.ChatApi;
 import com.example.android.ocschat.api.HomeApi;
@@ -31,8 +33,8 @@ public class RepositoryModule {
     }
 
     @Provides @Singleton
-    public HomeRepository provideHomeRepository(Gate gate, HomeApi api){
-        return new HomeRepositoryImpl(gate, api);
+    public HomeRepository provideHomeRepository(Gate gate, HomeApi api, Context context){
+        return new HomeRepositoryImpl(gate, api, context);
     }
 
     @Provides @Singleton

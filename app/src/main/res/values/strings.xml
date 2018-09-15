@@ -65,5 +65,5 @@
     <string name="signed_in">Signed in successfully</string>
     <string name="signed_out">Signed out successfully</string>
     <string name="new_user_message">Add Friends and start chatting now</string>
-    <string name="shared_preferences_error">"Error getting shared preferences"</string>
+    <string name="shared_preferences_error">"Error from shared preferences"</string>
 </resources>

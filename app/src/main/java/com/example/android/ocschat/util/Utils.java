@@ -1,15 +1,21 @@
 package com.example.android.ocschat.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.nfc.Tag;
+import android.util.Log;
 
+import com.example.android.ocschat.R;
 import com.example.android.ocschat.model.User;
 
 import java.util.List;
 import java.util.function.Consumer;
 
 public class Utils {
+
+    private final static String TAG = "Utils";
 
     /**
      * checks if the device is connected to the internet or not
@@ -87,6 +93,29 @@ public class Utils {
             }
         }
         return false;
+    }
+
+    public static void setDownloadFlag(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(Constants.DOWNLOAD_FLAG_KEY, true).apply();
+        Log.d(TAG, "set download flag");
+    }
+
+    public static void clearDownloadFlag(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean(Constants.DOWNLOAD_FLAG_KEY, false).apply();
+        Log.d(TAG, "clear download flag");
+    }
+
+    public  static boolean isDownloadFlag(Context context) throws Exception{
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        if(sharedPreferences.contains(Constants.DOWNLOAD_FLAG_KEY)){
+            return sharedPreferences.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false);
+        }
+        else {
+            throw new Exception(context.getString(R.string.shared_preferences_error));
+        }
+
     }
 
 }

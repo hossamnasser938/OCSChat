@@ -1,11 +1,15 @@
 package com.example.android.ocschat.repository.impl
 
+import android.content.Context
 import android.util.Log
 import com.example.android.ocschat.api.HomeApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.HomeRepository
+import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.OCSChatThrowable
+import com.example.android.ocschat.util.Utils
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
@@ -18,10 +22,12 @@ class HomeRepositoryImpl : HomeRepository {
 
     private val gate : Gate
     private val api : HomeApi
+    private val context : Context
 
-    constructor(gate: Gate, api : HomeApi) {
+    constructor(gate: Gate, api : HomeApi, context : Context) {
         this.gate = gate
         this.api = api
+        this.context = context
     }
 
     override fun getCurrentUserFriends(): Flowable<User> {
@@ -53,30 +59,25 @@ class HomeRepositoryImpl : HomeRepository {
                         gate.isFriend(user.id).flatMapPublisher {
                             //insert fetched users in local database if not inserted yet
                             if(!it) {
+                                Log.d(TAG, "got user : " + user.firstName + " and inserted")
+
                                 friendsFetchedCounter++
                                 Log.d(TAG, "friendsFetchedCounter = " + friendsFetchedCounter)
 
-                                Log.d(TAG, "got user : " + user.firstName + " and inserted")
-                                //if it is the last element just and onComplete
+                                //if it is the last element clear download flag
                                 if(friendsFetchedCounter == currentUser.friendsCount){
                                     Log.d(TAG, "reached last friend")
-                                    gate.addFriend(user)
-                                            .andThen(Flowable.create( {
-                                                Log.d(TAG, "last friend = " + user.firstName)
-                                                it.onNext(user)
-                                                it.onComplete()
-                                                Log.d(TAG, "Sent on complete from getJustLoggedUserFriends")
-                                            }, BackpressureStrategy.BUFFER))
+                                    Utils.clearDownloadFlag(context)
+                                    Log.d(TAG, "Download flag = " + Utils.isDownloadFlag(context))
                                 }
                                 else{
                                     Log.d(TAG, "did not reach last friend")
-                                    gate.addFriend(user).andThen(Flowable.just(user))
                                 }
+                                gate.addFriend(user).andThen(Flowable.just(user))
 
                             }
                             else{
                                 Log.d(TAG, "got user : " + user.firstName + " but not inserted")
-                                Log.d(TAG, "did not reach last friend")
                                 Flowable.just(user)
                             }
 
@@ -90,4 +91,5 @@ class HomeRepositoryImpl : HomeRepository {
     override fun clearDatabase() {
         gate.clearDatabase()
     }
+
 }

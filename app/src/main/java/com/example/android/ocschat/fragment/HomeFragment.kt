@@ -1,8 +1,6 @@
 package com.example.android.ocschat.fragment
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -22,6 +20,7 @@ import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.eclipse.jdt.internal.core.util.Util
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
@@ -30,8 +29,6 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var homeViewModel : HomeViewModel
-
-    private var sharedPreferences : SharedPreferences? = null
 
     private lateinit var userState: UserState
 
@@ -54,7 +51,6 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
-        sharedPreferences = activity?.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -76,8 +72,8 @@ class HomeFragment : Fragment() {
             UserState.JUST_LOGGED -> {
                 //set download flag in shared preferences
                 Log.d(TAG, "put needsDownload sharedPreferences")
-                sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, true)?.apply()
-                Log.d(TAG, "needsDownload = " + sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false))
+                Utils.setDownloadFlag(context)
+                Log.d(TAG, "needsDownload = " + Utils.isDownloadFlag(context))
                 //download friends
                 prepareforDisplayingFriends()
                 fetchCurrentUserFriends(userState)
@@ -86,21 +82,15 @@ class HomeFragment : Fragment() {
                 prepareforDisplayingFriends()
 
                 Log.d(TAG, "check download flag")
-                val downloadFlag = sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false)
-                if(downloadFlag != null){
-                    Log.d(TAG, "Download flag = " + downloadFlag)
-                    if(downloadFlag){
-                        fetchCurrentUserFriends(UserState.JUST_LOGGED)
-                    }
-                    else{
-                        fetchCurrentUserFriends(userState)  //normal logged before
-                    }
+                val downloadFlag = Utils.isDownloadFlag(context)
+                Log.d(TAG, "Download flag = " + downloadFlag)
+                if(downloadFlag){
+                    fetchCurrentUserFriends(UserState.JUST_LOGGED)
                 }
                 else{
-                    throw error(R.string.shared_preferences_error)
+                    fetchCurrentUserFriends(userState)  //normal logged before
                 }
             }
-
         }
     }
 
@@ -122,18 +112,13 @@ class HomeFragment : Fragment() {
                 //check if user has just logged but already downloaded friends
                 if(userState == UserState.JUST_LOGGED){
                     Log.d(TAG, "check download flag")
-                    val downloadFlag = sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false)
-                    if(downloadFlag != null){
-                        Log.d(TAG, "Download flag = " + downloadFlag)
-                        if(downloadFlag){
-                            fetchCurrentUserFriends(userState)
-                        }
-                        else{
-                            fetchCurrentUserFriends(UserState.LOGGED_BEFORE)  //normal logged before
-                        }
+                    val downloadFlag = Utils.isDownloadFlag(context)
+                    Log.d(TAG, "Download flag = " + downloadFlag)
+                    if(downloadFlag){
+                        fetchCurrentUserFriends(userState)
                     }
                     else{
-                        throw error(R.string.shared_preferences_error)
+                        fetchCurrentUserFriends(UserState.LOGGED_BEFORE)  //normal logged before
                     }
                 }
                 else{
@@ -211,35 +196,21 @@ class HomeFragment : Fragment() {
             Toast.makeText(context, Constants.FAILED_LOADING_FRIENDS, Toast.LENGTH_SHORT).show()
         }, {
             //onComplete
-            Log.d(TAG, "onComplete getUserFriends")
+            Log.d(TAG, "received onComplete getUserFriends")
             //if loading progress bar is still visible hence user has no friends
             if(loading_progress_bar.visibility == View.VISIBLE){
                 Log.d(TAG, "hide loading PB")
                 loading_progress_bar.visibility = View.GONE
                 when(sentUserState){
-                    UserState.JUST_LOGGED -> {
+                    UserState.JUST_LOGGED, UserState.LOGGED_BEFORE -> {
                         Log.d(TAG, "show empty list text")
                         showEmptyListText()
                     }
-                    UserState.LOGGED_BEFORE -> {
-                        if(userState == sentUserState){  //user logged before
-                            Log.d(TAG, "show empty list text")
-                            showEmptyListText()
-                        }
-                        else{  //user just registered
-                            Log.d(TAG, "show new user text")
-                            showNewUserText()
-                        }
-
+                    UserState.JUST_REGISTERED -> {
+                        Log.d(TAG, "show new user text")
+                        showNewUserText()
                     }
                 }
-            }
-
-            if(sentUserState == UserState.JUST_LOGGED){
-                //clear download flag in shared preferences
-                Log.d(TAG, "onComplete set needsDownload false")
-                sharedPreferences?.edit()?.putBoolean(Constants.DOWNLOAD_FLAG_KEY, false)?.apply()
-                Log.d(TAG, "needsDownload = " + sharedPreferences?.getBoolean(Constants.DOWNLOAD_FLAG_KEY, false))
             }
         })
     }
