@@ -16,7 +16,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
-public class ChatApiImpl implements ChatApi {
+class ChatApiImpl implements ChatApi {
 
     @Override
     public Flowable<RxFirebaseChildEvent<DataSnapshot>> getMessages(String friendId) throws OCSChatThrowable {

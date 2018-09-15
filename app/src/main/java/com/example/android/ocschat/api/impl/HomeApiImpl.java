@@ -14,7 +14,7 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
-public class HomeApiImpl implements HomeApi {
+class HomeApiImpl implements HomeApi {
 
     private static final String TAG = "HomeApiImpl";
 

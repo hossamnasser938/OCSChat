@@ -1,6 +1,5 @@
 package com.example.android.ocschat.api.impl;
 
-
 import com.example.android.ocschat.api.LoginApi;
 import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;
@@ -15,7 +14,7 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 
-public class LoginApiImpl implements LoginApi {
+class LoginApiImpl implements LoginApi {
 
     @Override
     public Maybe<AuthResult> registerInFirebaseAuth(String email, String password) {

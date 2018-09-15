@@ -22,7 +22,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.functions.Function;
 
-public class AddFriendApiImpl implements AddFriendApi {
+class AddFriendApiImpl implements AddFriendApi {
 
     private final String TAG = "AddFriendIapiImpl";
 

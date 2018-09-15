@@ -17,7 +17,7 @@ import io.reactivex.CompletableSource;
 import io.reactivex.Maybe;
 import io.reactivex.functions.Function;
 
-public class SettingsApiImpl implements SettingsApi {
+class SettingsApiImpl implements SettingsApi {
 
     @Override
     public Completable updateCurrentUser(User user) {

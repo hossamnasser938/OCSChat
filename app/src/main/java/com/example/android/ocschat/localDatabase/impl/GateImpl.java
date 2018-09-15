@@ -31,7 +31,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
-public class GateImpl implements Gate {
+class GateImpl implements Gate {
 
     private final String TAG = "GateImpl";
 
