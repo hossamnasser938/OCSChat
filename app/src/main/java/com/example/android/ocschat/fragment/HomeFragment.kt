@@ -68,10 +68,13 @@ class HomeFragment : Fragment() {
         when(userState){
             UserState.JUST_REGISTERED -> {
                 showNewUserText()
+                Log.d(TAG, "clear Download flag")
+                Utils.clearDownloadFlag(context)
+                Log.d(TAG, "needsDownload = " + Utils.isDownloadFlag(context))
             }
             UserState.JUST_LOGGED -> {
                 //set download flag in shared preferences
-                Log.d(TAG, "put needsDownload sharedPreferences")
+                Log.d(TAG, "set Download flag")
                 Utils.setDownloadFlag(context)
                 Log.d(TAG, "needsDownload = " + Utils.isDownloadFlag(context))
                 //download friends
