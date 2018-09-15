@@ -13,15 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.HashMap
 
-class LoginRepositoryImpl : LoginRepository {
-
-    private val gate : Gate
-    private val api : LoginApi
-
-    constructor(gate: Gate, api: LoginApi) {
-        this.gate = gate
-        this.api = api
-    }
+class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : LoginRepository {
 
     override fun register(body: HashMap<String, Any>): Completable {
         return api.registerInFirebaseAuth(body[Constants.EMAIL_KEY] as String, body[Constants.PASSWORD_KEY] as String)

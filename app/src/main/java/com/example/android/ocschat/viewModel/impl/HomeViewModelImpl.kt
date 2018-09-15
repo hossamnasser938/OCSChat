@@ -8,15 +8,7 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class
-HomeViewModelImpl : HomeViewModel {
-
-    private val repository : HomeRepository
-
-    constructor(repository : HomeRepository) {
-        this.repository = repository
-    }
-
+class HomeViewModelImpl(private val repository: HomeRepository) : HomeViewModel {
 
     override fun getCurrentUserFriends(userState: UserState) : Flowable<User> {
         when(userState){

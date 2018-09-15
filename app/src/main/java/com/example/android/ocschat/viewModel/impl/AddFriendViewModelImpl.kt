@@ -9,13 +9,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class AddFriendViewModelImpl : AddFriendViewModel {
-
-    private val repository : AddFriendRepository
-
-    constructor(repository : AddFriendRepository) {
-        this.repository = repository
-    }
+class AddFriendViewModelImpl(private val repository: AddFriendRepository) : AddFriendViewModel {
 
     override fun getSuggestedUsers(): Flowable<User> {
         return repository.currentUserFriends

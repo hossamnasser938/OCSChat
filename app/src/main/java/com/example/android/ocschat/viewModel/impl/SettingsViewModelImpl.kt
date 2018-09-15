@@ -8,13 +8,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class SettingsViewModelImpl : SettingsViewModel {
-
-    private val repository : SettingsRepository
-
-    constructor(repository : SettingsRepository) {
-        this.repository = repository
-    }
+class SettingsViewModelImpl(private val repository: SettingsRepository) : SettingsViewModel {
 
     override fun getUser(uid: String?): Single<User> {
         return repository.getUser(uid)

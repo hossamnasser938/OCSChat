@@ -9,15 +9,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class ChatRepositoryImpl : ChatRepository {
-
-    private val gate : Gate
-    private val api : ChatApi
-
-    constructor(gate: Gate, api: ChatApi) {
-        this.gate = gate
-        this.api = api
-    }
+class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi) : ChatRepository {
 
     override fun getMessages(friendId: String?): Flowable<Message> {
         return api.getMessages(friendId).flatMap {

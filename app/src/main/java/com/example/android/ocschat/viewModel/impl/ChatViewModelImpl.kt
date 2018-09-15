@@ -10,13 +10,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class ChatViewModelImpl : ChatViewModel {
-
-    private var repository : ChatRepository
-
-    constructor(repository : ChatRepository) {
-        this.repository = repository
-    }
+class ChatViewModelImpl(private var repository: ChatRepository) : ChatViewModel {
 
     override fun getMessages(friendId: String?): Flowable<Message> {
         return repository.getMessages(friendId)

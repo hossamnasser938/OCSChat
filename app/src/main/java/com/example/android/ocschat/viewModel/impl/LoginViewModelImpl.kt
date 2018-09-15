@@ -9,13 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import java.util.*
 
 
-class LoginViewModelImpl : LoginViewModel {
-
-    private val repository : LoginRepository
-
-    constructor(repository : LoginRepository) {
-        this.repository = repository
-    }
+class LoginViewModelImpl(private val repository: LoginRepository) : LoginViewModel {
 
     override fun register(body: HashMap<String, Any>): Completable {
         return repository.register(body)
