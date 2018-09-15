@@ -44,7 +44,6 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
                 openFragment(HomeFragment.newInstance(userState))
             }
             else{
-                //
                 Log.d(TAG, "default logging get needsDownload sharedPreferences")
                 val prefs = getSharedPreferences("prefs", Context.MODE_PRIVATE)
                 if(prefs.contains("needsDownload")){
@@ -61,15 +60,13 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
                 else {
                     openFragment(HomeFragment.newInstance(UserState.LOGGED_BEFORE))
                 }
-                //
             }
-
         }
-
     }
 
     override fun openFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
+        supportFragmentManager
+                .beginTransaction()
                 .replace(R.id.home_frame_layout, fragment)
                 .commit()
     }
@@ -99,6 +96,6 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
     }
 
     override fun onBackPressed() {
-        //Nothing
+        finishAffinity()
     }
 }
