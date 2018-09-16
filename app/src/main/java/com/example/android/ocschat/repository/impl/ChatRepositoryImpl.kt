@@ -9,7 +9,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi) : ChatRepository {
+class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi) : BaseRepository(gate), ChatRepository {
 
     override fun getMessages(friendId: String?): Flowable<Message> {
         return api.getMessages(friendId).flatMap {
@@ -20,10 +20,6 @@ class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi) : Cha
 
     override fun pushMessage(friendId: String?, message: Message?): Completable {
         return api.pushMessage(friendId, message)
-    }
-
-    override fun getUser(userid: String?): Single<User> {
-        return gate.getUser(userid)
     }
 
 

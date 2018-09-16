@@ -22,7 +22,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.functions.Function;
 
-class AddFriendApiImpl implements AddFriendApi {
+class AddFriendApiImpl extends BaseApi implements AddFriendApi {
 
     private final String TAG = "AddFriendIapiImpl";
 
@@ -31,12 +31,6 @@ class AddFriendApiImpl implements AddFriendApi {
         DatabaseReference usersReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY);
         return RxFirebaseDatabase.observeChildEvent(usersReference);
     }
-
-    private Maybe<DataSnapshot> getUser(String uid){
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
-        return RxFirebaseDatabase.observeSingleValueEvent(userReference);
-    }
-
 
     @Override
     public Completable addFriend(final Friend friend){

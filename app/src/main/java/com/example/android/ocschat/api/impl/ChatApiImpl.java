@@ -16,7 +16,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
-class ChatApiImpl implements ChatApi {
+class ChatApiImpl extends BaseApi implements ChatApi {
 
     @Override
     public Flowable<RxFirebaseChildEvent<DataSnapshot>> getMessages(String friendId) throws OCSChatThrowable {
@@ -34,9 +34,4 @@ class ChatApiImpl implements ChatApi {
         return RxFirebaseDatabase.setValue(messagesRef, message);
     }
 
-    @Override
-    public Maybe<DataSnapshot> getUser(String userId) {  //TODO: remove
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(userId);
-        return RxFirebaseDatabase.observeSingleValueEvent(userRef);
-    }
 }

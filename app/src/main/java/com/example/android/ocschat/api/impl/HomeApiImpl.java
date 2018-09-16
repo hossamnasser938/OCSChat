@@ -12,7 +12,7 @@ import durdinapps.rxfirebase2.RxFirebaseDatabase;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 
-class HomeApiImpl implements HomeApi {
+class HomeApiImpl extends BaseApi implements HomeApi {
 
     private static final String TAG = "HomeApiImpl";
 
@@ -24,12 +24,4 @@ class HomeApiImpl implements HomeApi {
 
         return RxFirebaseDatabase.observeChildEvent(currentUserFriendsReference);
     }
-
-    @Override
-    public Maybe<DataSnapshot> getUser(String uid) {
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
-
-        return RxFirebaseDatabase.observeSingleValueEvent(userReference);
-    }
-
 }

@@ -5,6 +5,7 @@ import com.example.android.ocschat.repository.ChatRepository;
 import com.example.android.ocschat.repository.HomeRepository;
 import com.example.android.ocschat.repository.LoginRepository;
 import com.example.android.ocschat.repository.SettingsRepository;
+import com.example.android.ocschat.repository.impl.BaseRepository;
 import com.example.android.ocschat.viewModel.AddFriendViewModel;
 import com.example.android.ocschat.viewModel.ChatViewModel;
 import com.example.android.ocschat.viewModel.HomeViewModel;
@@ -20,28 +21,28 @@ import dagger.Provides;
 public class ViewModelModule {
 
     @Provides @Singleton
-    LoginViewModel provideLoginViewModel(LoginRepository repository){
-        return new LoginViewModelImpl(repository);
+    LoginViewModel provideLoginViewModel(LoginRepository repository, BaseRepository baseRepository){
+        return new LoginViewModelImpl(repository, baseRepository);
     }
 
     @Provides @Singleton
-    HomeViewModel provideHomeViewModel(HomeRepository repository){
-        return new HomeViewModelImpl(repository);
+    HomeViewModel provideHomeViewModel(HomeRepository repository, BaseRepository baseRepository){
+        return new HomeViewModelImpl(repository, baseRepository);
     }
 
     @Provides @Singleton
-    AddFriendViewModel provideAddFriendViewModel(AddFriendRepository repository){
-        return new AddFriendViewModelImpl(repository);
+    AddFriendViewModel provideAddFriendViewModel(AddFriendRepository repository, BaseRepository baseRepository){
+        return new AddFriendViewModelImpl(repository, baseRepository);
     }
 
     @Provides @Singleton
-    ChatViewModel provideChatViewModel(ChatRepository repository){
-        return new ChatViewModelImpl(repository);
+    ChatViewModel provideChatViewModel(ChatRepository repository, BaseRepository baseRepository){
+        return new ChatViewModelImpl(repository, baseRepository);
     }
 
     @Provides @Singleton
-    SettingsViewModel provideSettingsViewModel(SettingsRepository repository){
-        return new SettingsViewModelImpl(repository);
+    SettingsViewModel provideSettingsViewModel(SettingsRepository repository, BaseRepository baseRepository){
+        return new SettingsViewModelImpl(repository, baseRepository);
     }
 
 }

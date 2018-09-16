@@ -7,11 +7,7 @@ import com.example.android.ocschat.repository.SettingsRepository
 import io.reactivex.Completable
 import io.reactivex.Single
 
-class SettingsRepositoryImpl(private val gate: Gate, private val api: SettingsApi) : SettingsRepository {
-
-    override fun getUser(uid: String?): Single<User> {
-        return gate.getUser(uid)
-    }
+class SettingsRepositoryImpl(private val gate: Gate, private val api: SettingsApi) : BaseRepository(gate), SettingsRepository {
 
     override fun updateCurrentUser(user: User?): Completable {
         return gate.updateUser(user)

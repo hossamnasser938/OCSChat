@@ -31,7 +31,7 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 
-class LoginApiImpl implements LoginApi {
+class LoginApiImpl extends BaseApi implements LoginApi {
 
     private String TAG = "LoginApiImpl";
 
@@ -49,12 +49,6 @@ class LoginApiImpl implements LoginApi {
     @Override
     public Maybe<AuthResult> login(String email, String password) {
         return RxFirebaseAuth.signInWithEmailAndPassword(FirebaseAuth.getInstance(), email, password);
-    }
-
-    @Override
-    public Maybe<DataSnapshot> getUser(String uid){
-        DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(uid);
-        return RxFirebaseDatabase.observeSingleValueEvent(userReference);
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.example.android.ocschat.viewModel.impl
 
-import com.example.android.ocschat.repository.LoginRepository import com.example.android.ocschat.viewModel.LoginViewModel
+import com.example.android.ocschat.repository.LoginRepository
+import com.example.android.ocschat.repository.impl.BaseRepository
+import com.example.android.ocschat.viewModel.LoginViewModel
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
@@ -10,7 +12,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import java.util.*
 
 
-class LoginViewModelImpl(private val repository: LoginRepository) : LoginViewModel {
+class LoginViewModelImpl(private val repository: LoginRepository, private val baseRepository : BaseRepository) : BaseViewModel(baseRepository), LoginViewModel {
 
     private val TAG = "LoginViewModel"
 

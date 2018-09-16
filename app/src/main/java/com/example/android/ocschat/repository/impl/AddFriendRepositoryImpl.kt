@@ -6,18 +6,11 @@ import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.AddFriendRepository
-import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.*
 
-class AddFriendRepositoryImpl(private val gate: Gate, private val api: AddFriendApi) : AddFriendRepository {
+class AddFriendRepositoryImpl(private val gate: Gate, private val api: AddFriendApi) : BaseRepository(gate), AddFriendRepository {
 
     private val TAG = "AddFriendRepoImpl"
-
-    override fun getCurrentUserFriends(): Flowable<User> {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-
-        return gate.getUserFriends(currentUserId)
-    }
 
     override fun getCurrentUserNonFriends(): Flowable<User> {
         //create custom flowable that emits non friend users and ignore friends ones

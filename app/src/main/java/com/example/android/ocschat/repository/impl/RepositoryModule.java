@@ -47,4 +47,9 @@ public class RepositoryModule {
         return new SettingsRepositoryImpl(gate, api);
     }
 
+    @Provides @Singleton
+    public BaseRepository provideBaseRepository(Gate gate){
+        return new BaseRepository(gate);
+    }
+
 }

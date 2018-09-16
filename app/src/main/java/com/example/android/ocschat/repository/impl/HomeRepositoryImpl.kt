@@ -12,17 +12,11 @@ import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 
-class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, private val context: Context) : HomeRepository {
+class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, private val context: Context) : BaseRepository(gate), HomeRepository {
 
     private val TAG = "HomeRepository"
 
     private var friendsFetchedCounter = 0
-
-    override fun getCurrentUserFriends(): Flowable<User> {
-        val currentUserId = FirebaseAuth.getInstance().currentUser?.uid
-
-        return gate.getUserFriends(currentUserId)
-    }
 
     override fun getJustLoggedUserFriends(): Flowable<User> {
         //get current user to find his friends count

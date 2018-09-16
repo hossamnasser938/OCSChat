@@ -16,7 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.HashMap
 
-class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : LoginRepository {
+class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : BaseRepository(gate), LoginRepository {
 
     private val TAG = "LoginRepositoryImpl"
 
