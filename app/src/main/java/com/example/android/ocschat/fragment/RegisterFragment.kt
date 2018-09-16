@@ -119,11 +119,20 @@ class RegisterFragment : Fragment() {
     }
 
     private fun performNext(inputs : HashMap<String, Any>){
+        //show loading progress bar
+        register_loading_progress_bar.visibility = View.VISIBLE
+
         displosable = loginViewModel.registerInAuth(inputs).subscribe ({
+            //hide loading progress bar
+            register_loading_progress_bar.visibility = View.GONE
+
             Log.d(TAG, "registered in auth successfully")
             inputs.put(Constants.ID_KEY, it.user.uid)
             transient.openFragment(RegisterMoreInfoFragment.newInstance(inputs))
         }, {
+            //hide loading progress bar
+            register_loading_progress_bar.visibility = View.GONE
+
             Log.d(TAG, "failed to register in auth")
             showErrorMessage(it.message)
         })

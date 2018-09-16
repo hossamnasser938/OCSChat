@@ -92,9 +92,11 @@ class AddPhotoFragment : Fragment() {
         add_photo_add_button.setOnClickListener{
             try{
                 body[Constants.FILE_PATH_KEY] = filePath
+                Log.d(TAG, "file path exists")
                 callRegisterApi(body)
             }
             catch (e : UninitializedPropertyAccessException){
+                Log.d(TAG, "no file path")
                 //file path has not been initialized
                 showErrorMessage(R.string.chosen_no_image)
             }
@@ -104,9 +106,12 @@ class AddPhotoFragment : Fragment() {
     private fun setSkipClickListener(body : HashMap<String, Any>){
         add_photo_skip_button.setOnClickListener{
             try{
+                body[Constants.FILE_PATH_KEY] = filePath
+                Log.d(TAG, "file path exists")
                 showErrorMessage(R.string.chosen_image)
             }
             catch (e : UninitializedPropertyAccessException){
+                Log.d(TAG, "no file path")
                 //file path has not been initialized
                 callRegisterApi(body)
             }

@@ -41,6 +41,13 @@
         android:visibility="gone"
         android:textColor="@color/red" />
 
+    <ProgressBar
+        android:id="@+id/register_loading_progress_bar"
+        android:layout_width="@dimen/progress_bar_dimens"
+        android:layout_height="@dimen/progress_bar_dimens"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal" />
+
     <Button
         android:id="@+id/next_button"
         style="@style/RegisterFields"
