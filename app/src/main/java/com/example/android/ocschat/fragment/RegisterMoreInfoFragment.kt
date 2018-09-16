@@ -30,7 +30,7 @@ class RegisterMoreInfoFragment : Fragment() {
     @Inject
     lateinit var loginViewModel : LoginViewModel
 
-    lateinit var storage : FirebaseStorage
+
 
     private lateinit var disposable : Disposable
     private lateinit var transient: LoginFragment.LoginTransitionInterface
@@ -51,7 +51,6 @@ class RegisterMoreInfoFragment : Fragment() {
         super.onCreate(savedInstanceState)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
-        storage = FirebaseStorage.getInstance()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -106,7 +105,6 @@ class RegisterMoreInfoFragment : Fragment() {
 
             //Call web service
             callRegisterApi(inputs)
-            uploadImage()
         }
     }
 
@@ -150,32 +148,6 @@ class RegisterMoreInfoFragment : Fragment() {
     private fun setClickLoginOnClickListener(){
         click_login_text_view.setOnClickListener{
             transient.openFragment(LoginFragment())
-        }
-    }
-
-    private fun uploadImage(){
-        Log.d(TAG, "upload image")
-        if(filePath != null){
-            Log.d(TAG, "file path is not null")
-            val storageRef = storage.reference.child("user_images/" + filePath!!.lastPathSegment)
-            val uploadTask = storageRef.putFile(filePath!!)
-            uploadTask.continueWithTask{
-
-                if(it.isSuccessful){
-                    it.exception
-                }
-                storageRef.downloadUrl
-
-            }.addOnCompleteListener {
-                if(it.isSuccessful){
-                    Log.d(TAG, "success")
-                    Log.d(TAG, "download uri = " + it.result)
-                }
-                else{
-                    //handle failure
-                    Log.d(TAG, "failure")
-                }
-            }
         }
     }
 

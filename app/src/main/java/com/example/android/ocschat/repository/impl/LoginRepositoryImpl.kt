@@ -1,5 +1,6 @@
 package com.example.android.ocschat.repository.impl
 
+import android.net.Uri
 import com.example.android.ocschat.api.LoginApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.User
@@ -9,6 +10,7 @@ import com.example.android.ocschat.util.OCSChatThrowable
 import com.google.firebase.auth.FirebaseUser
 import io.reactivex.Completable
 import io.reactivex.Maybe
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.HashMap
@@ -36,6 +38,10 @@ class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : L
             else Maybe.error(OCSChatThrowable(Constants.FAILED_LOGIN_MESSAGE)) }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun uploadImage(filePath: Uri?): Single<Uri> {
+        return api.uploadImage(filePath)
     }
 
     private fun addUserInfo(user : User, body: HashMap<String, Any>){
