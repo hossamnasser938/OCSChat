@@ -8,29 +8,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- User profile photo -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default16_margin" >
-
-            <ImageView
-                android:id="@+id/register_user_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/person_placeholder"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true" />
-
-            <TextView
-                android:id="@+id/register_choose_image_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/choose_profile_picture" />
-
-        </RelativeLayout>
-
         <EditText
             android:id="@+id/register_age_edit_text"
             style="@style/RegisterFields"
@@ -91,18 +68,28 @@
             android:gravity="center_horizontal"
             android:textColor="@color/red" />
 
-        <ProgressBar
-            android:id="@+id/register_loading_progress_bar"
-            android:layout_width="@dimen/progress_bar_dimens"
-            android:layout_height="@dimen/progress_bar_dimens"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default8_margin">
 
-        <Button
-            android:id="@+id/register_button"
-            style="@style/RegisterFields"
-            android:layout_marginTop="@dimen/default16_margin"
-            android:text="@string/register" />
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/register"
+                android:layout_margin="@dimen/default8_margin" />
+
+            <Button
+                android:id="@+id/register_skip_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/skip"
+                android:layout_margin="@dimen/default8_margin" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/click_login_text_view"

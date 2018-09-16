@@ -1,12 +1,6 @@
 package com.example.android.ocschat.fragment
 
-import android.app.Activity
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,23 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
-import com.example.android.ocschat.activity.HomeActivity
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.LoginViewModel
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_register.*
-import org.eclipse.osgi.framework.adaptor.FilePath
-import java.io.IOException
 import javax.inject.Inject
 
 class RegisterFragment : Fragment() {
 
+    private val TAG = "RegisterFragment"
+
     @Inject
     lateinit var loginViewModel : LoginViewModel
 
+    lateinit var displosable : Disposable
+
     private lateinit var transient: LoginFragment.LoginTransitionInterface
+
+    private lateinit var userInput : HashMap<String, Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +44,30 @@ class RegisterFragment : Fragment() {
         setClickLoginOnClickListener()
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        try {
+            displosable.dispose()
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just stop
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        try {
+            if (displosable.isDisposed){
+                performNext(userInput)
+            }
+        }
+        catch (e : UninitializedPropertyAccessException){
+            //just resume
+        }
+    }
+
     private fun setNextButtonOnClickListener(){
         next_button.setOnClickListener {
             //Do not respond to user clicks for now
@@ -62,7 +82,7 @@ class RegisterFragment : Fragment() {
             }
 
             //get email and password entered by user
-            val userInput = getUserInput()
+            userInput = getUserInput()
 
             //check empty email or password
             if(!loginViewModel.checkEmptyInputs(userInput[Constants.EMAIL_KEY] as String, userInput[Constants.FIRST_NAME_KEY] as String, userInput[Constants.LAST_NAME_KEY] as String, userInput[Constants.PASSWORD_KEY] as String)){
@@ -99,7 +119,14 @@ class RegisterFragment : Fragment() {
     }
 
     private fun performNext(inputs : HashMap<String, Any>){
-        transient.openFragment(RegisterMoreInfoFragment.newInstance(inputs))
+        displosable = loginViewModel.registerInAuth(inputs).subscribe ({
+            Log.d(TAG, "registered in auth successfully")
+            inputs.put(Constants.ID_KEY, it.user.uid)
+            transient.openFragment(RegisterMoreInfoFragment.newInstance(inputs))
+        }, {
+            Log.d(TAG, "failed to register in auth")
+            showErrorMessage(it.message)
+        })
     }
 
     private fun setClickLoginOnClickListener(){

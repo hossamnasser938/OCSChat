@@ -42,6 +42,7 @@ class LoginApiImpl implements LoginApi {
 
     @Override
     public Completable registerInFirebaseDatabase(User user){
+        Log.d(TAG, "register in fire-base database");
         return RxFirebaseDatabase.setValue(FirebaseDatabase.getInstance().getReference().child(Constants.USERS_KEY).child(user.getId()), user);
     }
 
@@ -88,6 +89,7 @@ class LoginApiImpl implements LoginApi {
                             if(task.isSuccessful()) {
                                 Log.d(TAG, "successfully got download Uri");
                                 Uri downloadUri = task.getResult();
+                                Log.d(TAG, "Download Uri : " + downloadUri);
                                 emitter.onSuccess(downloadUri);
                             }
                             else {
@@ -101,7 +103,8 @@ class LoginApiImpl implements LoginApi {
         }
         else {
             Log.d(TAG, "file path is null");
-            return Single.error(new OCSChatThrowable(Constants.ERROR_UPLOADING_IMAGE));
+            return Single.error(new OCSChatThrowable(Constants.NULL_FILE_PATH));
         }
     }
+
 }

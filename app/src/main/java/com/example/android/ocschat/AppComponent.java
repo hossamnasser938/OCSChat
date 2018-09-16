@@ -2,6 +2,7 @@ package com.example.android.ocschat;
 
 import com.example.android.ocschat.activity.HomeActivity;
 import com.example.android.ocschat.fragment.AddFriendFragment;
+import com.example.android.ocschat.fragment.AddPhotoFragment;
 import com.example.android.ocschat.fragment.ChatFragment;
 import com.example.android.ocschat.fragment.FriendInfoFragment;
 import com.example.android.ocschat.fragment.HomeFragment;
@@ -22,7 +23,7 @@ public interface AppComponent {
 
     void inject(LoginFragment loginFragment);
     void inject(RegisterFragment registerFragment);
-    void inject(RegisterMoreInfoFragment registerMoreInfoFragment);
+    void inject(AddPhotoFragment addPhotoFragment);
     void inject(HomeFragment homeFragment);
     void inject(AddFriendFragment addFriendFragment);
     void inject(FriendInfoFragment friendInfoFragment);

@@ -7,8 +7,6 @@ import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.HomeRepository
-import com.example.android.ocschat.util.Constants
-import com.example.android.ocschat.util.OCSChatThrowable
 import com.example.android.ocschat.util.Utils
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.BackpressureStrategy

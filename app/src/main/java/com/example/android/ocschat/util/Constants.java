@@ -36,7 +36,10 @@ public class Constants {
     public static final String ERROR_FROM_DATABASE = "Error caused by local database";
     public static final String ERROR_UPLOADING_IMAGE = "Error uploading image";
     public static final String USER_STATE_KEY = "user_state";
+    public static final String FILE_PATH_KEY = "file_path";
     public static final String SHARED_PREFERENCES_KEY = "preferences";
     public static final String DOWNLOAD_FLAG_KEY = "needs_download";
+    public static final String NULL_FILE_PATH = "null file path";
+    public static final String NO_FILE_PATH = "no file path found";
 
 }

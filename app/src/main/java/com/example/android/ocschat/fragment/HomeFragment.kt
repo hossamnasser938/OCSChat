@@ -1,6 +1,7 @@
 package com.example.android.ocschat.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -21,6 +22,7 @@ import com.example.android.ocschat.viewModel.HomeViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.eclipse.jdt.internal.core.util.Util
+import java.net.URI
 import javax.inject.Inject
 
 class HomeFragment : Fragment() {
@@ -226,6 +228,11 @@ class HomeFragment : Fragment() {
     private fun showNewUserText(){
         failure_list_text_view.visibility = View.VISIBLE
         failure_list_text_view.text = resources.getString(R.string.new_user_message)
+    }
+
+    private fun showSavingImageText(){
+        failure_list_text_view.visibility = View.VISIBLE
+        failure_list_text_view.text = resources.getString(R.string.saving_image)
     }
 
     interface HomeTransitionInterface{

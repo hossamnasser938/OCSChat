@@ -5,6 +5,8 @@
     <string name="login">Login</string>
     <string name="next">Next</string>
     <string name="register">Register</string>
+    <string name="skip">Skip</string>
+    <string name="add">Add</string>
     <string name="click_here_to_register">Click here to register</string>
     <string name="click_here_to_login">Click here to login</string>
     <string name="email">E-mail</string>
@@ -66,4 +68,11 @@
     <string name="signed_out">Signed out successfully</string>
     <string name="new_user_message">Add Friends and start chatting now</string>
     <string name="shared_preferences_error">"Error from shared preferences"</string>
+    <string name="saving_image">Saving your profile photo &#8230;</string>
+    <string name="image_saved">Your profile photo is saved successfully</string>
+    <string name="image_not_saved">Error occurred while saving your profile photo</string>
+    <string name="added_no_more_info">If you do not want to add more info, just click SKIP</string>
+    <string name="added_more_info">If you want to add more info, just click REGISTER</string>
+    <string name="chosen_no_image">If you do not want to add a profile photo, just click SKIP</string>
+    <string name="chosen_image">If you want to add a profile photo, just click ADD</string>
 </resources>

@@ -197,7 +197,7 @@ class GateImpl implements Gate {
      */
     @Override
     public Completable insertUser(User user) {
-        Log.d(TAG, "add user : " + user.getFirstName());
+        Log.d(TAG, "insert user : " + user.getFirstName());
         final ContentValues values = userToContentValues(user);
 
         if(context.getContentResolver().insert(Contract.User.CONTENT_URI, values) != null)

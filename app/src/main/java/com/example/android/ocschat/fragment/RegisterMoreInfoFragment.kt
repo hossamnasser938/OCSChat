@@ -1,41 +1,19 @@
 package com.example.android.ocschat.fragment
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
-import com.example.android.ocschat.activity.HomeActivity
-import com.example.android.ocschat.model.UserState
 import com.example.android.ocschat.util.Constants
-import com.example.android.ocschat.viewModel.LoginViewModel
-import com.google.firebase.storage.FirebaseStorage
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_register_more_info.*
-import java.io.IOException
-import javax.inject.Inject
 
 class RegisterMoreInfoFragment : Fragment() {
 
     private val TAG = "RegisterMoreFragment"
 
-    @Inject
-    lateinit var loginViewModel : LoginViewModel
-
-
-
-    private lateinit var disposable : Disposable
     private lateinit var transient: LoginFragment.LoginTransitionInterface
-
-    private var filePath: Uri? = null
 
     companion object {
         fun newInstance(map : HashMap<String, Any>) : RegisterMoreInfoFragment{
@@ -49,7 +27,6 @@ class RegisterMoreInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
     }
 
@@ -63,86 +40,65 @@ class RegisterMoreInfoFragment : Fragment() {
         //get inputs received from Register fragment as arguments
         val userInputs = arguments?.getSerializable(Constants.INPUTS_KEY) as HashMap<String, Any>
 
-        setChooseProfilePictureClickListener()
         setClickLoginOnClickListener()
         setRegisterButtonClickListener(userInputs)
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        try { disposable.dispose() }
-        catch (e : UninitializedPropertyAccessException){ }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) { //postponed
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            filePath = data.data
-            try {
-                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
-                register_user_image_view.setImageBitmap(bitmap)
-                register_choose_image_text_view.visibility = View.GONE
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-    }
-
-    private fun setChooseProfilePictureClickListener(){
-        register_user_image_view.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
-        }
+        setSkipButtonClickListener(userInputs)
     }
 
     private fun setRegisterButtonClickListener(inputs : HashMap<String, Any>){
         register_button.setOnClickListener{
-            getUserInputs(inputs)
-
-            //Call web service
-            callRegisterApi(inputs)
+            if(getUserInputs(inputs)){
+                //move to Add Photo fragment with user inputs
+                transient.openFragment(AddPhotoFragment.newInstance(inputs))
+            }
+            else{
+                showErrorMessage(R.string.added_no_more_info)
+            }
         }
     }
 
-    private fun getUserInputs(inputs : HashMap<String, Any>){
-        if(!register_age_edit_text.text.toString().isEmpty())
-            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString().toInt()
-        if(!register_education_edit_text.text.toString().isEmpty())
-            inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.toString()
-        if(!register_education_org_edit_text.text.toString().isEmpty())
-            inputs[Constants.EDUCATION_ORG_KEY] = register_education_org_edit_text.text.toString()
-        if(!register_major_edit_text.text.toString().isEmpty())
-            inputs[Constants.MAJOR_KEY] = register_major_edit_text.text.toString()
-        if(!register_work_edit_text.text.toString().isEmpty())
-            inputs[Constants.WORK_KEY] = register_work_edit_text.text.toString()
-        if(!register_company_edit_text.text.toString().isEmpty())
-            inputs[Constants.COMPANY_KEY] = register_company_edit_text.text.toString()
+    private fun setSkipButtonClickListener(inputs : HashMap<String, Any>){
+        register_skip_button.setOnClickListener{
+            if(getUserInputs(inputs)){
+                showErrorMessage(R.string.added_more_info)
+            }
+            else{
+                //move to add photo fragment with user inputs
+                transient.openFragment(AddPhotoFragment.newInstance(inputs))
+            }
+        }
     }
 
-    private fun callRegisterApi(body : HashMap<String, Any>){
-        //show loading progress bar
-        register_loading_progress_bar.visibility = View.VISIBLE
-
-        disposable = loginViewModel.register(body).subscribe({
-            //hide loading progress bar
-            register_loading_progress_bar.visibility = View.GONE
-            //Open Home Activity with user info
-            val intent = Intent(context, HomeActivity::class.java)
-            intent.putExtra(Constants.USER_STATE_KEY, UserState.JUST_REGISTERED)
-            startActivity(intent)
-            Toast.makeText(context, getString(R.string.welcome) + body[Constants.FIRST_NAME_KEY], Toast.LENGTH_SHORT).show()
-            activity?.finish()
-        }, {
-            Log.d("RegisterMoreFragment", it.message)
-            //hide loading progress bar
-            register_loading_progress_bar.visibility = View.GONE
-            //show error message
-            showErrorMessage(Constants.FAILED_REGISTERING_MESSAGE)
-        })
+    /**
+     * get user inputs and check if he added nothing
+     */
+    private fun getUserInputs(inputs : HashMap<String, Any>) : Boolean{
+        var addedInfo = false
+        if(!register_age_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString().toInt()
+            addedInfo = true
+        }
+        if(!register_education_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.toString()
+            addedInfo = true
+        }
+        if(!register_education_org_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.EDUCATION_ORG_KEY] = register_education_org_edit_text.text.toString()
+            addedInfo = true
+        }
+        if(!register_major_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.MAJOR_KEY] = register_major_edit_text.text.toString()
+            addedInfo = true
+        }
+        if(!register_work_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.WORK_KEY] = register_work_edit_text.text.toString()
+            addedInfo = true
+        }
+        if(!register_company_edit_text.text.toString().isEmpty()) {
+            inputs[Constants.COMPANY_KEY] = register_company_edit_text.text.toString()
+            addedInfo = true
+        }
+        return addedInfo
     }
 
     private fun setClickLoginOnClickListener(){
@@ -157,12 +113,10 @@ class RegisterMoreInfoFragment : Fragment() {
     private fun showErrorMessage(messageId : Int){
         register_error_text_view.visibility = View.VISIBLE
         register_error_text_view.text = getString(messageId)
-        register_button.isClickable = true
     }
 
     private fun showErrorMessage(message : String?){
         register_error_text_view.visibility = View.VISIBLE
         register_error_text_view.text = message
-        register_button.isClickable = true
     }
 }
