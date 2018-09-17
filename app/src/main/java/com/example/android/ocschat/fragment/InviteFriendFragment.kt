@@ -18,7 +18,6 @@ class InviteFriendFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.invite_friend)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,6 +65,11 @@ class InviteFriendFragment : Fragment() {
             }
         }
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.invite_friend)
     }
 
     private fun checkEmptyEmail() : Boolean{

@@ -35,7 +35,6 @@ class AddFriendFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.add_friend)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as AddFriendTransitionInterface
     }
@@ -84,7 +83,7 @@ class AddFriendFragment : Fragment() {
     override fun onResume() {
         Log.d(TAG, "onResume executes")
         super.onResume()
-
+        activity?.title = getString(R.string.add_friend)
         try {
             if(disposable.isDisposed){
                 Log.d(TAG, "isDisposed")

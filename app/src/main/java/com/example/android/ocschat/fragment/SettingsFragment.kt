@@ -30,7 +30,6 @@ class SettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.settings)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as SettingsTransitionInterface
     }
@@ -51,7 +50,10 @@ class SettingsFragment : Fragment() {
         catch (e : UninitializedPropertyAccessException){ }
     }
 
-    //TODO: override onStart
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.settings)
+    }
 
     /**
      * display currently logged user information

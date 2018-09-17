@@ -46,7 +46,6 @@ class AddPhotoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.add_profile_photo)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
     }
@@ -64,6 +63,11 @@ class AddPhotoFragment : Fragment() {
         setChooseProfilePictureClickListener()
         setAddClickListener(userInputs)
         setSkipClickListener(userInputs)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.add_profile_photo)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

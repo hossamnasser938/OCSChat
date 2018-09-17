@@ -35,7 +35,6 @@ class UserInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.my_profile)
         transition = activity as SettingsFragment.SettingsTransitionInterface
     }
 
@@ -52,6 +51,11 @@ class UserInfoFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.user_info_menu, menu)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.my_profile)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

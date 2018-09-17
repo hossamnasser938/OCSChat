@@ -36,7 +36,6 @@ class UpdateProfileFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.update_profile)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
 
@@ -56,6 +55,11 @@ class UpdateProfileFragment : Fragment(){
 
         try { disposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.update_profile)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {

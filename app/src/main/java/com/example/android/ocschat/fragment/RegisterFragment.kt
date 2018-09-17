@@ -31,7 +31,6 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.register)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
     }
@@ -59,7 +58,7 @@ class RegisterFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
+        activity?.title = getString(R.string.register)
         try {
             if (displosable.isDisposed){
                 performNext(userInput)

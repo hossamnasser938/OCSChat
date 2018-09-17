@@ -44,7 +44,6 @@ class FriendInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.friend_profile)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as AddFriendFragment.AddFriendTransitionInterface
     }
@@ -74,6 +73,11 @@ class FriendInfoFragment : Fragment() {
 
         try { addFriendDisposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity?.title = getString(R.string.friend_profile)
     }
 
     /**

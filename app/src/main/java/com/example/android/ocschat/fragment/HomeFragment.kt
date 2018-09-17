@@ -52,7 +52,6 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
-        activity?.title = getString(R.string.home)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
 
@@ -112,6 +111,7 @@ class HomeFragment : Fragment() {
         Log.d(TAG, "onResume executes")
         Log.d(TAG, "userState = " + userState.name)
         super.onResume()
+        activity?.title = getString(R.string.home)
         try {
             if (disposable.isDisposed) {
                 Log.d(TAG, "disposed")
