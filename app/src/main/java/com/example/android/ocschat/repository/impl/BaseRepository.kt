@@ -7,6 +7,7 @@ import com.example.android.ocschat.model.User
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.Flowable
 import io.reactivex.Single
+import java.io.File
 
 open class BaseRepository(private val gate : Gate, private val baseApi : BaseApi) {
 
@@ -20,7 +21,7 @@ open class BaseRepository(private val gate : Gate, private val baseApi : BaseApi
         return gate.getUserFriends(currentUserId)
     }
 
-    fun downloadImage(downloadUrl : Uri, userId : String) : Single<Uri> {
+    fun downloadImage(downloadUrl : Uri, userId : String) : Single<File> {
         return baseApi.downloadImage(downloadUrl, userId)
     }
 

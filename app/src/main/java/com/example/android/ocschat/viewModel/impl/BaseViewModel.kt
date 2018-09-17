@@ -6,6 +6,7 @@ import com.example.android.ocschat.repository.impl.BaseRepository
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 open class BaseViewModel(private val repository: BaseRepository) {
 
@@ -15,7 +16,7 @@ open class BaseViewModel(private val repository: BaseRepository) {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun downloadImage(downloadUrl : Uri, userId : String) : Single<Uri>{
+    fun downloadImage(downloadUrl : Uri, userId : String) : Single<File>{
         return repository.downloadImage(downloadUrl, userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

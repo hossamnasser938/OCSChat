@@ -40,14 +40,14 @@ public class BaseApi {
     /**
      * downloads an image from fire-base storage
      * @param downloadUrl the url of the image file to be downloaded
-     * @return the Uri of the file saved locally
+     * @return the file saved locally
      */
-    public Single<Uri> downloadImage(final Uri downloadUrl, final String userId){
+    public Single<File> downloadImage(final Uri downloadUrl, final String userId){
         if(downloadUrl != null){
             Log.d(TAG, "downloadUrl is not null");
-            return Single.create(new SingleOnSubscribe<Uri>() {
+            return Single.create(new SingleOnSubscribe<File>() {
                 @Override
-                public void subscribe(final SingleEmitter<Uri> emitter) throws Exception {
+                public void subscribe(final SingleEmitter<File> emitter) throws Exception {
                     FirebaseStorage storage = FirebaseStorage.getInstance();
 
                     StorageReference storageRef = storage.getReferenceFromUrl(downloadUrl.toString());
@@ -62,12 +62,11 @@ public class BaseApi {
 
                     if(localFile != null){
                         final File createdFile = localFile;
-
                         storageRef.getFile(createdFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 Log.d(TAG, "successfully downloaded image as local file");
-                                emitter.onSuccess(Uri.fromFile(createdFile));
+                                emitter.onSuccess(createdFile);
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override

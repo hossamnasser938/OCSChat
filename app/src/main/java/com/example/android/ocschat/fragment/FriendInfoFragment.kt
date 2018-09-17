@@ -17,6 +17,7 @@ import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_friend_info.*
+import java.io.File
 import javax.inject.Inject
 
 class FriendInfoFragment : Fragment() {
