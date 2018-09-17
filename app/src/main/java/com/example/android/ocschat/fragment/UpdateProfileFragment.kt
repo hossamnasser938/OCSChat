@@ -1,7 +1,11 @@
 package com.example.android.ocschat.fragment
 
+import android.app.Activity
 import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
@@ -13,12 +17,17 @@ import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_update_profile.*
+import java.io.IOException
 import javax.inject.Inject
 
 class UpdateProfileFragment : Fragment(){
 
+    private val TAG = "UpdateProfileFragment"
+
     @Inject
     lateinit var settingsViewModel: SettingsViewModel
+
+    private lateinit var filePath: Uri
 
     lateinit var disposable : Disposable
 
@@ -82,7 +91,8 @@ class UpdateProfileFragment : Fragment(){
 
                 updateUserProperties()
 
-                //call firebase service to update current user info
+                //TODO: Implement update profile picture functionality
+                //call fire-base service to update current user info
                 disposable = settingsViewModel.updateCurrentUser(currentlyLoggedUser)
                         .subscribe({
                             //Inform user and go back to Home activity
@@ -103,6 +113,19 @@ class UpdateProfileFragment : Fragment(){
             }
         }
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants.PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            filePath = data.data
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
+                update_profile_image_view.setImageBitmap(bitmap)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     /**
@@ -180,11 +203,25 @@ class UpdateProfileFragment : Fragment(){
             update_profile_company_edit_text.setText(currentlyLoggedUser.company)
         }
 
+        checkUserImage()
+    }
+
+    private fun checkUserImage() {
+        Log.d(TAG, "checkUserImage")
+        update_profile_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentlyLoggedUser.hasImage){
-            //TODO: set user image
+            Log.d(TAG, "has image")
+            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentlyLoggedUser.imageFilePath))
+            update_profile_image_view.setImageBitmap(bitmap)
         }
-        else{
-            update_profile_image_view.setImageResource(R.drawable.person_placeholder)
+    }
+
+    private fun setUpdateProfilePictureClickListener(){
+        update_profile_update_image_text_view.setOnClickListener{
+            val intent = Intent()
+            intent.type = "image/*"
+            intent.action = Intent.ACTION_OPEN_DOCUMENT  //ACTION_OPEN_DOCUMENT instead of ACTION_GET_DOCUMENT to have future access to this file
+            startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
         }
     }
 }

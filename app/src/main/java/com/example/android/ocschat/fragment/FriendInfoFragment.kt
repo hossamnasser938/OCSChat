@@ -116,22 +116,11 @@ class FriendInfoFragment : Fragment() {
 
     private fun checkFriendImage(currentUser: User){
         Log.d(TAG, "checkFriendImage")
+        friend_info_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentUser.hasImage){
             Log.d(TAG, "has image")
-            //TODO: Postponed functionality
-            //test
-            addFriendViewMdel
-                    .downloadImage(Uri.parse(currentUser.imageUrl), currentUser.id)
-                    .subscribe({
-                        Log.d(TAG, "successfully downloaded image")
-                        val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, it)
-                        friend_info_image_view.setImageBitmap(bitmap)
-                    }, {
-                        Log.d(TAG, "error downloading image : " + it.message)
-                    })
-            //
-        }
-        else{ friend_info_image_view.setImageResource(R.drawable.person_placeholder)
+            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentUser.imageFilePath))
+            friend_info_image_view.setImageBitmap(bitmap)
         }
     }
 

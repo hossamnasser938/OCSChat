@@ -48,6 +48,7 @@
     <string name="friend_profile">Friend Profile</string>
     <string name="choose_profile_picture">\tClick here to\nadd profile picture</string>
     <string name="update_profile_picture">\tUpdate\nprofile picture</string>
+    <string name="update_picture">Update Picture</string>
     <string name="update_profile">Update Profile</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>

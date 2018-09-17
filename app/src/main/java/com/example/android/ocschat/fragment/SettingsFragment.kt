@@ -1,6 +1,8 @@
 package com.example.android.ocschat.fragment
 
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,9 +17,12 @@ import com.example.android.ocschat.viewModel.SettingsViewModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_settings.*
+import java.io.IOException
 import javax.inject.Inject
 
 class SettingsFragment : Fragment() {
+
+    private val TAG = "SettingsFragment"
 
     @Inject
     lateinit var settingsViewModel: SettingsViewModel
@@ -65,13 +70,29 @@ class SettingsFragment : Fragment() {
         disposable = settingsViewModel.getUser(currentlyLoggedUserId).subscribe({
             currentlyLoggedUser = it
             settings_logged_user_name.text = currentlyLoggedUser.name
-            //TODO: set user image
+            checkUserImage()
             setUserInfoOnClickListener(currentlyLoggedUser)
             //Log.d("SettingsFragment", it.firstName)
         }, {
             Log.d("SettingsFragment", it.message)
             Toast.makeText(context, Constants.ERROR_FETCHING_USER_INFO, Toast.LENGTH_SHORT).show()
         })
+    }
+
+    private fun checkUserImage(){
+        Log.d(TAG, "checkUserImage")
+        Log.d(TAG, "imageFilePath = " + currentlyLoggedUser.imageFilePath)
+        settings_logged_user_image.setImageResource(R.drawable.person_placeholder)
+        if(currentlyLoggedUser.hasImage){
+            Log.d(TAG, "has image")
+            try {
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentlyLoggedUser.imageFilePath))
+                settings_logged_user_image.setImageBitmap(bitmap)
+            }
+            catch (e : IOException){
+                e.printStackTrace()
+            }
+        }
     }
 
     private fun setUserInfoOnClickListener(user : User){
