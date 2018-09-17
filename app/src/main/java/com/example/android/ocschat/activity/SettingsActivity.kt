@@ -15,9 +15,18 @@ class SettingsActivity : AppCompatActivity(), SettingsFragment.SettingsTransitio
     }
 
     override fun openFragment(fragment: Fragment) {
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings_frame_layout, fragment)
-                .commit()
+        if(fragment is SettingsFragment){
+            supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.settings_frame_layout, fragment)
+                    .commit()
+        }
+        else{
+            supportFragmentManager
+                    .beginTransaction()
+                    .addToBackStack(null)
+                    .replace(R.id.settings_frame_layout, fragment)
+                    .commit()
+        }
     }
 }
