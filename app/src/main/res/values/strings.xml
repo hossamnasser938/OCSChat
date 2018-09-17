@@ -42,6 +42,7 @@
     <string name="friend">Friend</string>
     <string name="friend_added">Friend Added Successfully</string>
     <string name="error_adding_friend">Error occurred while adding Friend</string>
+    <string name="error_downloading_image">Error occurred while downloading user image</string>
     <string name="add_friend">Add Friend</string>
     <string name="chat">Chat</string>
     <string name="my_profile">My Profile</string>

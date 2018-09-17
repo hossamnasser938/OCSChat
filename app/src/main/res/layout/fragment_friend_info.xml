@@ -36,13 +36,26 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/friend_info_image_view"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default8_margin"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true" />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/friend_info_image_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/default8_margin"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true" />
+
+                    <ProgressBar
+                        android:id="@+id/friend_info_image_loading_progress_bar"
+                        android:layout_width="@dimen/progress_bar_dimens"
+                        android:layout_height="@dimen/progress_bar_dimens"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/friend_info_add_friend_button"

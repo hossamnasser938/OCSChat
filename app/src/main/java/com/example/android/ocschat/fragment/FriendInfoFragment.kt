@@ -33,6 +33,9 @@ class FriendInfoFragment : Fragment() {
     private lateinit var addFriendDisposable : Disposable
 
     private lateinit var currentUser: User
+    private lateinit var userImageFile : File
+    private var isFriend : Boolean? = null
+    private var addedFriend = false
 
     companion object {
         fun newInstance(user : User) : FriendInfoFragment {
@@ -57,17 +60,17 @@ class FriendInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         currentUser = arguments?.get(Constants.USER_KEY) as User
+
         displayFriendInfo(currentUser)
+        checkFriendshipState(currentUser)
 
         if(!Utils.isNetworkConnected(context)){
             Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
         }
-        else{
-            checkFriendshipState(currentUser)
-        }
     }
 
     override fun onPause() {
+        Log.d(TAG,"onPause executes")
         super.onPause()
 
         try { isFriendDisposable.dispose() }
@@ -75,6 +78,21 @@ class FriendInfoFragment : Fragment() {
 
         try { addFriendDisposable.dispose() }
         catch (e : UninitializedPropertyAccessException){ }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG,"onDestroy executes")
+        //check if user image is downloaded and user is not added as a friend
+        if(!addedFriend){
+            Log.d(TAG, "user is not added as a friend")
+            try {
+                if(userImageFile.delete()){
+                    Log.d(TAG, "file deleted")
+                }
+            }
+            catch (e : UninitializedPropertyAccessException){ }
+        }
     }
 
     override fun onResume() {
@@ -87,6 +105,8 @@ class FriendInfoFragment : Fragment() {
      */
     private fun checkFriendshipState(currentUser : User){
         isFriendDisposable = addFriendViewMdel.isFriend(currentUser.id).subscribe({
+            isFriend = it
+            checkFriendImage(currentUser)
             if(it){
                 showFriendState()
             }
@@ -96,21 +116,29 @@ class FriendInfoFragment : Fragment() {
             }
         }, {
             Toast.makeText(context, Constants.FAILED_CHECKING_FRIENDSHIPSTATE, Toast.LENGTH_SHORT).show()
-            Log.d("FriendInfoFragment", it.message)
+            Log.d(TAG, it.message)
         })
     }
 
     private fun setAddFriendButtonClickListen(currentUser: User) {
         friend_info_add_friend_button.setOnClickListener {
             friend_info_add_friend_button.isClickable = false
+            //try to add image path if downloaded
+            try{
+                currentUser.imageFilePath = Uri.fromFile(userImageFile).toString()
+            }
+            catch (e : UninitializedPropertyAccessException){
+                //did not download image
+            }
             addFriendDisposable = addFriendViewMdel.addFriend(currentUser).subscribe({
+                addedFriend = true
                 showFriendState()
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 activity?.finish()
             }, {
                 friend_info_add_friend_button.isClickable = true
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
-                Log.d("FriendInfoFragment", it.message)
+                Log.d(TAG, it.message)
             })
         }
     }
@@ -119,32 +147,33 @@ class FriendInfoFragment : Fragment() {
         Log.d(TAG, "checkFriendImage")
         friend_info_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentUser.hasImage){
-            /*
-            Log.d(TAG, "has image")
-            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentUser.imageFilePath))
-            friend_info_image_view.setImageBitmap(bitmap)
-            */
-            //test
-            if(Utils.getTestPath(activity).equals(Constants.NONE, false)){
-                Log.d(TAG, "did not find test path")
+            Log.d(TAG, "user has image")
+            //show loading progress bar
+            friend_info_image_loading_progress_bar.visibility = View.VISIBLE
+            if(isFriend!!){
+                Log.d(TAG, "user is a friend")
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentUser.imageFilePath))
+                friend_info_image_view.setImageBitmap(bitmap)
+            }
+            else{
+                Log.d(TAG, "user is not a friend")
+                //download image from fire-base storage
                 addFriendViewMdel
                         .downloadImage(Uri.parse(currentUser.imageUrl), currentUser.id)
                         .subscribe ({
+                            userImageFile = it
+                            //hide loading progress bar
+                            friend_info_image_loading_progress_bar.visibility = View.GONE
                             Log.d(TAG, "got downloaded image")
-                            Utils.setTestPath(activity, it.toString())
-                            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(it.toString()))
+                            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(it))
                             friend_info_image_view.setImageBitmap(bitmap)
                         }, {
+                            //hide loading progress bar
+                            friend_info_image_loading_progress_bar.visibility = View.GONE
+                            Toast.makeText(context, getString(R.string.error_downloading_image), Toast.LENGTH_SHORT).show()
                             Log.d(TAG, "failed to download image")
                         })
             }
-            else{
-                Log.d(TAG, "found test path")
-                val testPath = Utils.getTestPath(activity)
-                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(testPath))
-                friend_info_image_view.setImageBitmap(bitmap)
-            }
-            //test
         }
     }
 
@@ -174,8 +203,6 @@ class FriendInfoFragment : Fragment() {
             friend_info_company_text_view.visibility = View.VISIBLE
             friend_info_company_text_view.setText(user.company)
         }
-
-        checkFriendImage(user)
     }
 
     private fun showFriendState(){
