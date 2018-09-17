@@ -35,7 +35,7 @@ public class Contract {
         public static final String COLUMN_FIRST_NAME = "First_Name";
         public static final String COLUMN_LAST_NAME = "Last_Name";
         public static final String COLUMN_HAS_IMAGE = "Has_Image";
-        public static final String COLUMN_IMAGE = "Image";
+        public static final String COLUMN_IMAGE_FILE_PATH = "Image_File_Path";
         public static final String COLUMN_AGE = "Age";
         public static final String COLUMN_EDUCATION = "Education";
         public static final String COLUMN_EDUCATION_ORGANIZATION = "Education_Organization";

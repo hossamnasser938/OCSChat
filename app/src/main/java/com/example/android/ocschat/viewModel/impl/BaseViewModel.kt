@@ -17,6 +17,8 @@ open class BaseViewModel(private val repository: BaseRepository) {
 
     fun downloadImage(downloadUrl : Uri, userId : String) : Single<Uri>{
         return repository.downloadImage(downloadUrl, userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
 }

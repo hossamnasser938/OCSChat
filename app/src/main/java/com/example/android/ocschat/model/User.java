@@ -1,7 +1,5 @@
 package com.example.android.ocschat.model;
 
-import android.net.Uri;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,8 @@ public class User implements Serializable {
     private List<Friend> friends;
     private Integer friendsCount;
     private boolean hasImage;
-    private Uri imageUrl;
+    private String imageUrl;
+    private String imageFilePath;
     private String education;   //Student, Diploma, Bachelor, master, or PHD
     private String educationOrganization;  //University, institute, or school
     private String major;
@@ -127,12 +126,20 @@ public class User implements Serializable {
         this.hasImage = hasImage;
     }
 
-    public Uri getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(Uri imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getImageFilePath() {
+        return imageFilePath;
+    }
+
+    public void setImageFilePath(String imageFilePath) {
+        this.imageFilePath = imageFilePath;
     }
 
     public String getEducation() {

@@ -34,11 +34,18 @@ class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi, pri
                     .flatMapCompletable {
                         Log.d(TAG, "successfully uploaded image")
                         user.hasImage = true
-                        user.imageUrl = it
+                        user.imageUrl = it.toString()
                         Log.d(TAG, "set user has image")
                         api.registerInFirebaseDatabase(user)
-                                .concatWith(gate.insertUser(user))
-                        //TODO: handle user with image while inserting in database
+                                .concatWith{ observer ->
+                                    Log.d(TAG, "successfully registered in real-time database")
+                                    user.imageFilePath = (body[Constants.FILE_PATH_KEY] as Uri).toString()
+                                    gate.insertUser(user).subscribe ({
+                                        observer.onComplete()
+                                    }, {
+                                        observer.onError(it)
+                                    })
+                                    }
                     }
         }
         else{

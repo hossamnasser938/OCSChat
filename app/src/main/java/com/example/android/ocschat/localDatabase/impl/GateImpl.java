@@ -12,10 +12,6 @@ import com.example.android.ocschat.model.User;
 import com.example.android.ocschat.util.Constants;
 import com.example.android.ocschat.util.OCSChatThrowable;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.reactivestreams.Publisher;
-
 import java.util.ArrayList;
 
 import io.reactivex.BackpressureStrategy;
@@ -26,10 +22,8 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 
 class GateImpl implements Gate {
 
@@ -50,7 +44,7 @@ class GateImpl implements Gate {
     public Single<User> getUser(String userId) {
         String[] projection = new String[] { Contract.User.COLUMN_FIRST_NAME,
                 Contract.User.COLUMN_LAST_NAME, Contract.User.COLUMN_AGE,
-                Contract.User.COLUMN_HAS_IMAGE, Contract.User.COLUMN_IMAGE,
+                Contract.User.COLUMN_HAS_IMAGE, Contract.User.COLUMN_IMAGE_FILE_PATH,
                 Contract.User.COLUMN_EDUCATION, Contract.User.COLUMN_EDUCATION_ORGANIZATION,
                 Contract.User.COLUMN_MAJOR, Contract.User.COLUMN_WORK,
                 Contract.User.COLUMN_COMPANY };
@@ -72,7 +66,7 @@ class GateImpl implements Gate {
         final int lastNameIndex = cursor.getColumnIndex(Contract.User.COLUMN_LAST_NAME);
         final int ageIndex = cursor.getColumnIndex(Contract.User.COLUMN_AGE);
         final int hasImageIndex = cursor.getColumnIndex(Contract.User.COLUMN_HAS_IMAGE);
-        final int imageIndex = cursor.getColumnIndex(Contract.User.COLUMN_IMAGE);
+        final int imageFilePathIndex = cursor.getColumnIndex(Contract.User.COLUMN_IMAGE_FILE_PATH);
         final int educationIndex = cursor.getColumnIndex(Contract.User.COLUMN_EDUCATION);
         final int educationOrgIndex = cursor.getColumnIndex(Contract.User.COLUMN_EDUCATION_ORGANIZATION);
         final int majorIndex = cursor.getColumnIndex(Contract.User.COLUMN_MAJOR);
@@ -84,8 +78,9 @@ class GateImpl implements Gate {
         String lastName = cursor.getString(lastNameIndex);
         Integer age = cursor.getInt(ageIndex);
         Integer hasImage = cursor.getInt(hasImageIndex);
+        String imageFilePath = null;
         if(hasImage == 1){  //User has image
-            //TODO: handle user image
+            imageFilePath = cursor.getString(imageFilePathIndex);
         }
         String education = cursor.getString(educationIndex);
         String educationOrg = cursor.getString(educationOrgIndex);
@@ -100,6 +95,10 @@ class GateImpl implements Gate {
         //construct User object
         final User user = new User(userId, firstName, lastName);
         user.setAge(age);
+        if(hasImage == 1){
+            user.setHasImage(true);
+            user.setImageFilePath(imageFilePath);
+        }
         user.setEducation(education);
         user.setEducationOrganization(educationOrg);
         user.setMajor(major);
@@ -310,7 +309,7 @@ class GateImpl implements Gate {
         values.put(Contract.User.COLUMN_AGE, user.getAge());
         if(user.getHasImage()){
             values.put(Contract.User.COLUMN_HAS_IMAGE, 1);
-            //TODO: handle inserting user image in the database
+            values.put(Contract.User.COLUMN_IMAGE_FILE_PATH, user.getImageFilePath());
         }
         values.put(Contract.User.COLUMN_EDUCATION, user.getEducation());
         values.put(Contract.User.COLUMN_EDUCATION_ORGANIZATION, user.getEducationOrganization());

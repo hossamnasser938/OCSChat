@@ -1,5 +1,6 @@
 package com.example.android.ocschat.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
@@ -120,7 +121,7 @@ class FriendInfoFragment : Fragment() {
             //TODO: Postponed functionality
             //test
             addFriendViewMdel
-                    .downloadImage(currentUser.imageUrl, currentUser.id)
+                    .downloadImage(Uri.parse(currentUser.imageUrl), currentUser.id)
                     .subscribe({
                         Log.d(TAG, "successfully downloaded image")
                         val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, it)

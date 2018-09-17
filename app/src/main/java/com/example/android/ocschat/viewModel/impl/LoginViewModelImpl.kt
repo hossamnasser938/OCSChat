@@ -18,10 +18,14 @@ class LoginViewModelImpl(private val repository: LoginRepository, private val ba
 
     override fun registerInAuth(body: HashMap<String, Any>?): Maybe<AuthResult> {
         return repository.registerInAuth(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun registerInRealtimeDatabase(body: HashMap<String, Any>?): Completable {
         return repository.registerInRealtimeDatabase(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun login(body : HashMap<String, String>): Maybe<FirebaseUser> {
