@@ -39,4 +39,9 @@ public class ApiModule {
         return new SettingsApiImpl();
     }
 
+    @Provides @Singleton
+    BaseApi provideBaseApi(){
+        return new BaseApi();
+    }
+
 }

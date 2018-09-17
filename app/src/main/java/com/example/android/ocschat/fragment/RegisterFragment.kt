@@ -30,6 +30,7 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.actionBar?.title = getString(R.string.register)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
     }

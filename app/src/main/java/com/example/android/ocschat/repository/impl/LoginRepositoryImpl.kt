@@ -3,6 +3,7 @@ package com.example.android.ocschat.repository.impl
 import android.net.Uri
 import android.util.Log
 import com.example.android.ocschat.api.LoginApi
+import com.example.android.ocschat.api.impl.BaseApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.LoginRepository
@@ -16,7 +17,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.HashMap
 
-class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : BaseRepository(gate), LoginRepository {
+class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi, private val baseApi : BaseApi) : BaseRepository(gate, baseApi), LoginRepository {
 
     private val TAG = "LoginRepositoryImpl"
 
@@ -34,6 +35,7 @@ class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi) : B
                         Log.d(TAG, "successfully uploaded image")
                         user.hasImage = true
                         user.imageUrl = it
+                        Log.d(TAG, "set user has image")
                         api.registerInFirebaseDatabase(user)
                                 .concatWith(gate.insertUser(user))
                         //TODO: handle user with image while inserting in database

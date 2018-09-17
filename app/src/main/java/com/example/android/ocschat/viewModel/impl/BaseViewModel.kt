@@ -1,5 +1,6 @@
 package com.example.android.ocschat.viewModel.impl
 
+import android.net.Uri
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.impl.BaseRepository
 import io.reactivex.Single
@@ -12,6 +13,10 @@ open class BaseViewModel(private val repository: BaseRepository) {
         return repository.getUser(uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun downloadImage(downloadUrl : Uri, userId : String) : Single<Uri>{
+        return repository.downloadImage(downloadUrl, userId)
     }
 
 }

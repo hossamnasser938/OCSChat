@@ -91,16 +91,6 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/click_login_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default16_margin"
-            android:text="@string/click_here_to_login"
-            android:textStyle="bold"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-            android:gravity="center_horizontal" />
-
     </LinearLayout>
 
 </ScrollView>

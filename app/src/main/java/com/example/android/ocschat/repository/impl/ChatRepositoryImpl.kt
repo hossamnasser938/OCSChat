@@ -1,6 +1,7 @@
 package com.example.android.ocschat.repository.impl
 
 import com.example.android.ocschat.api.ChatApi
+import com.example.android.ocschat.api.impl.BaseApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Message
 import com.example.android.ocschat.model.User
@@ -9,7 +10,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
-class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi) : BaseRepository(gate), ChatRepository {
+class ChatRepositoryImpl(private val gate: Gate, private val api: ChatApi, private val baseApi : BaseApi) : BaseRepository(gate, baseApi), ChatRepository {
 
     override fun getMessages(friendId: String?): Flowable<Message> {
         return api.getMessages(friendId).flatMap {

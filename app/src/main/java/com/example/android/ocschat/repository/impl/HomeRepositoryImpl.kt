@@ -3,6 +3,7 @@ package com.example.android.ocschat.repository.impl
 import android.content.Context
 import android.util.Log
 import com.example.android.ocschat.api.HomeApi
+import com.example.android.ocschat.api.impl.BaseApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
@@ -12,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 
-class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, private val context: Context) : BaseRepository(gate), HomeRepository {
+class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, private val baseApi : BaseApi, private val context: Context) : BaseRepository(gate, baseApi), HomeRepository {
 
     private val TAG = "HomeRepository"
 

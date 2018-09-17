@@ -1,6 +1,7 @@
 package com.example.android.ocschat.fragment
 
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,20 +10,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
-import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_friend_info.*
-import kotlinx.android.synthetic.main.fragment_user_info.*
 import javax.inject.Inject
 
 class FriendInfoFragment : Fragment() {
 
+    private val TAG = "FriendInfoFragment"
+
     @Inject
     lateinit var addFriendViewMdel : AddFriendViewModel
+
     private lateinit var transition : AddFriendFragment.AddFriendTransitionInterface
 
     private lateinit var isFriendDisposable : Disposable
@@ -42,6 +44,7 @@ class FriendInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.actionBar?.title = getString(R.string.friend_profile)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as AddFriendFragment.AddFriendTransitionInterface
     }
@@ -54,8 +57,6 @@ class FriendInfoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         currentUser = arguments?.get(Constants.USER_KEY) as User
         displayFriendInfo(currentUser)
-
-        checkFriendImage(currentUser)
 
         if(!Utils.isNetworkConnected(context)){
             Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
@@ -109,8 +110,21 @@ class FriendInfoFragment : Fragment() {
     }
 
     private fun checkFriendImage(currentUser: User){
+        Log.d(TAG, "checkFriendImage")
         if(currentUser.hasImage){
+            Log.d(TAG, "has image")
             //TODO: Postponed functionality
+            //test
+            addFriendViewMdel
+                    .downloadImage(currentUser.imageUrl, currentUser.id)
+                    .subscribe({
+                        Log.d(TAG, "successfully downloaded image")
+                        val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, it)
+                        friend_info_image_view.setImageBitmap(bitmap)
+                    }, {
+                        Log.d(TAG, "error downloading image : " + it.message)
+                    })
+            //
         }
         else{ friend_info_image_view.setImageResource(R.drawable.person_placeholder)
         }

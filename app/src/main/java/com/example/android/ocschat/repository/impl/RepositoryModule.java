@@ -7,6 +7,7 @@ import com.example.android.ocschat.api.ChatApi;
 import com.example.android.ocschat.api.HomeApi;
 import com.example.android.ocschat.api.LoginApi;
 import com.example.android.ocschat.api.SettingsApi;
+import com.example.android.ocschat.api.impl.BaseApi;
 import com.example.android.ocschat.localDatabase.Gate;
 import com.example.android.ocschat.repository.AddFriendRepository;
 import com.example.android.ocschat.repository.ChatRepository;
@@ -23,33 +24,33 @@ import dagger.Provides;
 public class RepositoryModule {
 
     @Provides @Singleton
-    public AddFriendRepository provideAddFriendRepository(Gate gate, AddFriendApi api){
-        return new AddFriendRepositoryImpl(gate, api);
+    public AddFriendRepository provideAddFriendRepository(Gate gate, AddFriendApi api, BaseApi baseApi){
+        return new AddFriendRepositoryImpl(gate, api, baseApi);
     }
 
     @Provides @Singleton
-    public ChatRepository provideChatRepository(Gate gate, ChatApi api){
-        return new ChatRepositoryImpl(gate, api);
+    public ChatRepository provideChatRepository(Gate gate, ChatApi api, BaseApi baseApi){
+        return new ChatRepositoryImpl(gate, api, baseApi);
     }
 
     @Provides @Singleton
-    public HomeRepository provideHomeRepository(Gate gate, HomeApi api, Context context){
-        return new HomeRepositoryImpl(gate, api, context);
+    public HomeRepository provideHomeRepository(Gate gate, HomeApi api, Context context, BaseApi baseApi){
+        return new HomeRepositoryImpl(gate, api, baseApi, context);
     }
 
     @Provides @Singleton
-    public LoginRepository provideLoginRepository(Gate gate, LoginApi api){
-        return new LoginRepositoryImpl(gate, api);
+    public LoginRepository provideLoginRepository(Gate gate, LoginApi api, BaseApi baseApi){
+        return new LoginRepositoryImpl(gate, api, baseApi);
     }
 
     @Provides @Singleton
-    public SettingsRepository provideSettingsRepository(Gate gate, SettingsApi api){
-        return new SettingsRepositoryImpl(gate, api);
+    public SettingsRepository provideSettingsRepository(Gate gate, SettingsApi api, BaseApi baseApi){
+        return new SettingsRepositoryImpl(gate, api, baseApi);
     }
 
     @Provides @Singleton
-    public BaseRepository provideBaseRepository(Gate gate){
-        return new BaseRepository(gate);
+    public BaseRepository provideBaseRepository(Gate gate, BaseApi baseApi){
+        return new BaseRepository(gate, baseApi);
     }
 
 }

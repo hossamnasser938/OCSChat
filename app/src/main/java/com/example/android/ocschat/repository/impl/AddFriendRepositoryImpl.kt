@@ -2,13 +2,14 @@ package com.example.android.ocschat.repository.impl
 
 import android.util.Log
 import com.example.android.ocschat.api.AddFriendApi
+import com.example.android.ocschat.api.impl.BaseApi
 import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.Friend
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.AddFriendRepository
 import io.reactivex.*
 
-class AddFriendRepositoryImpl(private val gate: Gate, private val api: AddFriendApi) : BaseRepository(gate), AddFriendRepository {
+class AddFriendRepositoryImpl(private val gate: Gate, private val api: AddFriendApi, private val baseApi : BaseApi) : BaseRepository(gate, baseApi), AddFriendRepository {
 
     private val TAG = "AddFriendRepoImpl"
 

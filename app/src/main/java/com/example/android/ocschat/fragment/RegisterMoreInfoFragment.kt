@@ -27,6 +27,7 @@ class RegisterMoreInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.actionBar?.title = getString(R.string.add_more_info)
         transient = activity as LoginFragment.LoginTransitionInterface
     }
 
@@ -40,7 +41,6 @@ class RegisterMoreInfoFragment : Fragment() {
         //get inputs received from Register fragment as arguments
         val userInputs = arguments?.getSerializable(Constants.INPUTS_KEY) as HashMap<String, Any>
 
-        setClickLoginOnClickListener()
         setRegisterButtonClickListener(userInputs)
         setSkipButtonClickListener(userInputs)
     }
@@ -99,12 +99,6 @@ class RegisterMoreInfoFragment : Fragment() {
             addedInfo = true
         }
         return addedInfo
-    }
-
-    private fun setClickLoginOnClickListener(){
-        click_login_text_view.setOnClickListener{
-            transient.openFragment(LoginFragment())
-        }
     }
 
     /**
