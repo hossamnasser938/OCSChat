@@ -35,6 +35,7 @@ class AddFriendFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
+        activity?.title = getString(R.string.add_friend)
         (activity?.application as OCSChatApplication).component.inject(this)
         transition = activity as AddFriendTransitionInterface
     }

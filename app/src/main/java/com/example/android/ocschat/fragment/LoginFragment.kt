@@ -29,6 +29,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.title = getString(R.string.login)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginTransitionInterface
     }

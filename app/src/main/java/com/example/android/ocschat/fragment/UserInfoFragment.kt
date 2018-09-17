@@ -35,7 +35,7 @@ class UserInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.actionBar?.title = getString(R.string.my_profile)
+        activity?.title = getString(R.string.my_profile)
         transition = activity as SettingsFragment.SettingsTransitionInterface
     }
 

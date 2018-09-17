@@ -18,7 +18,7 @@ class InviteFriendFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.actionBar?.title = getString(R.string.invite_friend)
+        activity?.title = getString(R.string.invite_friend)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

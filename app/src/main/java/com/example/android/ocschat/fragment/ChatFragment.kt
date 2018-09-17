@@ -50,6 +50,7 @@ class ChatFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activity?.title = getString(R.string.chat)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
 

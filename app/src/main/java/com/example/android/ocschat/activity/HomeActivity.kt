@@ -33,8 +33,6 @@ class HomeActivity : AppCompatActivity(), HomeFragment.HomeTransitionInterface {
 
         (application as OCSChatApplication).component.inject(this)
 
-        supportActionBar?.title = getString(R.string.home)
-
         if(FirebaseAuth.getInstance().currentUser == null){
             val intent = Intent(applicationContext, LoginActivity::class.java)
             startActivity(intent)

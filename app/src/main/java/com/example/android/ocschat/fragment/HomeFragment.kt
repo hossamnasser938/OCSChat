@@ -52,6 +52,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "onCreate executes")
         super.onCreate(savedInstanceState)
+        activity?.title = getString(R.string.home)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
 

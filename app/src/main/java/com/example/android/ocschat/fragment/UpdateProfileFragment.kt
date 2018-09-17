@@ -36,7 +36,7 @@ class UpdateProfileFragment : Fragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.actionBar?.title = getString(R.string.update_profile)
+        activity?.title = getString(R.string.update_profile)
         (activity?.application as OCSChatApplication).component.inject(this)
     }
 

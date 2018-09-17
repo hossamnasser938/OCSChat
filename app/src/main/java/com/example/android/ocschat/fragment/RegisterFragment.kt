@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
+import com.example.android.ocschat.activity.LoginActivity
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.LoginViewModel
@@ -30,7 +31,7 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.actionBar?.title = getString(R.string.register)
+        activity?.title = getString(R.string.register)
         (activity?.application as OCSChatApplication).component.inject(this)
         transient = activity as LoginFragment.LoginTransitionInterface
     }

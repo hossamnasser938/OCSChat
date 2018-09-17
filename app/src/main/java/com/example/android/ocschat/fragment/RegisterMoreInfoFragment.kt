@@ -27,7 +27,7 @@ class RegisterMoreInfoFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.actionBar?.title = getString(R.string.add_more_info)
+        activity?.title = getString(R.string.add_more_info)
         transient = activity as LoginFragment.LoginTransitionInterface
     }
 
