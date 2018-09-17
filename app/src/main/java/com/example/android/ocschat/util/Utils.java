@@ -118,4 +118,19 @@ public class Utils {
 
     }
 
+    //test
+    public static void setTestPath(Context context, String filePath){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().putString(Constants.TEST_PATH_KEY, filePath).apply();
+        Log.d(TAG, "set test flag");
+    }
+
+    public  static String getTestPath(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        if(sharedPreferences.contains(Constants.TEST_PATH_KEY)){
+            return sharedPreferences.getString(Constants.TEST_PATH_KEY, Constants.NONE);
+        }
+        return Constants.NONE;
+    }
+    //test
 }

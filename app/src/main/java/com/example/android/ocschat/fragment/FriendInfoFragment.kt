@@ -118,9 +118,32 @@ class FriendInfoFragment : Fragment() {
         Log.d(TAG, "checkFriendImage")
         friend_info_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentUser.hasImage){
+            /*
             Log.d(TAG, "has image")
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentUser.imageFilePath))
             friend_info_image_view.setImageBitmap(bitmap)
+            */
+            //test
+            if(Utils.getTestPath(activity).equals(Constants.NONE, false)){
+                Log.d(TAG, "did not find test path")
+                addFriendViewMdel
+                        .downloadImage(Uri.parse(currentUser.imageUrl), currentUser.id)
+                        .subscribe ({
+                            Log.d(TAG, "got downloaded image")
+                            Utils.setTestPath(activity, it.toString())
+                            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(it.toString()))
+                            friend_info_image_view.setImageBitmap(bitmap)
+                        }, {
+                            Log.d(TAG, "failed to download image")
+                        })
+            }
+            else{
+                Log.d(TAG, "found test path")
+                val testPath = Utils.getTestPath(activity)
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(testPath))
+                friend_info_image_view.setImageBitmap(bitmap)
+            }
+            //test
         }
     }
 

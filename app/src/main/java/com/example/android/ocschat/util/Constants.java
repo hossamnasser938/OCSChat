@@ -39,6 +39,8 @@ public class Constants {
     public static final String FILE_PATH_KEY = "file_path";
     public static final String SHARED_PREFERENCES_KEY = "preferences";
     public static final String DOWNLOAD_FLAG_KEY = "needs_download";
+    public static final String TEST_PATH_KEY = "test_path";
+    public static final String NONE = "none";
     public static final String NULL_FILE_PATH = "null file path";
     public static final String NULL_DOWNLOAD_URLH = "null download url";
     public static final String NO_FILE_PATH = "no file path found";
