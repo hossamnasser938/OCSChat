@@ -57,6 +57,7 @@ class UpdateProfileFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         currentlyLoggedUser = arguments?.get(Constants.USER_KEY) as User
         loadUserInfo()
+        setUpdateProfilePictureClickListener()
     }
 
     override fun onStop() {
@@ -91,9 +92,19 @@ class UpdateProfileFragment : Fragment(){
 
                 updateUserProperties()
 
-                //TODO: Implement update profile picture functionality
+                //try to access filePath variable to see if it has been initialized which means user has updated his profile picture or not
+                var filePathToSend : Uri?
+                try{
+                    filePathToSend = filePath
+                    Log.d(TAG, "not null file path")
+                }
+                catch (e : UninitializedPropertyAccessException){
+                    Log.d(TAG, "null file path")
+                    filePathToSend = null  //null means user has not updated his profile picture
+                }
+
                 //call fire-base service to update current user info
-                disposable = settingsViewModel.updateCurrentUser(currentlyLoggedUser)
+                disposable = settingsViewModel.updateCurrentUser(currentlyLoggedUser, filePathToSend)
                         .subscribe({
                             //Inform user and go back to Home activity
                             Log.d("UpdateProfileFragment", "Updated")
@@ -160,6 +171,13 @@ class UpdateProfileFragment : Fragment(){
             if(!update_profile_company_edit_text.text.toString().equals(currentlyLoggedUser.company, false))
                 return true
         }
+        //try to access filePath to see if it has been initialized
+        try{
+            filePath.toString()
+            return true
+        }
+        catch (e : UninitializedPropertyAccessException){ }
+
         return false
     }
 
