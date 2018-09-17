@@ -64,7 +64,6 @@ public class OCSChatProvider extends ContentProvider {
                     throw new IllegalArgumentException("Unknown Uri:" + uri);
         }
 
-        //TODO: notification
         return cursor;
     }
 
@@ -109,7 +108,6 @@ public class OCSChatProvider extends ContentProvider {
 
         if(rowId != -1){
             Uri insertedRowUri = ContentUris.withAppendedId(Contract.User.CONTENT_URI, rowId);
-            //TODO: notifychange
             return insertedRowUri;
         }
         return null;
@@ -128,7 +126,6 @@ public class OCSChatProvider extends ContentProvider {
 
         if(rowId != -1){
             Uri insertedRowUri = ContentUris.withAppendedId(Contract.Friend.CONTENT_URI, rowId);
-            //TODO: notifychange
             return insertedRowUri;
         }
         return null;
@@ -167,7 +164,6 @@ public class OCSChatProvider extends ContentProvider {
         //Validate data before updating
         validateUser(values);
 
-        //TODO: notifyChange
         return database.update(Contract.User.TABLE_NAME,
                 values,
                 selection,
@@ -180,7 +176,6 @@ public class OCSChatProvider extends ContentProvider {
         //Validate data before updating
         validateFriend(values);
 
-        //TODO: notifyChange
         return database.update(Contract.Friend.TABLE_NAME,
                 values,
                 selection,
@@ -190,7 +185,6 @@ public class OCSChatProvider extends ContentProvider {
     private int deleteUser(Uri uri, String selection, String[] selectionArgs){
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
 
-        //TODO: notifyChange
         return database.delete(Contract.User.TABLE_NAME,
                 selection,
                 selectionArgs);
@@ -199,7 +193,6 @@ public class OCSChatProvider extends ContentProvider {
     private int deleteFriend(Uri uri, String selection, String[] selectionArgs){
         SQLiteDatabase database = mDbHelper.getReadableDatabase();
 
-        //TODO: notifyChange
         return database.delete(Contract.Friend.TABLE_NAME,
                 selection,
                 selectionArgs);

@@ -31,7 +31,6 @@ public class Helper extends SQLiteOpenHelper {
                 + Contract.User.COLUMN_WORK + Contract.DATA_TEXT + ", "
                 + Contract.User.COLUMN_COMPANY + Contract.DATA_TEXT + ");";
 
-        //TODO: make userId foreign key
         final String SQL_CREATE_TABLE_FRIEND_STATEMENT = "CREATE TABLE" + Contract.Friend.TABLE_NAME + " ("
                 + Contract.Friend.COLUMN_USER_ID + Contract.DATA_TEXT + Contract.CONSTRAINT_NOT_NULL + ", "
                 + Contract.Friend.COLUMN_FRIEND_ID + Contract.DATA_TEXT + Contract.CONSTRAINT_NOT_NULL + ", "
