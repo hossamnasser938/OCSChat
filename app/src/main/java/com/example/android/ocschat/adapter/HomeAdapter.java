@@ -1,6 +1,9 @@
 package com.example.android.ocschat.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.example.android.ocschat.R;
 import com.example.android.ocschat.model.User;
 
+import java.io.IOException;
 import java.util.List;
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
@@ -50,11 +54,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         User currentFriend = friendsList.get(position);
         holder.name.setText(currentFriend.getName());
+        holder.image.setImageResource(R.drawable.person_placeholder);
         if(currentFriend.getHasImage()){
-            //TODO: Postponed functionality
-        }
-        else{
-            holder.image.setImageResource(R.drawable.person_placeholder);
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.parse(currentFriend.getImageFilePath()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(bitmap != null)
+                holder.image.setImageBitmap(bitmap);
         }
     }
 
