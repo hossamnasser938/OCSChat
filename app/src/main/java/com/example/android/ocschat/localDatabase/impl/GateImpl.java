@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import com.example.android.ocschat.R;
 import com.example.android.ocschat.localDatabase.Contract;
 import com.example.android.ocschat.localDatabase.Gate;
 import com.example.android.ocschat.model.Friend;
@@ -22,8 +23,11 @@ import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 class GateImpl implements Gate {
 
@@ -265,6 +269,41 @@ class GateImpl implements Gate {
             return Completable.complete();  //updated successfully
 
         return Completable.error(new OCSChatThrowable(Constants.ERROR_FROM_DATABASE));  //something went wrong
+    }
+
+    /**
+     * check if the friend with this id has image and was downloaded before or not
+     * @param friendId
+     * @return true if the user has image and downloaded, false if the user has image but not downloaded and error if this friend has no image
+     */
+    @Override
+    public Single<Boolean> downloadedImage(String friendId) {
+        return getUser(friendId)
+                .flatMap(new Function<User, SingleSource<Boolean>>() {
+                    @Override
+                    public SingleSource<Boolean> apply(final User user) {
+                        return new Single<Boolean>() {
+                            @Override
+                            protected void subscribeActual(SingleObserver<? super Boolean> observer) {
+                                if(user.getHasImage()){
+                                    Log.d(TAG, "user has image");
+                                    if(user.getImageFilePath() != null) {
+                                        Log.d(TAG, "user has image file path");
+                                        observer.onSuccess(true);
+                                    }
+                                    else{
+                                        Log.d(TAG, "user has no image file path");
+                                        observer.onSuccess(false);
+                                    }
+                                }
+                                else{
+                                    Log.d(TAG, "user has no image");
+                                    observer.onError(new OCSChatThrowable(context.getString(R.string.user_has_no_image_error)));
+                                }
+                            }
+                        };
+                    }
+                });
     }
 
     /**

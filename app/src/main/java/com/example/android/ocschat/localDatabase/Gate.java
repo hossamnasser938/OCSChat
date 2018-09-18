@@ -14,6 +14,7 @@ public interface Gate {
     Completable insertUser(User user);
     Completable addFriend(User user);
     Completable updateUser(User user);
+    Single<Boolean> downloadedImage(String friendId);
     void clearDatabase();
 
 }

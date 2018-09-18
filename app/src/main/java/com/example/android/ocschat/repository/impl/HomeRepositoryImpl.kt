@@ -1,6 +1,7 @@
 package com.example.android.ocschat.repository.impl
 
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import com.example.android.ocschat.api.HomeApi
 import com.example.android.ocschat.api.impl.BaseApi
@@ -42,26 +43,59 @@ class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, priva
                         gate.isFriend(user.id).flatMapPublisher {
                             //insert fetched users in local database if not inserted yet
                             if(!it) {
-                                Log.d(TAG, "got user : " + user.firstName + " and inserted")
+                                //not a friend
+                                Log.d(TAG, "got user : " + user.firstName + " and to be inserted")
 
                                 friendsFetchedCounter++
                                 Log.d(TAG, "friendsFetchedCounter = " + friendsFetchedCounter)
 
-                                //if it is the last element clear download flag
-                                if(friendsFetchedCounter == currentUser.friendsCount){
-                                    Log.d(TAG, "reached last friend")
-                                    Utils.clearDownloadFlag(context)
-                                    Log.d(TAG, "Download flag = " + Utils.isDownloadFlag(context))
+                                //if user has image check if it was downloaded or not
+                                if(user.hasImage){
+                                    Log.d(TAG, "user has image")
+                                    api.downloadImage(Uri.parse(user.imageUrl), user.id)
+                                            .flatMapPublisher {
+                                                Log.d(TAG, "image downloaded successfully")
+                                                checkToClearDownloadFlag(currentUser)
+                                                //update user object with image file path before inserting into database
+                                                user.imageFilePath = Uri.fromFile(it).toString()
+                                                gate.addFriend(user).andThen(Flowable.just(user))
+                                            }
                                 }
                                 else{
-                                    Log.d(TAG, "did not reach last friend")
+                                    Log.d(TAG, "user has no image")
+                                    checkToClearDownloadFlag(currentUser)
+                                    gate.addFriend(user).andThen(Flowable.just(user))
                                 }
-                                gate.addFriend(user).andThen(Flowable.just(user))
 
                             }
                             else{
-                                Log.d(TAG, "got user : " + user.firstName + " but not inserted")
-                                Flowable.just(user)
+                                //already a friend
+                                Log.d(TAG, "got user : " + user.firstName + " but not to be inserted")
+                                //if user has image check if it was downloaded or not
+                                if(user.hasImage) {
+                                    Log.d(TAG, "user has image")
+                                    gate.downloadedImage(user.id).flatMapPublisher {
+                                        if (it) {
+                                            Log.d(TAG, "image downloaded before")
+                                            Flowable.just(user)
+                                        }
+                                        else {
+                                            Log.d(TAG, "image not downloaded before")
+                                            api.downloadImage(Uri.parse(user.imageUrl), user.id)
+                                                    .flatMapPublisher {
+                                                        Log.d(TAG, "image downloaded successfully")
+                                                        //store image file path and update database
+                                                        user.imageFilePath = Uri.fromFile(it).toString()
+                                                        gate.updateUser(user)
+                                                                .startWith(Flowable.just(user))
+                                                    }
+                                        }
+                                    }
+                                }
+                                else{
+                                    Log.d(TAG, "user has no image")
+                                    Flowable.just(user)
+                                }
                             }
 
                         }
@@ -73,6 +107,19 @@ class HomeRepositoryImpl(private val gate: Gate, private val api: HomeApi, priva
 
     override fun clearDatabase() {
         gate.clearDatabase()
+    }
+
+    private fun checkToClearDownloadFlag(currentUser : User){
+        //if it is the last element clear download flag
+        if(friendsFetchedCounter == currentUser.friendsCount){
+            Log.d(TAG, "reached last friend")
+            Utils.clearDownloadFlag(context)
+            Log.d(TAG, "Download flag = " + Utils.isDownloadFlag(context))
+        }
+        else{
+            Log.d(TAG, "did not reach last friend")
+        }
+
     }
 
 }
