@@ -56,14 +56,32 @@ class LoginRepositoryImpl(private val gate: Gate, private val api: LoginApi, pri
     }
 
     override fun login(body : HashMap<String, String>): Maybe<FirebaseUser> {
-        return api.login(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY]).flatMap {
-            if(it.user != null){
-                api.getUser(it.user.uid).flatMapCompletable { dataSnapshot ->
+        return api.login(body[Constants.EMAIL_KEY], body[Constants.PASSWORD_KEY]).flatMap { authResult ->
+            if(authResult.user != null) {
+                Log.d(TAG, "logged successfully")
+                api.getUser(authResult.user.uid).flatMap { dataSnapshot ->
+                    Log.d(TAG, "got user from api successfully")
                     val user = dataSnapshot.getValue(User::class.java)
-                    gate.insertUser(user) }
-                        .andThen(Maybe.just(it.user))
+                    if (user.hasImage) {
+                        Log.d(TAG, "user has image")
+                        api.downloadImage(Uri.parse(user.imageUrl), user.id)
+                                .flatMapMaybe {
+                                    Log.d(TAG, "image downloaded successfully")
+                                    user.imageFilePath = Uri.fromFile(it).toString()
+                                    gate.insertUser(user)
+                                            .andThen(Maybe.just(authResult.user))
+                                }
+                    } else {
+                        Log.d(TAG, "user has no image")
+                        gate.insertUser(user)
+                                .andThen(Maybe.just(authResult.user))
+                    }
+                }
             }
-            else Maybe.error(OCSChatThrowable(Constants.FAILED_LOGIN_MESSAGE)) }
+            else {
+                Log.d(TAG, "error logging user")
+                Maybe.error(OCSChatThrowable(Constants.FAILED_LOGIN_MESSAGE))
+            } }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
     }
