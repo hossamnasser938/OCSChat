@@ -78,28 +78,28 @@ class RegisterMoreInfoFragment : Fragment() {
      */
     private fun getUserInputs(inputs : HashMap<String, Any>) : Boolean{
         var addedInfo = false
-        if(!register_age_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.AGE_KEY] = register_age_edit_text.text.toString().toInt()
+        if(!register_age_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.AGE_KEY] = register_age_edit_text.text.trim().toString().toInt()
             addedInfo = true
         }
-        if(!register_education_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.toString()
+        if(!register_education_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_education_org_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.EDUCATION_ORG_KEY] = register_education_org_edit_text.text.toString()
+        if(!register_education_org_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.EDUCATION_ORG_KEY] = register_education_org_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_major_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.MAJOR_KEY] = register_major_edit_text.text.toString()
+        if(!register_major_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.MAJOR_KEY] = register_major_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_work_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.WORK_KEY] = register_work_edit_text.text.toString()
+        if(!register_work_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.WORK_KEY] = register_work_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_company_edit_text.text.toString().isEmpty()) {
-            inputs[Constants.COMPANY_KEY] = register_company_edit_text.text.toString()
+        if(!register_company_edit_text.text.toString().trim().isEmpty()) {
+            inputs[Constants.COMPANY_KEY] = register_company_edit_text.text.trim().toString()
             addedInfo = true
         }
         return addedInfo

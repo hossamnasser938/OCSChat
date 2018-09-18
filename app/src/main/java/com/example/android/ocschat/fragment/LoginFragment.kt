@@ -131,8 +131,8 @@ class LoginFragment : Fragment() {
      */
     private fun getUserInput() : HashMap<String, String>{
         val userInput : HashMap<String, String> = HashMap()
-        userInput[Constants.EMAIL_KEY] = login_email_edit_text.text.toString()
-        userInput[Constants.PASSWORD_KEY] = login_password_edit_text.text.toString()
+        userInput[Constants.EMAIL_KEY] = login_email_edit_text.text.trim().toString()
+        userInput[Constants.PASSWORD_KEY] = login_password_edit_text.text.trim().toString()
         return userInput
     }
 

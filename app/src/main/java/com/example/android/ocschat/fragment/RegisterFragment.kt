@@ -150,10 +150,10 @@ class RegisterFragment : Fragment() {
      */
     private fun getUserInput() : HashMap<String, Any>{
         val userInput : HashMap<String, Any> = HashMap()
-        userInput[Constants.EMAIL_KEY] = register_email_edit_text.text.toString()
-        userInput[Constants.FIRST_NAME_KEY] = register_firstname_edit_text.text.toString()
-        userInput[Constants.LAST_NAME_KEY] = register_lastname_edit_text.text.toString()
-        userInput[Constants.PASSWORD_KEY] = register_password_edit_text.text.toString()
+        userInput[Constants.EMAIL_KEY] = register_email_edit_text.text.trim().toString()
+        userInput[Constants.FIRST_NAME_KEY] = register_firstname_edit_text.text.trim().toString()
+        userInput[Constants.LAST_NAME_KEY] = register_lastname_edit_text.text.trim().toString()
+        userInput[Constants.PASSWORD_KEY] = register_password_edit_text.text.trim().toString()
         return userInput
     }
 

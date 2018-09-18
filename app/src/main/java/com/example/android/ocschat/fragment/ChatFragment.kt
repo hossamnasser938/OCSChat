@@ -143,7 +143,7 @@ class ChatFragment : Fragment() {
                 Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
             }
             else{
-                val messageText = message_text_input.text.toString()
+                val messageText = message_text_input.text.trim().toString()
                 if(!messageText.isEmpty()){
                     val message = Message(messageText, currentUser.name, friendUser.name)
                     pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)

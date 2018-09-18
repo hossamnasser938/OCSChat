@@ -143,32 +143,32 @@ class UpdateProfileFragment : Fragment(){
      * check if user updated something or not
      */
     private fun checkSomethingUpdated() : Boolean{
-        if(!update_profile_firstname_edit_text.text.toString().equals(currentlyLoggedUser.firstName, false))
+        if(!update_profile_firstname_edit_text.text.trim().toString().equals(currentlyLoggedUser.firstName, false))
             return true
-        if(!update_profile_lastname_edit_text.text.toString().equals(currentlyLoggedUser.lastName, false))
+        if(!update_profile_lastname_edit_text.text.trim().toString().equals(currentlyLoggedUser.lastName, false))
             return true
         if(update_profile_age_edit_text.visibility == View.VISIBLE){
-            if(update_profile_age_edit_text.text.toString().toInt() != currentlyLoggedUser.age)
+            if(update_profile_age_edit_text.text.trim().toString().toInt() != currentlyLoggedUser.age)
                 return true
         }
         if(update_profile_education_edit_text.visibility == View.VISIBLE){
-            if(!update_profile_education_edit_text.text.toString().equals(currentlyLoggedUser.education, false))
+            if(!update_profile_education_edit_text.text.trim().toString().equals(currentlyLoggedUser.education, false))
                 return true
         }
         if(update_profile_education_org_edit_text.visibility == View.VISIBLE){
-            if(!update_profile_education_org_edit_text.text.toString().equals(currentlyLoggedUser.educationOrganization, false))
+            if(!update_profile_education_org_edit_text.text.trim().toString().equals(currentlyLoggedUser.educationOrganization, false))
                 return true
         }
         if(update_profile_major_edit_text.visibility == View.VISIBLE){
-            if(!update_profile_major_edit_text.text.toString().equals(currentlyLoggedUser.major, false))
+            if(!update_profile_major_edit_text.text.trim().toString().equals(currentlyLoggedUser.major, false))
                 return true
         }
         if(update_profile_work_edit_text.visibility == View.VISIBLE){
-            if(!update_profile_work_edit_text.text.toString().equals(currentlyLoggedUser.work, false))
+            if(!update_profile_work_edit_text.text.trim().toString().equals(currentlyLoggedUser.work, false))
                 return true
         }
         if(update_profile_company_edit_text.visibility == View.VISIBLE){
-            if(!update_profile_company_edit_text.text.toString().equals(currentlyLoggedUser.company, false))
+            if(!update_profile_company_edit_text.text.trim().toString().equals(currentlyLoggedUser.company, false))
                 return true
         }
         //try to access filePath to see if it has been initialized
@@ -184,12 +184,18 @@ class UpdateProfileFragment : Fragment(){
     private fun updateUserProperties() {
         currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.toString()
         currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.toString()
-        currentlyLoggedUser.age = update_profile_age_edit_text.text.toString().toInt()
-        currentlyLoggedUser.education = update_profile_education_edit_text.text.toString()
-        currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.toString()
-        currentlyLoggedUser.major = update_profile_major_edit_text.text.toString()
-        currentlyLoggedUser.work = update_profile_work_edit_text.text.toString()
-        currentlyLoggedUser.company = update_profile_company_edit_text.text.toString()
+        if(update_profile_age_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.age = update_profile_age_edit_text.text.toString().toInt()
+        if(update_profile_education_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.education = update_profile_education_edit_text.text.toString()
+        if(update_profile_education_org_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.toString()
+        if(update_profile_major_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.major = update_profile_major_edit_text.text.toString()
+        if(update_profile_work_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.work = update_profile_work_edit_text.text.toString()
+        if(update_profile_company_edit_text.visibility == View.VISIBLE)
+            currentlyLoggedUser.company = update_profile_company_edit_text.text.toString()
     }
 
 

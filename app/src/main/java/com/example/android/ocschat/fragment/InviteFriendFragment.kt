@@ -52,7 +52,7 @@ class InviteFriendFragment : Fragment() {
                 }
 
                 //create intent for sending email inviting friends
-                val emailUriString = "mailto:" + invite_friend_email_edit_text.text.toString() + "?cc=" + Constants.EMAIL_SENDER + "&subject=" + Uri.encode(Constants.EMAIL_SUBJECT) + "&body=" + Uri.encode(Constants.EMAIL_BODY)
+                val emailUriString = "mailto:" + invite_friend_email_edit_text.text.trim().toString() + "?cc=" + Constants.EMAIL_SENDER + "&subject=" + Uri.encode(Constants.EMAIL_SUBJECT) + "&body=" + Uri.encode(Constants.EMAIL_BODY)
                 val emailIntent = Intent()
                 emailIntent.action = Intent.ACTION_SENDTO
                 emailIntent.data = Uri.parse(emailUriString)
@@ -73,7 +73,7 @@ class InviteFriendFragment : Fragment() {
     }
 
     private fun checkEmptyEmail() : Boolean{
-        if(invite_friend_email_edit_text.text.toString().isEmpty())
+        if(invite_friend_email_edit_text.text.toString().trim().isEmpty())
             return true
         return false
     }
