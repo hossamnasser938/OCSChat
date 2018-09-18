@@ -241,7 +241,7 @@ class UpdateProfileFragment : Fragment(){
     }
 
     private fun setUpdateProfilePictureClickListener(){
-        update_profile_update_image_text_view.setOnClickListener{
+        update_profile_image_view.setOnClickListener{
             val intent = Intent()
             intent.type = "image/*"
             intent.action = Intent.ACTION_OPEN_DOCUMENT  //ACTION_OPEN_DOCUMENT instead of ACTION_GET_DOCUMENT to have future access to this file

@@ -67,7 +67,7 @@ class AddPhotoFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        activity?.title = getString(R.string.add_profile_photo)
+        activity?.title = getString(R.string.add_profile_picture)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
