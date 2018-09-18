@@ -8,7 +8,6 @@ import com.example.android.ocschat.localDatabase.Gate
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.repository.SettingsRepository
 import io.reactivex.Completable
-import io.reactivex.Single
 
 class SettingsRepositoryImpl(private val gate: Gate, private val api: SettingsApi, private val baseApi : BaseApi) : BaseRepository(gate, baseApi), SettingsRepository {
 

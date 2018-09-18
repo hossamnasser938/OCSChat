@@ -107,12 +107,12 @@ class UpdateProfileFragment : Fragment(){
                 disposable = settingsViewModel.updateCurrentUser(currentlyLoggedUser, filePathToSend)
                         .subscribe({
                             //Inform user and go back to Home activity
-                            Log.d("UpdateProfileFragment", "Updated")
+                            Log.d(TAG, "Updated")
                             Toast.makeText(context, R.string.account_updated, Toast.LENGTH_SHORT).show()
                             progressDialog.dismiss()
                             activity?.finish()
                         }, {
-                            Log.d("UpdateProfileFragment", it.message)
+                            Log.d(TAG, it.message)
                             Toast.makeText(context, Constants.ERROR_UPDATING_ACCOUNT, Toast.LENGTH_SHORT).show()
                             progressDialog.dismiss()
                         })

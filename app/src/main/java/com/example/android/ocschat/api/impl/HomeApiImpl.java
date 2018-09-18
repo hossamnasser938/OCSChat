@@ -14,8 +14,6 @@ import io.reactivex.Maybe;
 
 class HomeApiImpl extends BaseApi implements HomeApi {
 
-    private static final String TAG = "HomeApiImpl";
-
     @Override
     public Flowable<RxFirebaseChildEvent<DataSnapshot>> getCurrentUserFriends() {
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();

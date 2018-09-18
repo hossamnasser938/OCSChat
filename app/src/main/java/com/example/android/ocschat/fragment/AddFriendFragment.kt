@@ -14,8 +14,6 @@ import com.example.android.ocschat.viewModel.AddFriendViewModel
 import com.google.firebase.auth.FirebaseAuth
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_add_friend.*
-import rx.Observer
-import rx.Subscription
 import javax.inject.Inject
 
 class AddFriendFragment : Fragment() {

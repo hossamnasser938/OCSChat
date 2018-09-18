@@ -9,6 +9,8 @@ import com.example.android.ocschat.model.FriendState;
 
 public class Helper extends SQLiteOpenHelper {
 
+    private final static String TAG = "Helper";
+
     private static final String DATABASE_NAME = "ocschat.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -39,8 +41,8 @@ public class Helper extends SQLiteOpenHelper {
         //execute create table statements
         db.execSQL(SQL_CREATE_TABLE_USER_STATEMENT);
         db.execSQL(SQL_CREATE_TABLE_FRIEND_STATEMENT);
-        Log.d("Helper", SQL_CREATE_TABLE_USER_STATEMENT);
-        Log.d("Helper", SQL_CREATE_TABLE_FRIEND_STATEMENT);
+        Log.d(TAG, SQL_CREATE_TABLE_USER_STATEMENT);
+        Log.d(TAG, SQL_CREATE_TABLE_FRIEND_STATEMENT);
     }
 
     @Override

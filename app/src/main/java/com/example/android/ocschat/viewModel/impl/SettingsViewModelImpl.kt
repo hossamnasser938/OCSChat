@@ -6,7 +6,6 @@ import com.example.android.ocschat.repository.SettingsRepository
 import com.example.android.ocschat.repository.impl.BaseRepository
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.Completable
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

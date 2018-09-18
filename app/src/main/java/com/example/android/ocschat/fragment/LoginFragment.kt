@@ -22,6 +22,8 @@ import javax.inject.Inject
 
 class LoginFragment : Fragment() {
 
+    private val TAG = "LoginFragment"
+
     @Inject
     lateinit var loginViewModel : LoginViewModel
     private lateinit var disposable : Disposable
@@ -60,7 +62,7 @@ class LoginFragment : Fragment() {
 
     private fun setLoginButtonOnClickListener(){
         login_button.setOnClickListener {
-            Log.d("LoginFragment", "login button clicked")
+            Log.d(TAG, "login button clicked")
             //Do not respond to user clicks for now
             it.isClickable = false
             //hide error text view

@@ -137,7 +137,7 @@ class AddPhotoFragment : Fragment() {
             Toast.makeText(context, getString(R.string.welcome) + body[Constants.FIRST_NAME_KEY], Toast.LENGTH_SHORT).show()
             activity?.finish()
         }, {
-            Log.d("RegisterMoreFragment", it.message)
+            Log.d(TAG, it.message)
             //hide loading progress bar
             add_photo_loading_progress_bar.visibility = View.GONE
             //show error message

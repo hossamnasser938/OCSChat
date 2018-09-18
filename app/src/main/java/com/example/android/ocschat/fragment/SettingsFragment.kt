@@ -72,9 +72,8 @@ class SettingsFragment : Fragment() {
             settings_logged_user_name.text = currentlyLoggedUser.name
             checkUserImage()
             setUserInfoOnClickListener(currentlyLoggedUser)
-            //Log.d("SettingsFragment", it.firstName)
         }, {
-            Log.d("SettingsFragment", it.message)
+            Log.d(TAG, it.message)
             Toast.makeText(context, Constants.ERROR_FETCHING_USER_INFO, Toast.LENGTH_SHORT).show()
         })
     }

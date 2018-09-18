@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
-import com.example.android.ocschat.activity.LoginActivity
 import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.LoginViewModel

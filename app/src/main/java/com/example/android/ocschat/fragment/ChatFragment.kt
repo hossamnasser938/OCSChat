@@ -23,6 +23,8 @@ import javax.inject.Inject
 
 class ChatFragment : Fragment() {
 
+    private val TAG = "ChatFragment"
+
     @Inject
     lateinit var chatViewModel: ChatViewModel
 
@@ -98,7 +100,7 @@ class ChatFragment : Fragment() {
         chat_recycler_view.layoutManager = layoutManager
         chat_recycler_view.setHasFixedSize(true)
 
-        Log.d("ChatFragment", "Initiate adapter")
+        Log.d(TAG, "Initiate adapter")
         chatAdapter = ChatAdapter(context, messagesList, currentUser.name)
         chat_recycler_view.adapter = chatAdapter
     }
@@ -109,9 +111,9 @@ class ChatFragment : Fragment() {
                     messagesList.add(it)
                     chatAdapter.notifyDataSetChanged()
                     chat_recycler_view.scrollToPosition(chatAdapter.itemCount - 1)
-                    Log.d("ChatFragment", it.text)
+                    Log.d(TAG, it.text)
                 },{
-                    Log.d("ChatFragment", it.message)
+                    Log.d(TAG, it.message)
                 })
     }
 
@@ -119,17 +121,17 @@ class ChatFragment : Fragment() {
         fetchUserDisposable = chatViewModel.getUser(currentUserId).subscribe({
             currentUser = it
             InitializeAdapter()
-            Log.d("ChatFragment", it.name)
+            Log.d(TAG, it.name)
         }, {
-            Log.d("ChatFragment", it.message)
+            Log.d(TAG, it.message)
             Toast.makeText(context, Constants.ERROR, Toast.LENGTH_SHORT).show()
             activity?.finish()
         })
         fetchFriendDisposable = chatViewModel.getUser(friendId).subscribe({
             friendUser = it
-            Log.d("ChatFragment", it.name)
+            Log.d(TAG, it.name)
         }, {
-            Log.d("ChatFragment", it.message)
+            Log.d(TAG, it.message)
             Toast.makeText(context, Constants.ERROR, Toast.LENGTH_SHORT).show()
             activity?.finish()
         })
@@ -147,10 +149,10 @@ class ChatFragment : Fragment() {
                     pushMessagesDisposable = chatViewModel.pushMessage(friendId, message)
                             .subscribe({
                                 message_text_input.text.clear()
-                                Log.d("ChatFragment", "Message sent")
+                                Log.d(TAG, "Message sent")
                             }, {
                                 Toast.makeText(context, Constants.FAILED_SENDING_MESSAGE, Toast.LENGTH_SHORT).show()
-                                Log.d("ChatFragment", it.message)
+                                Log.d(TAG, it.message)
                             })
                 }
             }

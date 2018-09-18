@@ -2,7 +2,6 @@ package com.example.android.ocschat.viewModel;
 
 import android.net.Uri;
 
-import com.example.android.ocschat.model.Friend;
 import com.example.android.ocschat.model.User;
 
 import java.io.File;
