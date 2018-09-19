@@ -2,10 +2,12 @@ package com.example.android.ocschat.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -60,6 +62,7 @@ class AddPhotoFragment : Fragment() {
         //get inputs received from Register fragment as arguments
         val userInputs = arguments?.getSerializable(Constants.INPUTS_KEY) as HashMap<String, Any>
 
+        setProfilePicturePlaceholder()
         setChooseProfilePictureClickListener()
         setAddClickListener(userInputs)
         setSkipClickListener(userInputs)
@@ -76,12 +79,23 @@ class AddPhotoFragment : Fragment() {
             filePath = data.data
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
-                add_photo_image_view.setImageBitmap(bitmap)
+                val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+                drawable.isCircular = true
+                add_photo_image_view.setImageDrawable(drawable)
                 add_photo_choose_image_text_view.visibility = View.GONE
             } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun setProfilePicturePlaceholder(){
+        val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.person_placeholder)
+        Log.d(TAG, "bitmap " + bitmap.byteCount)
+        val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+        Log.d(TAG, "drawable " + drawable.toString())
+        drawable.isCircular = true
+        add_photo_image_view.setImageDrawable(drawable)
     }
 
     private fun setChooseProfilePictureClickListener(){
