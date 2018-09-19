@@ -90,12 +90,12 @@ class AddPhotoFragment : Fragment() {
     }
 
     private fun setProfilePicturePlaceholder(){
-        val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.person_placeholder)
-        Log.d(TAG, "bitmap " + bitmap.byteCount)
+        add_photo_image_view.setImageDrawable(resources.getDrawable(R.drawable.person_placeholder))
+        //TODO: Rounded image
+        /*val bitmap = BitmapFactory.decodeResource(context?.resources, R.drawable.person_placeholder)
         val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
-        Log.d(TAG, "drawable " + drawable.toString())
         drawable.isCircular = true
-        add_photo_image_view.setImageDrawable(drawable)
+        add_photo_image_view.setImageDrawable(drawable)*/
     }
 
     private fun setChooseProfilePictureClickListener(){

@@ -17,6 +17,13 @@
         <item name="android:visibility">gone</item>
     </style>
 
+    <style name="UserExtraLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/default8_margin</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <style name="RegisterFields">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

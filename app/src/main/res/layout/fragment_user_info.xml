@@ -8,58 +8,176 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- for photo, name, and work -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
                 android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/user_info_image_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:scaleType="fitCenter"
+                        android:adjustViewBounds="true" />
+
+                    <ProgressBar
+                        android:id="@+id/user_info_image_loading_progress_bar"
+                        android:layout_width="@dimen/progress_bar_dimens"
+                        android:layout_height="@dimen/progress_bar_dimens"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/user_info_main_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right" />
 
                 <TextView
                     android:id="@+id/user_info_name_text_view"
-                    style="@style/UserExtraInfo"
-                    android:visibility="visible"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default8_margin"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
                 <TextView
-                    android:id="@+id/user_info_age_text_view"
-                    style="@style/UserExtraInfo" />
+                    android:id="@+id/user_info_work_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/default8_margin"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/white"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/user_info_image_view"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/default8_margin"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/user_info_education_text_view"
-            style="@style/UserExtraInfo" />
 
-        <TextView
-            android:id="@+id/user_info_education_org_text_view"
-            style="@style/UserExtraInfo" />
+        <!-- For rest of info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/user_info_major_text_view"
-            style="@style/UserExtraInfo" />
+            <!-- age -->
+            <LinearLayout
+                android:id="@+id/user_info_age_layout"
+                style="@style/UserExtraLayout">
 
-        <TextView
-            android:id="@+id/user_info_work_text_view"
-            style="@style/UserExtraInfo" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/age_colon"/>
 
-        <TextView
-            android:id="@+id/user_info_company_text_view"
-            style="@style/UserExtraInfo" />
+                <TextView
+                    android:id="@+id/user_info_age_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <!-- education -->
+            <LinearLayout
+                android:id="@+id/user_info_education_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/education_colon"/>
+
+                <TextView
+                    android:id="@+id/user_info_education_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <!-- major -->
+            <LinearLayout
+                android:id="@+id/user_info_major_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/major_colon"/>
+
+                <TextView
+                    android:id="@+id/user_info_major_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <!-- education organization -->
+            <LinearLayout
+                android:id="@+id/user_info_education_org_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/studied_at_colon"/>
+
+                <TextView
+                    android:id="@+id/user_info_education_org_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+            <!-- company -->
+            <LinearLayout
+                android:id="@+id/user_info_company_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/works_at_colon"/>
+
+                <TextView
+                    android:id="@+id/user_info_company_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

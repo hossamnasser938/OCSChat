@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,7 @@ import com.example.android.ocschat.util.Constants
 import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.AddFriendViewModel
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.fragment_friend_info.*
+import kotlinx.android.synthetic.main.fragment_user_info.*
 import java.io.File
 import javax.inject.Inject
 
@@ -54,11 +55,13 @@ class FriendInfoFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_friend_info, container, false)
+        setMenuVisibility(false)
+        return inflater.inflate(R.layout.fragment_user_info, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         currentUser = arguments?.get(Constants.USER_KEY) as User
 
         displayFriendInfo(currentUser)
@@ -121,8 +124,8 @@ class FriendInfoFragment : Fragment() {
     }
 
     private fun setAddFriendButtonClickListen(currentUser: User) {
-        friend_info_add_friend_button.setOnClickListener {
-            friend_info_add_friend_button.isClickable = false
+        user_info_main_button.setOnClickListener {
+            user_info_main_button.isClickable = false
             //try to add image path if downloaded
             try{
                 currentUser.imageFilePath = Uri.fromFile(userImageFile).toString()
@@ -136,7 +139,7 @@ class FriendInfoFragment : Fragment() {
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 activity?.finish()
             }, {
-                friend_info_add_friend_button.isClickable = true
+                user_info_main_button.isClickable = true
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d(TAG, it.message)
             })
@@ -145,15 +148,18 @@ class FriendInfoFragment : Fragment() {
 
     private fun checkFriendImage(currentUser: User){
         Log.d(TAG, "checkFriendImage")
-        friend_info_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentUser.hasImage){
             Log.d(TAG, "user has image")
             //show loading progress bar
-            friend_info_image_loading_progress_bar.visibility = View.VISIBLE
+            user_info_image_loading_progress_bar.visibility = View.VISIBLE
             if(isFriend!!){
                 Log.d(TAG, "user is a friend")
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentUser.imageFilePath))
-                friend_info_image_view.setImageBitmap(bitmap)
+                val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+                drawable.isCircular = true
+                user_info_image_view.setImageDrawable(drawable)
+                //hide loading progress bar
+                user_info_image_loading_progress_bar.visibility = View.GONE
             }
             else{
                 Log.d(TAG, "user is not a friend")
@@ -163,61 +169,60 @@ class FriendInfoFragment : Fragment() {
                         .subscribe ({
                             userImageFile = it
                             //hide loading progress bar
-                            friend_info_image_loading_progress_bar.visibility = View.GONE
+                            user_info_image_loading_progress_bar.visibility = View.GONE
                             Log.d(TAG, "got downloaded image")
                             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.fromFile(it))
-                            friend_info_image_view.setImageBitmap(bitmap)
+                            val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+                            drawable.isCircular = true
+                            user_info_image_view.setImageDrawable(drawable)
                         }, {
                             //hide loading progress bar
-                            friend_info_image_loading_progress_bar.visibility = View.GONE
+                            user_info_image_loading_progress_bar.visibility = View.GONE
                             Toast.makeText(context, getString(R.string.error_downloading_image), Toast.LENGTH_SHORT).show()
                             Log.d(TAG, "failed to download image")
                         })
             }
         }
+        else{
+            //TODO: convert into rounded
+            user_info_image_view.setImageResource(R.drawable.person_placeholder)
+        }
     }
 
     private fun displayFriendInfo(user : User){
-        friend_info_name_text_view.text = user.name
+        user_info_name_text_view.text = user.name
         if(user.age != null){
-            friend_info_age_text_view.visibility = View.VISIBLE
-            friend_info_age_text_view.setText(user.age.toString())
+            user_info_age_layout.visibility = View.VISIBLE
+            user_info_age_text_view.setText(user.age.toString())
         }
         if(user.education != null){
-            friend_info_education_text_view.visibility = View.VISIBLE
-            friend_info_education_text_view.setText(user.education)
+            user_info_education_layout.visibility = View.VISIBLE
+            user_info_education_text_view.setText(user.education)
         }
         if(user.educationOrganization != null){
-            friend_info_education_org_text_view.visibility = View.VISIBLE
-            friend_info_education_org_text_view.setText(user.educationOrganization)
+            user_info_education_org_layout.visibility = View.VISIBLE
+            user_info_education_org_text_view.setText(user.educationOrganization)
         }
         if(user.major != null){
-            friend_info_major_text_view.visibility = View.VISIBLE
-            friend_info_major_text_view.setText(user.major)
+            user_info_major_layout.visibility = View.VISIBLE
+            user_info_major_text_view.setText(user.major)
         }
         if(user.work != null){
-            friend_info_work_text_view.visibility = View.VISIBLE
-            friend_info_work_text_view.setText(user.work)
+            user_info_work_text_view.visibility = View.VISIBLE
+            user_info_work_text_view.setText(user.work)
         }
         if(user.company != null){
-            friend_info_company_text_view.visibility = View.VISIBLE
-            friend_info_company_text_view.setText(user.company)
+            user_info_company_layout.visibility = View.VISIBLE
+            user_info_company_text_view.setText(user.company)
         }
     }
 
     private fun showFriendState(){
-        setMenuVisibility(false)
-        friend_info_add_friend_button.visibility = View.VISIBLE
-        friend_info_add_friend_button.background = resources.getDrawable(R.drawable.already_friend)
-        friend_info_add_friend_button.setTextColor(resources.getColor(R.color.black))
-        friend_info_add_friend_button.text = resources.getString(R.string.friend)
+        user_info_main_button.setImageDrawable(resources.getDrawable(R.mipmap.checked_user_male_24dp))
+        user_info_main_button.isClickable = false
     }
 
     private fun showAddFriendState(){
-        setMenuVisibility(false)
-        friend_info_add_friend_button.visibility = View.VISIBLE
-        friend_info_add_friend_button.background = resources.getDrawable(R.drawable.add_friend)
-        friend_info_add_friend_button.setTextColor(resources.getColor(R.color.white))
-        friend_info_add_friend_button.text = resources.getString(R.string.add_friend)
+        user_info_main_button.setImageDrawable(resources.getDrawable(R.mipmap.add_user_male_24dp))
     }
 }
