@@ -51,12 +51,14 @@ class RegisterMoreInfoFragment : Fragment() {
 
     private fun setRegisterButtonClickListener(inputs : HashMap<String, Any>){
         register_button.setOnClickListener{
-            if(getUserInputs(inputs)){
-                //move to Add Photo fragment with user inputs
-                transient.openFragment(AddPhotoFragment.newInstance(inputs))
-            }
-            else{
-                showErrorMessage(R.string.added_no_more_info)
+            if(validateUserInputs()){
+                if(getUserInputs(inputs)){
+                    //move to Add Photo fragment with user inputs
+                    transient.openFragment(AddPhotoFragment.newInstance(inputs))
+                }
+                else{
+                    showErrorMessage(R.string.added_no_more_info)
+                }
             }
         }
     }
@@ -74,35 +76,52 @@ class RegisterMoreInfoFragment : Fragment() {
     }
 
     /**
-     * get user inputs and check if he added nothing
+     * get user inputs and check if user added something or not
      */
     private fun getUserInputs(inputs : HashMap<String, Any>) : Boolean{
         var addedInfo = false
-        if(!register_age_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_age_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.AGE_KEY] = register_age_edit_text.text.trim().toString().toInt()
             addedInfo = true
         }
-        if(!register_education_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_education_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.EDUCATION_KEY] = register_education_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_education_org_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_education_org_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.EDUCATION_ORG_KEY] = register_education_org_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_major_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_major_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.MAJOR_KEY] = register_major_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_work_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_work_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.WORK_KEY] = register_work_edit_text.text.trim().toString()
             addedInfo = true
         }
-        if(!register_company_edit_text.text.toString().trim().isEmpty()) {
+        if(!register_company_edit_text.text.trim().toString().isEmpty()) {
             inputs[Constants.COMPANY_KEY] = register_company_edit_text.text.trim().toString()
             addedInfo = true
         }
         return addedInfo
+    }
+
+    /**
+     * validate user inputs
+     */
+    private fun validateUserInputs() : Boolean{
+        var passed = true
+        //validate age property
+        if(!register_age_edit_text.text.trim().toString().isEmpty()) {
+            //check if user entered value equal to or less than zero or a floating-point value
+            val age = register_age_edit_text.text.trim().toString().toDouble()
+            if(age <= 0.0 || (age - age.toInt()) != 0.0) {
+                passed = false
+                showErrorMessage(R.string.enter_valid_age)
+            }
+        }
+        return passed
     }
 
     /**
