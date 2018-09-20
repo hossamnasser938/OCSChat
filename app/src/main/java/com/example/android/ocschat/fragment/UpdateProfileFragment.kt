@@ -149,13 +149,13 @@ class UpdateProfileFragment : Fragment(){
     private fun validateUserInputs() : Boolean{
         //validate first name
         val firstName = update_profile_firstname_edit_text.text.trim().toString()
-        if(!Utils.isValidName(firstName)){
+        if(firstName.isEmpty() || !Utils.isValidName(firstName)){
             showErrorMessage(R.string.invalid_name)
             return false
         }
         //validate second name
         val secondName = update_profile_lastname_edit_text.text.trim().toString()
-        if(!Utils.isValidName(secondName)){
+        if(secondName.isEmpty() || !Utils.isValidName(secondName)){
             showErrorMessage(R.string.invalid_name)
             return false
         }
@@ -178,27 +178,27 @@ class UpdateProfileFragment : Fragment(){
             return true
         if(!update_profile_lastname_edit_text.text.trim().toString().equals(currentlyLoggedUser.lastName, false))
             return true
-        if(update_profile_age_layout.visibility == View.VISIBLE){
+        if(!update_profile_age_edit_text.text.trim().toString().isEmpty()){
             if(update_profile_age_edit_text.text.trim().toString().toInt() != currentlyLoggedUser.age)
                 return true
         }
-        if(update_profile_education_layout.visibility == View.VISIBLE){
+        if(!update_profile_education_edit_text.text.trim().toString().isEmpty()){
             if(!update_profile_education_edit_text.text.trim().toString().equals(currentlyLoggedUser.education, false))
                 return true
         }
-        if(update_profile_education_org_layout.visibility == View.VISIBLE){
+        if(!update_profile_education_org_edit_text.text.trim().toString().isEmpty()){
             if(!update_profile_education_org_edit_text.text.trim().toString().equals(currentlyLoggedUser.educationOrganization, false))
                 return true
         }
-        if(update_profile_major_layout.visibility == View.VISIBLE){
+        if(!update_profile_major_edit_text.text.trim().toString().isEmpty()){
             if(!update_profile_major_edit_text.text.trim().toString().equals(currentlyLoggedUser.major, false))
                 return true
         }
-        if(update_profile_work_layout.visibility == View.VISIBLE){
+        if(!update_profile_work_edit_text.text.trim().toString().isEmpty()){
             if(!update_profile_work_edit_text.text.trim().toString().equals(currentlyLoggedUser.work, false))
                 return true
         }
-        if(update_profile_company_layout.visibility == View.VISIBLE){
+        if(!update_profile_company_edit_text.text.trim().toString().isEmpty()){
             if(!update_profile_company_edit_text.text.trim().toString().equals(currentlyLoggedUser.company, false))
                 return true
         }
@@ -215,17 +215,17 @@ class UpdateProfileFragment : Fragment(){
     private fun updateUserProperties() {
         currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.trim().toString()
         currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.trim().toString()
-        if(update_profile_age_layout.visibility == View.VISIBLE)
+        if(!update_profile_age_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.age = update_profile_age_edit_text.text.trim().toString().toInt()
-        if(update_profile_education_layout.visibility == View.VISIBLE)
+        if(!update_profile_education_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.education = update_profile_education_edit_text.text.trim().toString()
-        if(update_profile_education_org_layout.visibility == View.VISIBLE)
+        if(!update_profile_education_org_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.trim().toString()
-        if(update_profile_major_layout.visibility == View.VISIBLE)
+        if(!update_profile_major_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.major = update_profile_major_edit_text.text.trim().toString()
-        if(update_profile_work_layout.visibility == View.VISIBLE)
+        if(!update_profile_work_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.work = update_profile_work_edit_text.text.trim().toString()
-        if(update_profile_company_layout.visibility == View.VISIBLE)
+        if(!update_profile_company_edit_text.text.trim().toString().isEmpty())
             currentlyLoggedUser.company = update_profile_company_edit_text.text.trim().toString()
     }
 
@@ -234,27 +234,21 @@ class UpdateProfileFragment : Fragment(){
         update_profile_firstname_edit_text.setText(currentlyLoggedUser.firstName)
         update_profile_lastname_edit_text.setText(currentlyLoggedUser.lastName)
         if(currentlyLoggedUser.age != null){
-            update_profile_age_layout.visibility = View.VISIBLE
             update_profile_age_edit_text.setText(currentlyLoggedUser.age.toString())
         }
         if(currentlyLoggedUser.education != null){
-            update_profile_education_layout.visibility = View.VISIBLE
             update_profile_education_edit_text.setText(currentlyLoggedUser.education)
         }
         if(currentlyLoggedUser.educationOrganization != null){
-            update_profile_education_org_layout.visibility = View.VISIBLE
             update_profile_education_org_edit_text.setText(currentlyLoggedUser.educationOrganization)
         }
         if(currentlyLoggedUser.major != null){
-            update_profile_major_layout.visibility = View.VISIBLE
             update_profile_major_edit_text.setText(currentlyLoggedUser.major)
         }
         if(currentlyLoggedUser.work != null){
-            update_profile_work_layout.visibility = View.VISIBLE
             update_profile_work_edit_text.setText(currentlyLoggedUser.work)
         }
         if(currentlyLoggedUser.company != null){
-            update_profile_company_layout.visibility = View.VISIBLE
             update_profile_company_edit_text.setText(currentlyLoggedUser.company)
         }
 

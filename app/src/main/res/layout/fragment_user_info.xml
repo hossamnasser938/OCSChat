@@ -97,7 +97,8 @@
             <!-- age -->
             <LinearLayout
                 android:id="@+id/user_info_age_layout"
-                style="@style/UserExtraLayout">
+                style="@style/UserExtraLayout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -115,7 +116,8 @@
             <!-- education -->
             <LinearLayout
                 android:id="@+id/user_info_education_layout"
-                style="@style/UserExtraLayout">
+                style="@style/UserExtraLayout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -133,7 +135,8 @@
             <!-- major -->
             <LinearLayout
                 android:id="@+id/user_info_major_layout"
-                style="@style/UserExtraLayout">
+                style="@style/UserExtraLayout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,7 +154,8 @@
             <!-- education organization -->
             <LinearLayout
                 android:id="@+id/user_info_education_org_layout"
-                style="@style/UserExtraLayout">
+                style="@style/UserExtraLayout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -169,7 +173,8 @@
             <!-- company -->
             <LinearLayout
                 android:id="@+id/user_info_company_layout"
-                style="@style/UserExtraLayout">
+                style="@style/UserExtraLayout"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
