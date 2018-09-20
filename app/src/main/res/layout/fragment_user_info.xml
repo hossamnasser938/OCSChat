@@ -12,71 +12,78 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:background="@color/colorPrimary">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
-                    <ImageView
-                        android:id="@+id/user_info_image_view"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/user_info_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:scaleType="fitCenter"
+                            android:adjustViewBounds="true" />
+
+                        <ProgressBar
+                            android:id="@+id/user_info_image_loading_progress_bar"
+                            android:layout_width="@dimen/progress_bar_dimens"
+                            android:layout_height="@dimen/progress_bar_dimens"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/user_info_main_button"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:scaleType="fitCenter"
-                        android:adjustViewBounds="true" />
+                        android:layout_gravity="right" />
 
-                    <ProgressBar
-                        android:id="@+id/user_info_image_loading_progress_bar"
-                        android:layout_width="@dimen/progress_bar_dimens"
-                        android:layout_height="@dimen/progress_bar_dimens"
-                        android:layout_centerInParent="true"
-                        android:visibility="gone" />
+                </LinearLayout>
 
-                </RelativeLayout>
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/user_info_main_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right" />
-
-                <TextView
-                    android:id="@+id/user_info_name_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default8_margin"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/white"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-                <TextView
-                    android:id="@+id/user_info_work_text_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default8_margin"
-                    android:gravity="center_horizontal"
-                    android:textColor="@color/white"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:visibility="gone" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/user_info_name_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default8_margin"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+            <TextView
+                android:id="@+id/user_info_work_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default8_margin"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:visibility="gone" />
 
         </LinearLayout>
 
