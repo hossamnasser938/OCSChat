@@ -148,6 +148,10 @@ class FriendInfoFragment : Fragment() {
 
     private fun checkFriendImage(currentUser: User){
         Log.d(TAG, "checkFriendImage")
+        //show profile picture placeholder
+        //TODO: convert into rounded
+        user_info_image_view.setImageResource(R.drawable.person_placeholder)
+        //check if user has image
         if(currentUser.hasImage){
             Log.d(TAG, "user has image")
             //show loading progress bar
@@ -182,10 +186,6 @@ class FriendInfoFragment : Fragment() {
                             Log.d(TAG, "failed to download image")
                         })
             }
-        }
-        else{
-            //TODO: convert into rounded
-            user_info_image_view.setImageResource(R.drawable.person_placeholder)
         }
     }
 
