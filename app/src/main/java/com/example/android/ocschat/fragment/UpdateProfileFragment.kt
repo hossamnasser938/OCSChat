@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.support.v4.app.Fragment
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory
 import android.util.Log
 import android.view.*
 import android.widget.Toast
@@ -139,7 +140,9 @@ class UpdateProfileFragment : Fragment(){
             filePath = data.data
             try {
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, filePath)
-                update_profile_image_view.setImageBitmap(bitmap)
+                val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+                drawable.isCircular = true
+                update_profile_image_view.setImageDrawable(drawable)
             } catch (e: IOException) {
                 e.printStackTrace()
             }
@@ -257,11 +260,14 @@ class UpdateProfileFragment : Fragment(){
 
     private fun checkUserImage() {
         Log.d(TAG, "checkUserImage")
+        //TODO: convert into rounded
         update_profile_image_view.setImageResource(R.drawable.person_placeholder)
         if(currentlyLoggedUser.hasImage){
             Log.d(TAG, "has image")
             val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, Uri.parse(currentlyLoggedUser.imageFilePath))
-            update_profile_image_view.setImageBitmap(bitmap)
+            val drawable = RoundedBitmapDrawableFactory.create(resources, bitmap)
+            drawable.isCircular = true
+            update_profile_image_view.setImageDrawable(drawable)
         }
     }
 
