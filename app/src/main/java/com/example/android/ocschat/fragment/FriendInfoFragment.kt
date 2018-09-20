@@ -1,5 +1,6 @@
 package com.example.android.ocschat.fragment
 
+import android.app.ProgressDialog
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -125,7 +126,14 @@ class FriendInfoFragment : Fragment() {
 
     private fun setAddFriendButtonClickListen(currentUser: User) {
         user_info_main_button.setOnClickListener {
+            //prevent user from clicking again until response
             user_info_main_button.isClickable = false
+
+            //Show loading progress dialog
+            val progressDialog = ProgressDialog(activity)
+            progressDialog.setTitle(R.string.adding_friend)
+            progressDialog.show()
+
             //try to add image path if downloaded
             try{
                 currentUser.imageFilePath = Uri.fromFile(userImageFile).toString()
@@ -136,10 +144,12 @@ class FriendInfoFragment : Fragment() {
             addFriendDisposable = addFriendViewMdel.addFriend(currentUser).subscribe({
                 addedFriend = true
                 showFriendState()
+                progressDialog.dismiss()
                 Toast.makeText(context, R.string.friend_added, Toast.LENGTH_SHORT).show()
                 activity?.finish()
             }, {
                 user_info_main_button.isClickable = true
+                progressDialog.dismiss()
                 Toast.makeText(context, R.string.error_adding_friend, Toast.LENGTH_SHORT).show()
                 Log.d(TAG, it.message)
             })

@@ -54,6 +54,7 @@
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="updating_profile">Updating profile &#8230;</string>
+    <string name="adding_friend">Adding friend &#8230;</string>
     <string name="invite_friend">Invite Friend</string>
     <string name="account_updated">Account updated successfully</string>
     <string name="no_changes_to_update">No changes to update</string>
