@@ -82,9 +82,12 @@
     <string name="chosen_no_image">If you do not want to add a profile photo, just click SKIP</string>
     <string name="chosen_image">If you want to add a profile photo, just click ADD</string>
     <string name="user_has_no_image_error">User has no image to be downloaded</string>
+    <string name="firstname_colon">First name : </string>
+    <string name="lastname_colon">Last name : </string>
     <string name="age_colon">Age : </string>
     <string name="education_colon">Education : </string>
     <string name="major_colon">Major : </string>
     <string name="studied_at_colon">Studied at : </string>
+    <string name="works_as_colon">Works as : </string>
     <string name="works_at_colon">Works at : </string>
 </resources>

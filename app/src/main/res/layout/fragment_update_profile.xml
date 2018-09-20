@@ -8,33 +8,106 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- for photo -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary">
 
-            <LinearLayout
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/update_profile_image_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="3"
+                android:layout_gravity="center_vertical"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+
+        <!-- For rest of info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/update_profile_error_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default8_margin"
-                android:orientation="vertical">
+                android:textColor="@color/red" />
+
+            <!-- first name -->
+            <LinearLayout
+                android:id="@+id/update_profile_firstname_layout"
+                style="@style/UserExtraLayout"
+                android:visibility="visible">
 
                 <TextView
-                    android:id="@+id/update_profile_error_text"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColor="@color/red" />
+                    android:text="@string/firstname_colon"/>
 
                 <EditText
                     android:id="@+id/update_profile_firstname_edit_text"
-                    style="@style/UpdateProfileMoreInfoFields"
-                    android:visibility="visible" />
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- last name -->
+            <LinearLayout
+                android:id="@+id/update_profile_lastname_layout"
+                style="@style/UserExtraLayout"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lastname_colon"/>
 
                 <EditText
                     android:id="@+id/update_profile_lastname_edit_text"
-                    style="@style/UpdateProfileMoreInfoFields"
-                    android:visibility="visible" />
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- work -->
+            <LinearLayout
+                android:id="@+id/update_profile_work_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/works_as_colon"/>
+
+                <EditText
+                    android:id="@+id/update_profile_work_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- age -->
+            <LinearLayout
+                android:id="@+id/update_profile_age_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/age_colon"/>
 
                 <EditText
                     android:id="@+id/update_profile_age_edit_text"
@@ -42,43 +115,71 @@
 
             </LinearLayout>
 
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="@dimen/default8_margin">
+            <!-- education -->
+            <LinearLayout
+                android:id="@+id/update_profile_education_layout"
+                style="@style/UserExtraLayout">
 
-                <ImageView
-                    android:id="@+id/update_profile_image_view"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scaleType="fitCenter"
-                    android:adjustViewBounds="true"
-                    android:layout_margin="@dimen/default8_margin"/>
+                    android:text="@string/education_colon"/>
 
-            </RelativeLayout>
+                <EditText
+                    android:id="@+id/update_profile_education_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- major -->
+            <LinearLayout
+                android:id="@+id/update_profile_major_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/major_colon"/>
+
+                <EditText
+                    android:id="@+id/update_profile_major_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- education organization -->
+            <LinearLayout
+                android:id="@+id/update_profile_education_org_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/studied_at_colon"/>
+
+                <EditText
+                    android:id="@+id/update_profile_education_org_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
+
+            <!-- company -->
+            <LinearLayout
+                android:id="@+id/update_profile_company_layout"
+                style="@style/UserExtraLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/works_at_colon"/>
+
+                <EditText
+                    android:id="@+id/update_profile_company_edit_text"
+                    style="@style/UpdateProfileMoreInfoFields" />
+
+            </LinearLayout>
 
         </LinearLayout>
-
-        <EditText
-            android:id="@+id/update_profile_education_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
-
-        <EditText
-            android:id="@+id/update_profile_education_org_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
-
-        <EditText
-            android:id="@+id/update_profile_major_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
-
-        <EditText
-            android:id="@+id/update_profile_work_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
-
-        <EditText
-            android:id="@+id/update_profile_company_edit_text"
-            style="@style/UpdateProfileMoreInfoFields" />
 
     </LinearLayout>
 

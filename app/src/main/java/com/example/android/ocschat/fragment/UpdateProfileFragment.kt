@@ -18,7 +18,6 @@ import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_update_profile.*
-import org.eclipse.jdt.internal.core.util.Util
 import java.io.IOException
 import javax.inject.Inject
 
@@ -161,7 +160,7 @@ class UpdateProfileFragment : Fragment(){
             return false
         }
         //validate age
-        if(update_profile_age_edit_text.visibility == View.VISIBLE){
+        if(update_profile_age_layout.visibility == View.VISIBLE){
             val age = update_profile_age_edit_text.text.trim().toString().toDouble()
             if(!Utils.isValidAge(age)){
                 showErrorMessage(R.string.enter_valid_age)
@@ -179,27 +178,27 @@ class UpdateProfileFragment : Fragment(){
             return true
         if(!update_profile_lastname_edit_text.text.trim().toString().equals(currentlyLoggedUser.lastName, false))
             return true
-        if(update_profile_age_edit_text.visibility == View.VISIBLE){
+        if(update_profile_age_layout.visibility == View.VISIBLE){
             if(update_profile_age_edit_text.text.trim().toString().toInt() != currentlyLoggedUser.age)
                 return true
         }
-        if(update_profile_education_edit_text.visibility == View.VISIBLE){
+        if(update_profile_education_layout.visibility == View.VISIBLE){
             if(!update_profile_education_edit_text.text.trim().toString().equals(currentlyLoggedUser.education, false))
                 return true
         }
-        if(update_profile_education_org_edit_text.visibility == View.VISIBLE){
+        if(update_profile_education_org_layout.visibility == View.VISIBLE){
             if(!update_profile_education_org_edit_text.text.trim().toString().equals(currentlyLoggedUser.educationOrganization, false))
                 return true
         }
-        if(update_profile_major_edit_text.visibility == View.VISIBLE){
+        if(update_profile_major_layout.visibility == View.VISIBLE){
             if(!update_profile_major_edit_text.text.trim().toString().equals(currentlyLoggedUser.major, false))
                 return true
         }
-        if(update_profile_work_edit_text.visibility == View.VISIBLE){
+        if(update_profile_work_layout.visibility == View.VISIBLE){
             if(!update_profile_work_edit_text.text.trim().toString().equals(currentlyLoggedUser.work, false))
                 return true
         }
-        if(update_profile_company_edit_text.visibility == View.VISIBLE){
+        if(update_profile_company_layout.visibility == View.VISIBLE){
             if(!update_profile_company_edit_text.text.trim().toString().equals(currentlyLoggedUser.company, false))
                 return true
         }
@@ -216,17 +215,17 @@ class UpdateProfileFragment : Fragment(){
     private fun updateUserProperties() {
         currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.trim().toString()
         currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.trim().toString()
-        if(update_profile_age_edit_text.visibility == View.VISIBLE)
+        if(update_profile_age_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.age = update_profile_age_edit_text.text.trim().toString().toInt()
-        if(update_profile_education_edit_text.visibility == View.VISIBLE)
+        if(update_profile_education_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.education = update_profile_education_edit_text.text.trim().toString()
-        if(update_profile_education_org_edit_text.visibility == View.VISIBLE)
+        if(update_profile_education_org_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.trim().toString()
-        if(update_profile_major_edit_text.visibility == View.VISIBLE)
+        if(update_profile_major_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.major = update_profile_major_edit_text.text.trim().toString()
-        if(update_profile_work_edit_text.visibility == View.VISIBLE)
+        if(update_profile_work_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.work = update_profile_work_edit_text.text.trim().toString()
-        if(update_profile_company_edit_text.visibility == View.VISIBLE)
+        if(update_profile_company_layout.visibility == View.VISIBLE)
             currentlyLoggedUser.company = update_profile_company_edit_text.text.trim().toString()
     }
 
@@ -235,27 +234,27 @@ class UpdateProfileFragment : Fragment(){
         update_profile_firstname_edit_text.setText(currentlyLoggedUser.firstName)
         update_profile_lastname_edit_text.setText(currentlyLoggedUser.lastName)
         if(currentlyLoggedUser.age != null){
-            update_profile_age_edit_text.visibility = View.VISIBLE
+            update_profile_age_layout.visibility = View.VISIBLE
             update_profile_age_edit_text.setText(currentlyLoggedUser.age.toString())
         }
         if(currentlyLoggedUser.education != null){
-            update_profile_education_edit_text.visibility = View.VISIBLE
+            update_profile_education_layout.visibility = View.VISIBLE
             update_profile_education_edit_text.setText(currentlyLoggedUser.education)
         }
         if(currentlyLoggedUser.educationOrganization != null){
-            update_profile_education_org_edit_text.visibility = View.VISIBLE
+            update_profile_education_org_layout.visibility = View.VISIBLE
             update_profile_education_org_edit_text.setText(currentlyLoggedUser.educationOrganization)
         }
         if(currentlyLoggedUser.major != null){
-            update_profile_major_edit_text.visibility = View.VISIBLE
+            update_profile_major_layout.visibility = View.VISIBLE
             update_profile_major_edit_text.setText(currentlyLoggedUser.major)
         }
         if(currentlyLoggedUser.work != null){
-            update_profile_work_edit_text.visibility = View.VISIBLE
+            update_profile_work_layout.visibility = View.VISIBLE
             update_profile_work_edit_text.setText(currentlyLoggedUser.work)
         }
         if(currentlyLoggedUser.company != null){
-            update_profile_company_edit_text.visibility = View.VISIBLE
+            update_profile_company_layout.visibility = View.VISIBLE
             update_profile_company_edit_text.setText(currentlyLoggedUser.company)
         }
 
