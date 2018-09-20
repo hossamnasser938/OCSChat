@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.android.ocschat.R
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import kotlinx.android.synthetic.main.fragment_register_more_info.*
 
 class RegisterMoreInfoFragment : Fragment() {
@@ -111,17 +112,15 @@ class RegisterMoreInfoFragment : Fragment() {
      * validate user inputs
      */
     private fun validateUserInputs() : Boolean{
-        var passed = true
         //validate age property
         if(!register_age_edit_text.text.trim().toString().isEmpty()) {
-            //check if user entered value equal to or less than zero or a floating-point value
             val age = register_age_edit_text.text.trim().toString().toDouble()
-            if(age <= 0.0 || (age - age.toInt()) != 0.0) {
-                passed = false
+            if(!Utils.isValidAge(age)) {
                 showErrorMessage(R.string.enter_valid_age)
+                return false
             }
         }
-        return passed
+        return true
     }
 
     /**

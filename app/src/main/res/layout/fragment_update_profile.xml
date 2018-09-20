@@ -19,6 +19,13 @@
                 android:layout_margin="@dimen/default8_margin"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/update_profile_error_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/red" />
+
                 <EditText
                     android:id="@+id/update_profile_firstname_edit_text"
                     style="@style/UpdateProfileMoreInfoFields"

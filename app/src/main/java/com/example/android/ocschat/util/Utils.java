@@ -54,6 +54,17 @@ public class Utils {
     }
 
     /**
+     * checks if age is valid(larger than zero and not floating point value)
+     * @param age
+     */
+    public static boolean isValidAge(Double age){
+        if(age <= 0.0 || (age - age.intValue()) != 0.0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * generates unique key each two friends using their guaranteed unique keys
      * @param currentUserId
      * @param friendId

@@ -14,9 +14,11 @@ import com.example.android.ocschat.OCSChatApplication
 import com.example.android.ocschat.R
 import com.example.android.ocschat.model.User
 import com.example.android.ocschat.util.Constants
+import com.example.android.ocschat.util.Utils
 import com.example.android.ocschat.viewModel.SettingsViewModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_update_profile.*
+import org.eclipse.jdt.internal.core.util.Util
 import java.io.IOException
 import javax.inject.Inject
 
@@ -85,6 +87,12 @@ class UpdateProfileFragment : Fragment(){
                     return true
                 }
 
+                //validate user inputs
+                if(!validateUserInputs()){
+                    //An Error message has already been displayed from the validateUserInputs function
+                    return true
+                }
+
                 //Show progress dialog
                 val progressDialog = ProgressDialog(activity)
                 progressDialog.setTitle(R.string.updating_profile)
@@ -139,6 +147,30 @@ class UpdateProfileFragment : Fragment(){
         }
     }
 
+    private fun validateUserInputs() : Boolean{
+        //validate first name
+        val firstName = update_profile_firstname_edit_text.text.trim().toString()
+        if(!Utils.isValidName(firstName)){
+            showErrorMessage(R.string.invalid_name)
+            return false
+        }
+        //validate second name
+        val secondName = update_profile_lastname_edit_text.text.trim().toString()
+        if(!Utils.isValidName(secondName)){
+            showErrorMessage(R.string.invalid_name)
+            return false
+        }
+        //validate age
+        if(update_profile_age_edit_text.visibility == View.VISIBLE){
+            val age = update_profile_age_edit_text.text.trim().toString().toDouble()
+            if(!Utils.isValidAge(age)){
+                showErrorMessage(R.string.enter_valid_age)
+                return false
+            }
+        }
+        return true
+    }
+
     /**
      * check if user updated something or not
      */
@@ -182,20 +214,20 @@ class UpdateProfileFragment : Fragment(){
     }
 
     private fun updateUserProperties() {
-        currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.toString()
-        currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.toString()
+        currentlyLoggedUser.firstName = update_profile_firstname_edit_text.text.trim().toString()
+        currentlyLoggedUser.lastName = update_profile_lastname_edit_text.text.trim().toString()
         if(update_profile_age_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.age = update_profile_age_edit_text.text.toString().toInt()
+            currentlyLoggedUser.age = update_profile_age_edit_text.text.trim().toString().toInt()
         if(update_profile_education_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.education = update_profile_education_edit_text.text.toString()
+            currentlyLoggedUser.education = update_profile_education_edit_text.text.trim().toString()
         if(update_profile_education_org_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.toString()
+            currentlyLoggedUser.educationOrganization = update_profile_education_org_edit_text.text.trim().toString()
         if(update_profile_major_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.major = update_profile_major_edit_text.text.toString()
+            currentlyLoggedUser.major = update_profile_major_edit_text.text.trim().toString()
         if(update_profile_work_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.work = update_profile_work_edit_text.text.toString()
+            currentlyLoggedUser.work = update_profile_work_edit_text.text.trim().toString()
         if(update_profile_company_edit_text.visibility == View.VISIBLE)
-            currentlyLoggedUser.company = update_profile_company_edit_text.text.toString()
+            currentlyLoggedUser.company = update_profile_company_edit_text.text.trim().toString()
     }
 
 
@@ -247,5 +279,18 @@ class UpdateProfileFragment : Fragment(){
             intent.action = Intent.ACTION_OPEN_DOCUMENT  //ACTION_OPEN_DOCUMENT instead of ACTION_GET_DOCUMENT to have future access to this file
             startActivityForResult(Intent.createChooser(intent, "Select Image"), Constants.PICK_IMAGE_REQUEST)
         }
+    }
+
+    /**
+     * show error message to user
+     */
+    private fun showErrorMessage(messageId : Int){
+        update_profile_error_text.visibility = View.VISIBLE
+        update_profile_error_text.text = getString(messageId)
+    }
+
+    private fun showErrorMessage(message : String?){
+        update_profile_error_text.visibility = View.VISIBLE
+        update_profile_error_text.text = message
     }
 }
