@@ -89,3 +89,12 @@ is the layer that sets between the view and model layers. It prevents direct acc
 separation of concerns concept. It consists only one package called viewModel
 
     •  There are other packages related to android development such as adapter, listener, and util
+
+## ScreenShots
+![screenshot_2018-09-26-17-21-04](https://user-images.githubusercontent.com/27894818/46090181-766c1600-c1b0-11e8-8995-84ee1cc3a16f.png)
+
+![screenshot_2018-09-26-17-21-53](https://user-images.githubusercontent.com/27894818/46090205-84219b80-c1b0-11e8-99e0-8b27b7a7257c.png)
+
+![screenshot_2018-09-26-17-23-01](https://user-images.githubusercontent.com/27894818/46090233-90a5f400-c1b0-11e8-8bea-b79aad814d6e.png)
+
+![screenshot_2018-09-26-17-23-26](https://user-images.githubusercontent.com/27894818/46090265-a3202d80-c1b0-11e8-9691-08553369f9f5.png)
